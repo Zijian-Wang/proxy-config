@@ -22,7 +22,7 @@ jobs:
       - name: Build Shadowrocket config
         run: |
           python3 scripts/build_shadowrocket.py
-          raw_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_REF_NAME}/shadowrocket.conf"
+          raw_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads/${GITHUB_REF_NAME}/shadowrocket.conf"
           python3 scripts/update_qr.py --url "$raw_url"
 
       - name: Commit changes

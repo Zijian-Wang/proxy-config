@@ -23,7 +23,7 @@ Scan that QR code in Shadowrocket to add the config directly.
 If you want to generate the QR manually:
 
 ```bash
-python3 scripts/update_qr.py --url "https://raw.githubusercontent.com/OWNER/REPO/main/shadowrocket.conf"
+python3 scripts/update_qr.py --url "https://raw.githubusercontent.com/OWNER/REPO/refs/heads/main/shadowrocket.conf"
 ```
 
 To rebuild manually:

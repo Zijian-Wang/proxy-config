@@ -26,7 +26,7 @@ def raw_url_from_remote() -> str:
         repo = remote.removeprefix("https://github.com/").removesuffix(".git")
     else:
         raise ValueError(f"unsupported origin remote: {remote}")
-    return f"https://raw.githubusercontent.com/{repo}/{branch}/shadowrocket.conf"
+    return f"https://raw.githubusercontent.com/{repo}/refs/heads/{branch}/shadowrocket.conf"
 
 
 def download_qr(url: str, output: Path) -> None:
