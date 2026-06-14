@@ -1,0 +1,22 @@
+# Clash Verge profile enhancement: rules.
+# Add this as a rule enhancement on top of your existing subscription.
+#
+# Note: broker/account domains currently use the upstream US fallback group.
+# If you want strict IP stability, manually switch these policies to your
+# provider's US manual group instead of the fallback group.
+
+prepend:
+  - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国故转'
+  - 'DOMAIN-KEYWORD,thinkorswim,🇺🇸 美国故转'
+  - 'DOMAIN-KEYWORD,epicgames,DIRECT'
+  - 'DOMAIN,unrealengine.com,DIRECT'
+  - 'DOMAIN,epicgames.com,DIRECT'
+  - 'DOMAIN-SUFFIX,waditu.com,DIRECT'
+  - 'DOMAIN-SUFFIX,todesk.com,DIRECT'
+  - 'DOMAIN,thinkorswim.com,🇺🇸 美国故转'
+  - 'DOMAIN,schwab.com,🇺🇸 美国故转'
+  - 'DOMAIN-SUFFIX,Rotenone.com,DIRECT'
+
+append: []
+delete: []
+
