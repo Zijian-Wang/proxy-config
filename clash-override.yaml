@@ -38,6 +38,33 @@ prepend:
   - 'DOMAIN-SUFFIX,windsurf.com,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,midjourney.com,🇯🇵 日本手动'
 
+  # Apple Music -> US manual (geo-locked catalog).
+  - 'DOMAIN-SUFFIX,music.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,amp-api.music.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,play.music.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,aodp-ssl.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,blobstore.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,audio-ssl.itunes.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,streamingaudio.itunes.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,mvod.itunes.apple.com,🇺🇸 美国手动'
+
+  # Apple Podcasts -> US manual (geo-locked catalog).
+  - 'DOMAIN-SUFFIX,podcasts.apple.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,podcasters.apple.com,🇺🇸 美国手动'
+
+  # Apple App Store / iTunes / software update: use China CDN directly.
+  - 'DOMAIN-SUFFIX,apps.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,itunes.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,bag.itunes.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,play.itunes.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,phobos.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,iosapps.itunes.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,appldnld.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,swcdn.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,updates-http.cdn-apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,c.apple.com,DIRECT'
+  - 'DOMAIN-SUFFIX,ocsp.apple.com,DIRECT'
+
   - 'DOMAIN-KEYWORD,epicgames,DIRECT'
   - 'DOMAIN,unrealengine.com,DIRECT'
   - 'DOMAIN,epicgames.com,DIRECT'
