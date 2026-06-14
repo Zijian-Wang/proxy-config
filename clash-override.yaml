@@ -1,22 +1,49 @@
 # Clash Verge profile enhancement: rules.
 # Add this as a rule enhancement on top of your existing subscription.
 #
-# Note: broker/account domains currently use the upstream US fallback group.
-# If you want strict IP stability, manually switch these policies to your
-# provider's US manual group instead of the fallback group.
+# Broker/account domains use the upstream US manual group for IP stability.
+# OpenAI/ChatGPT also avoids Hong Kong by using the US manual group.
 
 prepend:
-  - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国故转'
-  - 'DOMAIN-KEYWORD,thinkorswim,🇺🇸 美国故转'
+  - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,interactivebrokers.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,ibkr.com,🇺🇸 美国手动'
+  - 'DOMAIN-KEYWORD,thinkorswim,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,thinkorswim.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,schwab.com,🇺🇸 美国手动'
+
+  # OpenAI/ChatGPT: avoid Hong Kong.
+  - 'DOMAIN-SUFFIX,openai.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,chatgpt.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,oaistatic.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,oaiusercontent.com,🇺🇸 美国手动'
+  - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国手动'
+
+  # Other AI tools: Japan is the default; switch manually in Clash if needed.
+  - 'DOMAIN-SUFFIX,anthropic.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,claude.ai,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,perplexity.ai,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,pplx.ai,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,poe.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,grok.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,x.ai,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,gemini.google.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,aistudio.google.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,ai.google.dev,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,generativelanguage.googleapis.com,🇯🇵 日本手动'
+  - 'DOMAIN,copilot.microsoft.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,cursor.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,cursor.sh,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,codeium.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,windsurf.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,midjourney.com,🇯🇵 日本手动'
+
   - 'DOMAIN-KEYWORD,epicgames,DIRECT'
   - 'DOMAIN,unrealengine.com,DIRECT'
   - 'DOMAIN,epicgames.com,DIRECT'
   - 'DOMAIN-SUFFIX,waditu.com,DIRECT'
   - 'DOMAIN-SUFFIX,todesk.com,DIRECT'
-  - 'DOMAIN,thinkorswim.com,🇺🇸 美国故转'
-  - 'DOMAIN,schwab.com,🇺🇸 美国故转'
   - 'DOMAIN-SUFFIX,Rotenone.com,DIRECT'
 
 append: []
 delete: []
-

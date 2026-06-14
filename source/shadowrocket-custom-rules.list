@@ -1,12 +1,40 @@
 # Custom overrides. Keep these before the base domestic/foreign + ad rules.
 DOMAIN-KEYWORD,interactivebrokers,US-STABLE
+DOMAIN-SUFFIX,interactivebrokers.com,US-STABLE
+DOMAIN-SUFFIX,ibkr.com,US-STABLE
 DOMAIN-KEYWORD,thinkorswim,US-STABLE
+DOMAIN-SUFFIX,thinkorswim.com,US-STABLE
+DOMAIN-SUFFIX,schwab.com,US-STABLE
+
+# OpenAI/ChatGPT: avoid Hong Kong; choose US, Japan, or Taiwan manually.
+DOMAIN-SUFFIX,openai.com,AI-OPENAI
+DOMAIN-SUFFIX,chatgpt.com,AI-OPENAI
+DOMAIN-SUFFIX,oaistatic.com,AI-OPENAI
+DOMAIN-SUFFIX,oaiusercontent.com,AI-OPENAI
+DOMAIN-SUFFIX,openaiapi-site.azureedge.net,AI-OPENAI
+
+# Other AI tools: prefer Japan/Taiwan.
+DOMAIN-SUFFIX,anthropic.com,AI-JP-TW
+DOMAIN-SUFFIX,claude.ai,AI-JP-TW
+DOMAIN-SUFFIX,perplexity.ai,AI-JP-TW
+DOMAIN-SUFFIX,pplx.ai,AI-JP-TW
+DOMAIN-SUFFIX,poe.com,AI-JP-TW
+DOMAIN-SUFFIX,grok.com,AI-JP-TW
+DOMAIN-SUFFIX,x.ai,AI-JP-TW
+DOMAIN-SUFFIX,gemini.google.com,AI-JP-TW
+DOMAIN-SUFFIX,aistudio.google.com,AI-JP-TW
+DOMAIN-SUFFIX,ai.google.dev,AI-JP-TW
+DOMAIN-SUFFIX,generativelanguage.googleapis.com,AI-JP-TW
+DOMAIN,copilot.microsoft.com,AI-JP-TW
+DOMAIN-SUFFIX,cursor.com,AI-JP-TW
+DOMAIN-SUFFIX,cursor.sh,AI-JP-TW
+DOMAIN-SUFFIX,codeium.com,AI-JP-TW
+DOMAIN-SUFFIX,windsurf.com,AI-JP-TW
+DOMAIN-SUFFIX,midjourney.com,AI-JP-TW
+
 DOMAIN-KEYWORD,epicgames,DIRECT
 DOMAIN,unrealengine.com,DIRECT
 DOMAIN,epicgames.com,DIRECT
 DOMAIN-SUFFIX,waditu.com,DIRECT
 DOMAIN-SUFFIX,todesk.com,DIRECT
-DOMAIN,thinkorswim.com,US-STABLE
-DOMAIN,schwab.com,US-STABLE
 DOMAIN-SUFFIX,Rotenone.com,DIRECT
-

@@ -34,6 +34,10 @@ private-ip-answer = true
 # Manually choose one stable US node here for broker/account domains.
 US-STABLE = select,policy-regex-filter=美国|美國|US|USA|United States|America,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
 
+# AI groups. AI-OPENAI intentionally excludes Hong Kong.
+AI-OPENAI = select,policy-regex-filter=美国|美國|US|USA|United States|America|日本|Japan|JP|台|台湾|台灣|Taiwan|TW,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
+AI-JP-TW = select,policy-regex-filter=日本|Japan|JP|台|台湾|台灣|Taiwan|TW,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
+
 # Region groups over nodes imported from your Shadowrocket subscription.
 TW = select,policy-regex-filter=台|台湾|台灣|Taiwan|TW,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
 JP = select,policy-regex-filter=日本|Japan|JP,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5

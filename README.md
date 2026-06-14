@@ -8,6 +8,12 @@ Two client-facing files live at the repo root:
 Shadowrocket uses your custom rules first, then a domestic/foreign split with
 ad blocking from Johnshall's `sr_cnip_ad.conf`.
 
+## Routing Notes
+
+- Broker/account domains use `US-STABLE`.
+- OpenAI/ChatGPT uses `AI-OPENAI`, which excludes Hong Kong nodes.
+- Most other AI tools use `AI-JP-TW`, which filters Japan/Taiwan nodes.
+
 ## Shadowrocket
 
 After this repo is pushed to GitHub, the workflow generates:
