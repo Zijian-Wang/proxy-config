@@ -1,0 +1,12 @@
+# Custom overrides. Keep these before the base domestic/foreign + ad rules.
+DOMAIN-KEYWORD,interactivebrokers,US-STABLE
+DOMAIN-KEYWORD,thinkorswim,US-STABLE
+DOMAIN-KEYWORD,epicgames,DIRECT
+DOMAIN,unrealengine.com,DIRECT
+DOMAIN,epicgames.com,DIRECT
+DOMAIN-SUFFIX,waditu.com,DIRECT
+DOMAIN-SUFFIX,todesk.com,DIRECT
+DOMAIN,thinkorswim.com,US-STABLE
+DOMAIN,schwab.com,US-STABLE
+DOMAIN-SUFFIX,Rotenone.com,DIRECT
+
