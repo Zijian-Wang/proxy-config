@@ -65,3 +65,6 @@ DOMAIN,epicgames.com,DIRECT
 DOMAIN-SUFFIX,waditu.com,DIRECT
 DOMAIN-SUFFIX,todesk.com,DIRECT
 DOMAIN-SUFFIX,Rotenone.com,DIRECT
+
+# Hugging Face China mirror: keep model downloads off proxy.
+DOMAIN-SUFFIX,hf-mirror.com,DIRECT

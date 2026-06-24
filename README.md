@@ -13,6 +13,7 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 - Broker/account domains use `US-STABLE`.
 - OpenAI/ChatGPT uses `AI-OPENAI`, which excludes Hong Kong nodes.
 - Most other AI tools use `AI-JP-TW`, which filters Japan/Taiwan nodes.
+- Hugging Face China mirror (`hf-mirror.com`) uses `DIRECT`.
 
 ## Shadowrocket
 
