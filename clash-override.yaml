@@ -2,7 +2,7 @@
 # Add this as a rule enhancement on top of your existing subscription.
 #
 # Broker/account domains use the upstream US manual group for IP stability.
-# OpenAI/ChatGPT also avoids Hong Kong by using the US manual group.
+# OpenAI/ChatGPT always uses the stable US manual group.
 
 prepend:
   - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国手动'
@@ -12,7 +12,7 @@ prepend:
   - 'DOMAIN-SUFFIX,thinkorswim.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,schwab.com,🇺🇸 美国手动'
 
-  # OpenAI/ChatGPT: avoid Hong Kong.
+  # OpenAI/ChatGPT: always use the stable US manual group.
   - 'DOMAIN-SUFFIX,openai.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,chatgpt.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,oaistatic.com,🇺🇸 美国手动'

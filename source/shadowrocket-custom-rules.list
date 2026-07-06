@@ -6,12 +6,12 @@ DOMAIN-KEYWORD,thinkorswim,US-STABLE
 DOMAIN-SUFFIX,thinkorswim.com,US-STABLE
 DOMAIN-SUFFIX,schwab.com,US-STABLE
 
-# OpenAI/ChatGPT: avoid Hong Kong; choose US, Japan, or Taiwan manually.
-DOMAIN-SUFFIX,openai.com,AI-OPENAI
-DOMAIN-SUFFIX,chatgpt.com,AI-OPENAI
-DOMAIN-SUFFIX,oaistatic.com,AI-OPENAI
-DOMAIN-SUFFIX,oaiusercontent.com,AI-OPENAI
-DOMAIN-SUFFIX,openaiapi-site.azureedge.net,AI-OPENAI
+# OpenAI/ChatGPT: always use the stable US group.
+DOMAIN-SUFFIX,openai.com,US-STABLE
+DOMAIN-SUFFIX,chatgpt.com,US-STABLE
+DOMAIN-SUFFIX,oaistatic.com,US-STABLE
+DOMAIN-SUFFIX,oaiusercontent.com,US-STABLE
+DOMAIN-SUFFIX,openaiapi-site.azureedge.net,US-STABLE
 
 # Other AI tools: prefer Japan/Taiwan.
 DOMAIN-SUFFIX,anthropic.com,AI-JP-TW
