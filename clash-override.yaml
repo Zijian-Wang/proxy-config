@@ -1,16 +1,28 @@
 # Clash Verge profile enhancement: rules.
 # Add this as a rule enhancement on top of your existing subscription.
 #
-# Broker/account domains use the upstream US manual group for IP stability.
+# Broker/account domains use the upstream US url-test group so a very slow but
+# technically reachable node does not remain selected by a fallback group.
 # OpenAI/ChatGPT always uses the stable US manual group.
 
 prepend:
-  - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,interactivebrokers.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,ibkr.com,🇺🇸 美国手动'
-  - 'DOMAIN-KEYWORD,thinkorswim,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,thinkorswim.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,schwab.com,🇺🇸 美国手动'
+  - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,interactivebrokers.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,ibkr.com,🇺🇸 美国自动'
+  - 'DOMAIN-KEYWORD,thinkorswim,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,thinkorswim.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,schwab.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,schwabapi.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,robinhood.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,fidelity.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,etrade.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,etrade.net,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,webull.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,webullbroker.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,tastytrade.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,tastyworks.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,tradestation.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,alpaca.markets,🇺🇸 美国自动'
 
   # OpenAI/ChatGPT: always use the stable US manual group.
   - 'DOMAIN-SUFFIX,openai.com,🇺🇸 美国手动'

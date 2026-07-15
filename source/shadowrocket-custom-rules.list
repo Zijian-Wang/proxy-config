@@ -5,6 +5,17 @@ DOMAIN-SUFFIX,ibkr.com,US-STABLE
 DOMAIN-KEYWORD,thinkorswim,US-STABLE
 DOMAIN-SUFFIX,thinkorswim.com,US-STABLE
 DOMAIN-SUFFIX,schwab.com,US-STABLE
+DOMAIN-SUFFIX,schwabapi.com,US-STABLE
+DOMAIN-SUFFIX,robinhood.com,US-STABLE
+DOMAIN-SUFFIX,fidelity.com,US-STABLE
+DOMAIN-SUFFIX,etrade.com,US-STABLE
+DOMAIN-SUFFIX,etrade.net,US-STABLE
+DOMAIN-SUFFIX,webull.com,US-STABLE
+DOMAIN-SUFFIX,webullbroker.com,US-STABLE
+DOMAIN-SUFFIX,tastytrade.com,US-STABLE
+DOMAIN-SUFFIX,tastyworks.com,US-STABLE
+DOMAIN-SUFFIX,tradestation.com,US-STABLE
+DOMAIN-SUFFIX,alpaca.markets,US-STABLE
 
 # OpenAI/ChatGPT: always use the stable US group.
 DOMAIN-SUFFIX,openai.com,US-STABLE
