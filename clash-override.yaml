@@ -81,8 +81,16 @@ prepend:
   - 'DOMAIN,unrealengine.com,DIRECT'
   - 'DOMAIN,epicgames.com,DIRECT'
   - 'DOMAIN-SUFFIX,waditu.com,DIRECT'
-  - 'DOMAIN-SUFFIX,todesk.com,DIRECT'
   - 'DOMAIN-SUFFIX,Rotenone.com,DIRECT'
+
+  # ToDesk remote desktop: keep Chinese control-plane traffic on DIRECT.
+  - 'DOMAIN-KEYWORD,todesk,DIRECT'
+  - 'DOMAIN-SUFFIX,todesk.com,DIRECT'
+  - 'DOMAIN-SUFFIX,kylinlot.com,DIRECT'
+  - 'PROCESS-NAME,ToDesk,DIRECT'
+  - 'PROCESS-NAME,ToDesk.exe,DIRECT'
+  - 'PROCESS-NAME,ToDesk_Service.exe,DIRECT'
+  - 'PROCESS-NAME,ToDesk_Session.exe,DIRECT'
 
   # Hugging Face China mirror: keep model downloads off proxy.
   - 'DOMAIN-SUFFIX,hf-mirror.com,DIRECT'
