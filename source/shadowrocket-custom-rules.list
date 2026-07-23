@@ -1,85 +1,22 @@
 # Custom overrides. Keep these before the base domestic/foreign + ad rules.
-DOMAIN-KEYWORD,interactivebrokers,US-STABLE
-DOMAIN-SUFFIX,interactivebrokers.com,US-STABLE
-DOMAIN-SUFFIX,ibkr.com,US-STABLE
-DOMAIN-KEYWORD,thinkorswim,US-STABLE
-DOMAIN-SUFFIX,thinkorswim.com,US-STABLE
-DOMAIN-SUFFIX,schwab.com,US-STABLE
-DOMAIN-SUFFIX,schwabapi.com,US-STABLE
-DOMAIN-SUFFIX,robinhood.com,US-STABLE
-DOMAIN-SUFFIX,fidelity.com,US-STABLE
-DOMAIN-SUFFIX,etrade.com,US-STABLE
-DOMAIN-SUFFIX,etrade.net,US-STABLE
-DOMAIN-SUFFIX,webull.com,US-STABLE
-DOMAIN-SUFFIX,webullbroker.com,US-STABLE
-DOMAIN-SUFFIX,tastytrade.com,US-STABLE
-DOMAIN-SUFFIX,tastyworks.com,US-STABLE
-DOMAIN-SUFFIX,tradestation.com,US-STABLE
-DOMAIN-SUFFIX,alpaca.markets,US-STABLE
+# US-only broker services.
+DOMAIN-KEYWORD,interactivebrokers,US
+DOMAIN-SUFFIX,interactivebrokers.com,US
+DOMAIN-SUFFIX,ibkr.com,US
+DOMAIN-KEYWORD,thinkorswim,US
+DOMAIN-SUFFIX,thinkorswim.com,US
+DOMAIN-SUFFIX,schwab.com,US
+DOMAIN-SUFFIX,schwabapi.com,US
+DOMAIN-SUFFIX,robinhood.com,US
+DOMAIN-SUFFIX,fidelity.com,US
 
-# OpenAI/ChatGPT: always use the stable US group.
-DOMAIN-SUFFIX,openai.com,US-STABLE
-DOMAIN-SUFFIX,chatgpt.com,US-STABLE
-DOMAIN-SUFFIX,oaistatic.com,US-STABLE
-DOMAIN-SUFFIX,oaiusercontent.com,US-STABLE
-DOMAIN-SUFFIX,openaiapi-site.azureedge.net,US-STABLE
+# Gemini and its supporting Google AI endpoints require a US IP.
+DOMAIN-SUFFIX,gemini.google.com,US
+DOMAIN-SUFFIX,aistudio.google.com,US
+DOMAIN-SUFFIX,ai.google.dev,US
+DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
 
-# Other AI tools: prefer Japan/Taiwan.
-DOMAIN-SUFFIX,anthropic.com,AI-JP-TW
-DOMAIN-SUFFIX,claude.ai,AI-JP-TW
-DOMAIN-SUFFIX,perplexity.ai,AI-JP-TW
-DOMAIN-SUFFIX,pplx.ai,AI-JP-TW
-DOMAIN-SUFFIX,poe.com,AI-JP-TW
-DOMAIN-SUFFIX,grok.com,AI-JP-TW
-DOMAIN-SUFFIX,x.ai,AI-JP-TW
-DOMAIN-SUFFIX,gemini.google.com,AI-JP-TW
-DOMAIN-SUFFIX,aistudio.google.com,AI-JP-TW
-DOMAIN-SUFFIX,ai.google.dev,AI-JP-TW
-DOMAIN-SUFFIX,generativelanguage.googleapis.com,AI-JP-TW
-DOMAIN,copilot.microsoft.com,AI-JP-TW
-DOMAIN-SUFFIX,cursor.com,AI-JP-TW
-DOMAIN-SUFFIX,cursor.sh,AI-JP-TW
-DOMAIN-SUFFIX,codeium.com,AI-JP-TW
-DOMAIN-SUFFIX,windsurf.com,AI-JP-TW
-DOMAIN-SUFFIX,midjourney.com,AI-JP-TW
-
-# Apple Music -> US-STABLE (geo-locked catalog).
-DOMAIN-SUFFIX,music.apple.com,US-STABLE
-DOMAIN-SUFFIX,amp-api.music.apple.com,US-STABLE
-DOMAIN-SUFFIX,play.music.apple.com,US-STABLE
-DOMAIN-SUFFIX,aodp-ssl.apple.com,US-STABLE
-DOMAIN-SUFFIX,blobstore.apple.com,US-STABLE
-DOMAIN-SUFFIX,audio-ssl.itunes.apple.com,US-STABLE
-DOMAIN-SUFFIX,streamingaudio.itunes.apple.com,US-STABLE
-DOMAIN-SUFFIX,mvod.itunes.apple.com,US-STABLE
-
-# Apple Podcasts -> US-STABLE (geo-locked catalog).
-DOMAIN-SUFFIX,podcasts.apple.com,US-STABLE
-DOMAIN-SUFFIX,podcasters.apple.com,US-STABLE
-
-# Apple App Store / iTunes / software update: use China CDN directly.
-DOMAIN-SUFFIX,apps.apple.com,DIRECT
-DOMAIN-SUFFIX,itunes.apple.com,DIRECT
-DOMAIN-SUFFIX,bag.itunes.apple.com,DIRECT
-DOMAIN-SUFFIX,play.itunes.apple.com,DIRECT
-DOMAIN-SUFFIX,phobos.apple.com,DIRECT
-DOMAIN-SUFFIX,iosapps.itunes.apple.com,DIRECT
-DOMAIN-SUFFIX,appldnld.apple.com,DIRECT
-DOMAIN-SUFFIX,swcdn.apple.com,DIRECT
-DOMAIN-SUFFIX,updates-http.cdn-apple.com,DIRECT
-DOMAIN-SUFFIX,c.apple.com,DIRECT
-DOMAIN-SUFFIX,ocsp.apple.com,DIRECT
-
-DOMAIN-KEYWORD,epicgames,DIRECT
-DOMAIN,unrealengine.com,DIRECT
-DOMAIN,epicgames.com,DIRECT
-DOMAIN-SUFFIX,waditu.com,DIRECT
-DOMAIN-SUFFIX,Rotenone.com,DIRECT
-
-# ToDesk remote desktop: keep Chinese control-plane traffic on DIRECT.
-DOMAIN-KEYWORD,todesk,DIRECT
-DOMAIN-SUFFIX,todesk.com,DIRECT
-DOMAIN-SUFFIX,kylinlot.com,DIRECT
-
-# Hugging Face China mirror: keep model downloads off proxy.
-DOMAIN-SUFFIX,hf-mirror.com,DIRECT
+# Tonghuashun uses the local network directly.
+DOMAIN-KEYWORD,10jqka,DIRECT
+DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
+DOMAIN-SUFFIX,10jqka.com,DIRECT

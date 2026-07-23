@@ -31,21 +31,11 @@ private-ip-answer = true
 # Do not publish tokenized node definitions here unless this repo is private.
 
 [Proxy Group]
-# Manually choose one stable US node here for broker/account domains.
-US-STABLE = select,policy-regex-filter=美国|美國|US|USA|United States|America,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
-
-# Other AI tools use Japan/Taiwan nodes.
-AI-JP-TW = select,policy-regex-filter=日本|Japan|JP|台|台湾|台灣|Taiwan|TW,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
-
 # Region groups over nodes imported from your Shadowrocket subscription.
-TW = select,policy-regex-filter=台|台湾|台灣|Taiwan|TW,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
-JP = select,policy-regex-filter=日本|Japan|JP,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
-HK = select,policy-regex-filter=香港|HongKong|Hong Kong|HK,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
-KR = select,policy-regex-filter=韩国|韓國|韩|韓|Korea|KR,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
-
-# General proxy group over nodes imported from your Shadowrocket subscription.
-PROXY = select,policy-regex-filter=.*,select=0,url=http://www.gstatic.com/generate_204,interval=86400,timeout=5
-AUTO = url-test,policy-regex-filter=.*,url=http://www.gstatic.com/generate_204,interval=600,timeout=5,tolerance=50
+US = select,policy-regex-filter=美国|美國|US|USA|United States|America,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
+JP = select,policy-regex-filter=日本|Japan|JP,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
+TW = select,policy-regex-filter=台|台湾|台灣|Taiwan|TW,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
+AUTO = url-test,policy-regex-filter=.*,url=https://www.gstatic.com/generate_204,interval=600,timeout=5,tolerance=50
 """
 
 FOOTER = """[Host]
@@ -98,8 +88,9 @@ def normalize_rule_line(line: str) -> str:
 
     line = re.sub(r"\s+#.*$", "", line).rstrip()
     mappings = {
-        "Proxy": "PROXY",
-        "proxy": "PROXY",
+        "Proxy": "AUTO",
+        "proxy": "AUTO",
+        "PROXY": "AUTO",
         "Reject": "REJECT",
         "reject": "REJECT",
         "Direct": "DIRECT",
