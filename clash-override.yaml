@@ -50,6 +50,12 @@ prepend:
   - 'DOMAIN-SUFFIX,windsurf.com,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,midjourney.com,🇯🇵 日本手动'
 
+  # X (Twitter) and its short-link/static domains use Japan.
+  - 'DOMAIN-SUFFIX,x.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,twitter.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,t.co,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,twimg.com,🇯🇵 日本手动'
+
   # Apple Music -> US manual (geo-locked catalog).
   - 'DOMAIN-SUFFIX,music.apple.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,amp-api.music.apple.com,🇺🇸 美国手动'
