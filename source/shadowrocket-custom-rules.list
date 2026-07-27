@@ -16,7 +16,8 @@ DOMAIN-SUFFIX,aistudio.google.com,US
 DOMAIN-SUFFIX,ai.google.dev,US
 DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
 
-# Tonghuashun uses the local network directly.
+# Tonghuashun and iFinD use the local network directly.
 DOMAIN-KEYWORD,10jqka,DIRECT
 DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
 DOMAIN-SUFFIX,10jqka.com,DIRECT
+DOMAIN-SUFFIX,51ifind.com,DIRECT
