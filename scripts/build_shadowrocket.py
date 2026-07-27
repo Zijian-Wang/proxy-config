@@ -35,7 +35,7 @@ private-ip-answer = true
 US = select,policy-regex-filter=美国|美國|US|USA|United States|America,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
 JP = select,policy-regex-filter=日本|Japan|JP,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
 TW = select,policy-regex-filter=台|台湾|台灣|Taiwan|TW,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
-AUTO = url-test,policy-regex-filter=.*,url=https://www.gstatic.com/generate_204,interval=600,timeout=5,tolerance=50
+AUTO = url-test,policy-regex-filter=台|台湾|台灣|Taiwan|TW|日本|Japan|JP|美国|美國|US|USA|United States|America,url=https://www.gstatic.com/generate_204,interval=600,timeout=5,tolerance=50
 """
 
 FOOTER = """[Host]
