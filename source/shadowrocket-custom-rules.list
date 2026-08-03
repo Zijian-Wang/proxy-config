@@ -22,6 +22,15 @@ DOMAIN-SUFFIX,aistudio.google.com,US
 DOMAIN-SUFFIX,ai.google.dev,US
 DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
 
+# Tencent Yuanbao core, streaming, CDN, and telemetry endpoints use DIRECT.
+DOMAIN-SUFFIX,yuanbao.tencent.com,DIRECT
+DOMAIN-SUFFIX,igtm-yuanbao.com,DIRECT
+DOMAIN-SUFFIX,aida.qq.com,DIRECT
+DOMAIN-SUFFIX,snowflake.qq.com,DIRECT
+DOMAIN-SUFFIX,rdelivery.qq.com,DIRECT
+DOMAIN-SUFFIX,trace.qq.com,DIRECT
+DOMAIN-SUFFIX,rumt-zh.com,DIRECT
+
 # Tonghuashun and iFinD use the local network directly.
 DOMAIN-KEYWORD,10jqka,DIRECT
 DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
