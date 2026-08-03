@@ -27,3 +27,8 @@ DOMAIN-KEYWORD,10jqka,DIRECT
 DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
 DOMAIN-SUFFIX,10jqka.com,DIRECT
 DOMAIN-SUFFIX,51ifind.com,DIRECT
+
+# ToDesk remote desktop: keep Chinese control-plane traffic on DIRECT.
+DOMAIN-KEYWORD,todesk,DIRECT
+DOMAIN-SUFFIX,todesk.com,DIRECT
+DOMAIN-SUFFIX,kylinlot.com,DIRECT
