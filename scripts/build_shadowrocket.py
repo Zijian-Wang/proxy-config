@@ -32,10 +32,10 @@ private-ip-answer = true
 
 [Proxy Group]
 # Region groups over nodes imported from your Shadowrocket subscription.
-US = select,policy-regex-filter=美国|美國|US|USA|United States|America,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
-JP = select,policy-regex-filter=日本|Japan|JP,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
-TW = select,policy-regex-filter=台|台湾|台灣|Taiwan|TW,select=0,url=https://www.gstatic.com/generate_204,interval=86400,timeout=5
-AUTO = url-test,policy-regex-filter=台|台湾|台灣|Taiwan|TW|日本|Japan|JP|美国|美國|US|USA|United States|America,url=https://www.gstatic.com/generate_204,interval=600,timeout=5,tolerance=50
+US = url-test,policy-regex-filter=美国|美國|US|USA|United States|America,url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+JP = url-test,policy-regex-filter=日本|Japan|JP,url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+TW = url-test,policy-regex-filter=台|台湾|台灣|Taiwan|TW,url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+AUTO = url-test,policy-regex-filter=台|台湾|台灣|Taiwan|TW|日本|Japan|JP|美国|美國|US|USA|United States|America,url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
 """
 
 FOOTER = """[Host]
