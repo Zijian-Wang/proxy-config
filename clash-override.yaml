@@ -89,6 +89,9 @@ prepend:
   - 'DOMAIN-SUFFIX,waditu.com,DIRECT'
   - 'DOMAIN-SUFFIX,Rotenone.com,DIRECT'
 
+  # MiniMax China website, platform, API, and product subdomains use DIRECT.
+  - 'DOMAIN-SUFFIX,minimaxi.com,DIRECT'
+
   # ToDesk remote desktop: keep Chinese control-plane traffic on DIRECT.
   - 'DOMAIN-KEYWORD,todesk,DIRECT'
   - 'DOMAIN-SUFFIX,todesk.com,DIRECT'

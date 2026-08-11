@@ -31,6 +31,9 @@ DOMAIN-SUFFIX,rdelivery.qq.com,DIRECT
 DOMAIN-SUFFIX,trace.qq.com,DIRECT
 DOMAIN-SUFFIX,rumt-zh.com,DIRECT
 
+# MiniMax China website, platform, API, and product subdomains use DIRECT.
+DOMAIN-SUFFIX,minimaxi.com,DIRECT
+
 # Tonghuashun and iFinD use the local network directly.
 DOMAIN-KEYWORD,10jqka,DIRECT
 DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
