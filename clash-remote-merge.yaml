@@ -7,7 +7,7 @@ rule-providers:
     type: http
     behavior: classical
     format: yaml
-    interval: 3600
+    interval: 604800
     proxy: 🚀 选择节点
     path: ./ruleset/personal-shadowrocket-us.yaml
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-us.yaml
@@ -15,7 +15,7 @@ rule-providers:
     type: http
     behavior: classical
     format: yaml
-    interval: 3600
+    interval: 604800
     proxy: 🚀 选择节点
     path: ./ruleset/personal-shadowrocket-jp.yaml
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-jp.yaml
@@ -23,7 +23,7 @@ rule-providers:
     type: http
     behavior: classical
     format: yaml
-    interval: 3600
+    interval: 604800
     proxy: 🚀 选择节点
     path: ./ruleset/personal-shadowrocket-direct.yaml
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-direct.yaml

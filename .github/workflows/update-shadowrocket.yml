@@ -2,6 +2,12 @@ name: Update Shadowrocket Config
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - source/shadowrocket-custom-rules.list
+      - scripts/build_clash_rule_providers.py
   schedule:
     # Mondays 09:20 Beijing time.
     - cron: "20 1 * * 1"
