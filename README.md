@@ -3,6 +3,8 @@
 Two client-facing files live at the repo root:
 
 - `clash-override.yaml`: Clash Verge rule enhancement.
+- `clash-remote-merge.yaml` + `clash-remote-override.yaml`: auto-updating
+  Clash Verge enhancements backed by remote rule providers.
 - `shadowrocket.conf`: generated Shadowrocket config.
 
 Shadowrocket uses your custom rules first, then a domestic/foreign split with
@@ -12,16 +14,53 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 
 - In Clash, broker/account domains use the subscription's `🇺🇸 美国自动`
   `url-test` group so the fastest measured US node is selected automatically.
-- In Shadowrocket, broker/account domains use the manually selected `US-STABLE`
-  group to preserve a stable account IP.
+- In Shadowrocket, broker/account domains use its separate `US` `url-test`
+  group. Shadowrocket node definitions are never copied into Clash.
 - Broker coverage includes Interactive Brokers, thinkorswim/Schwab, Robinhood,
   Fidelity, E*TRADE, Webull, tastytrade, TradeStation, and Alpaca. Rules use
   domain suffixes for broker-owned web, login, and API subdomains.
-- OpenAI/ChatGPT always uses `US-STABLE`.
-- Most other AI tools use `AI-JP-TW`, which filters Japan/Taiwan nodes.
+- In Clash only, OpenAI/ChatGPT uses `🇺🇸 美国手动`; other Clash-only AI routes
+  use `🇯🇵 日本手动`. Gemini follows the shared `US` policy and maps to
+  `🇺🇸 美国自动` in Clash.
+- Logitech Options+ domains use `DIRECT`; Clash also has process-name fallbacks
+  for the Options+ app, agent, updater, and Electron helpers.
 - Hugging Face China mirror (`hf-mirror.com`) uses `DIRECT`.
 
 ## Clash Verge Rev
+
+### Policy mapping
+
+Shadowrocket and Clash keep separate nodes and policy groups. The shared custom
+rules map only the routing intent:
+
+| Shadowrocket policy | Current Clash policy |
+| --- | --- |
+| `US` | `🇺🇸 美国自动` |
+| `JP` | `🇯🇵 日本手动` |
+| `DIRECT` | `DIRECT` |
+
+`🇺🇸 美国自动` performs latency-based selection among the subscription's US
+nodes. `🇺🇸 美国手动` remains a separate Clash-only stable selection used for
+OpenAI and Apple media routes. No Shadowrocket node definitions are copied into
+Clash.
+
+### Auto-updating rules
+
+`scripts/build_clash_rule_providers.py` converts the shared Shadowrocket custom
+rule source into policy-specific Mihomo `classical` providers under
+`clash/rules/`. The GitHub workflow regenerates them with `shadowrocket.conf`.
+
+After the generated files are published to `main`, bind both enhancements to
+the active Clash subscription:
+
+1. Merge: `clash-remote-merge.yaml`
+2. Rules: `clash-remote-override.yaml`
+
+Mihomo then refreshes each provider from the repository's raw GitHub URL every
+hour. The Merge defines provider URLs; the Rules file maps each provider to the
+appropriate Clash policy group. Clash-only rules stay inline in the Rules file.
+
+### Static rules fallback
 
 `clash-override.yaml` is a per-subscription Rules enhancement; Clash Verge does
 not read the repository file automatically.
@@ -73,5 +112,5 @@ To edit your personal Shadowrocket overrides, change:
 source/shadowrocket-custom-rules.list
 ```
 
-The GitHub Action runs weekly and only commits when the generated
-`shadowrocket.conf` changes.
+The GitHub Action runs weekly and commits when `shadowrocket.conf`, its QR code,
+or the generated Clash rule providers change.

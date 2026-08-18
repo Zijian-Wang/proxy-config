@@ -1,20 +1,14 @@
-# Clash Verge profile enhancement: rules.
-# Add this as a rule enhancement on top of your existing subscription.
-#
-# Broker/account domains use the upstream US url-test group so a very slow but
-# technically reachable node does not remain selected by a fallback group.
-# OpenAI/ChatGPT always uses the stable US manual group.
+# Clash Verge Rules enhancement paired with clash-remote-merge.yaml.
+# Shadowrocket-derived routing is loaded from remote providers. Clash-only
+# routing stays inline because it intentionally has no Shadowrocket equivalent.
 
 prepend:
-  - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,interactivebrokers.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,ibkr.com,🇺🇸 美国自动'
-  - 'DOMAIN-KEYWORD,thinkorswim,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,thinkorswim.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,schwab.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,schwabapi.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,robinhood.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,fidelity.com,🇺🇸 美国自动'
+  # Shadowrocket policy -> Clash policy-group mapping.
+  - 'RULE-SET,personal-shadowrocket-us,🇺🇸 美国自动'
+  - 'RULE-SET,personal-shadowrocket-jp,🇯🇵 日本手动'
+  - 'RULE-SET,personal-shadowrocket-direct,DIRECT'
+
+  # Additional Clash-only broker coverage -> US automatic group.
   - 'DOMAIN-SUFFIX,etrade.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,etrade.net,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,webull.com,🇺🇸 美国自动'
@@ -24,14 +18,14 @@ prepend:
   - 'DOMAIN-SUFFIX,tradestation.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,alpaca.markets,🇺🇸 美国自动'
 
-  # OpenAI/ChatGPT: always use the stable US manual group.
+  # OpenAI/ChatGPT -> stable US manual group.
   - 'DOMAIN-SUFFIX,openai.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,chatgpt.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,oaistatic.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,oaiusercontent.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国手动'
 
-  # Other AI tools: Japan is the default; switch manually in Clash if needed.
+  # Other Clash-only AI routes -> Japan manual group.
   - 'DOMAIN-SUFFIX,anthropic.com,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,claude.ai,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,perplexity.ai,🇯🇵 日本手动'
@@ -46,19 +40,7 @@ prepend:
   - 'DOMAIN-SUFFIX,windsurf.com,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,midjourney.com,🇯🇵 日本手动'
 
-  # Gemini: match the current Shadowrocket US routing policy.
-  - 'DOMAIN-SUFFIX,gemini.google.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,aistudio.google.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,ai.google.dev,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,generativelanguage.googleapis.com,🇺🇸 美国自动'
-
-  # X (Twitter) and its short-link/static domains use Japan.
-  - 'DOMAIN-SUFFIX,x.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,twitter.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,t.co,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,twimg.com,🇯🇵 日本手动'
-
-  # Apple Music -> US manual (geo-locked catalog).
+  # Apple Music and Podcasts -> US manual group.
   - 'DOMAIN-SUFFIX,music.apple.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,amp-api.music.apple.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,play.music.apple.com,🇺🇸 美国手动'
@@ -67,12 +49,10 @@ prepend:
   - 'DOMAIN-SUFFIX,audio-ssl.itunes.apple.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,streamingaudio.itunes.apple.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,mvod.itunes.apple.com,🇺🇸 美国手动'
-
-  # Apple Podcasts -> US manual (geo-locked catalog).
   - 'DOMAIN-SUFFIX,podcasts.apple.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,podcasters.apple.com,🇺🇸 美国手动'
 
-  # Apple App Store / iTunes / software update: use China CDN directly.
+  # Apple App Store / iTunes / software update -> direct China CDN.
   - 'DOMAIN-SUFFIX,apps.apple.com,DIRECT'
   - 'DOMAIN-SUFFIX,itunes.apple.com,DIRECT'
   - 'DOMAIN-SUFFIX,bag.itunes.apple.com,DIRECT'
@@ -91,41 +71,11 @@ prepend:
   - 'DOMAIN-SUFFIX,waditu.com,DIRECT'
   - 'DOMAIN-SUFFIX,Rotenone.com,DIRECT'
 
-  # Tencent Yuanbao: match the current Shadowrocket DIRECT policy.
-  - 'DOMAIN-SUFFIX,yuanbao.tencent.com,DIRECT'
-  - 'DOMAIN-SUFFIX,igtm-yuanbao.com,DIRECT'
-  - 'DOMAIN-SUFFIX,aida.qq.com,DIRECT'
-  - 'DOMAIN-SUFFIX,snowflake.qq.com,DIRECT'
-  - 'DOMAIN-SUFFIX,rdelivery.qq.com,DIRECT'
-  - 'DOMAIN-SUFFIX,trace.qq.com,DIRECT'
-  - 'DOMAIN-SUFFIX,rumt-zh.com,DIRECT'
-
-  # MiniMax China website, platform, API, and product subdomains use DIRECT.
-  - 'DOMAIN-SUFFIX,minimaxi.com,DIRECT'
-
-  # Tonghuashun and iFinD: match the current Shadowrocket DIRECT policy.
-  - 'DOMAIN-KEYWORD,10jqka,DIRECT'
-  - 'DOMAIN-SUFFIX,10jqka.com.cn,DIRECT'
-  - 'DOMAIN-SUFFIX,10jqka.com,DIRECT'
-  - 'DOMAIN-SUFFIX,51ifind.com,DIRECT'
-
-  # ToDesk remote desktop: keep Chinese control-plane traffic on DIRECT.
-  - 'DOMAIN-KEYWORD,todesk,DIRECT'
-  - 'DOMAIN-SUFFIX,todesk.com,DIRECT'
-  - 'DOMAIN-SUFFIX,kylinlot.com,DIRECT'
+  # Clash-only process fallbacks.
   - 'PROCESS-NAME,ToDesk,DIRECT'
   - 'PROCESS-NAME,ToDesk.exe,DIRECT'
   - 'PROCESS-NAME,ToDesk_Service.exe,DIRECT'
   - 'PROCESS-NAME,ToDesk_Session.exe,DIRECT'
-
-  # Logitech Options+: use China/direct traffic without overmatching "login".
-  - 'DOMAIN-SUFFIX,logi.com,DIRECT'
-  - 'DOMAIN-SUFFIX,logitech.com,DIRECT'
-  - 'DOMAIN-SUFFIX,logitech.io,DIRECT'
-  - 'DOMAIN-SUFFIX,logitechg.com,DIRECT'
-  - 'DOMAIN-SUFFIX,logitech.com.cn,DIRECT'
-  - 'DOMAIN-SUFFIX,logitechg.com.cn,DIRECT'
-  - 'DOMAIN-KEYWORD,logitech,DIRECT'
   - 'PROCESS-NAME,logioptionsplus,DIRECT'
   - 'PROCESS-NAME,logioptionsplus_agent,DIRECT'
   - 'PROCESS-NAME,logioptionsplus_updater,DIRECT'
@@ -134,7 +84,6 @@ prepend:
   - 'PROCESS-NAME,logioptionsplus Helper (Plugin),DIRECT'
   - 'PROCESS-NAME,logioptionsplus Helper (GPU),DIRECT'
 
-  # Hugging Face China mirror: keep model downloads off proxy.
   - 'DOMAIN-SUFFIX,hf-mirror.com,DIRECT'
 
 append: []

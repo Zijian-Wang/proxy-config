@@ -1,0 +1,29 @@
+# Clash Verge Merge enhancement for auto-updating personal rule providers.
+# These files are generated from source/shadowrocket-custom-rules.list and
+# published through the same GitHub repository as shadowrocket.conf.
+
+rule-providers:
+  personal-shadowrocket-us:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 3600
+    proxy: 🚀 选择节点
+    path: ./ruleset/personal-shadowrocket-us.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-us.yaml
+  personal-shadowrocket-jp:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 3600
+    proxy: 🚀 选择节点
+    path: ./ruleset/personal-shadowrocket-jp.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-jp.yaml
+  personal-shadowrocket-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 3600
+    proxy: 🚀 选择节点
+    path: ./ruleset/personal-shadowrocket-direct.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-direct.yaml

@@ -44,3 +44,13 @@ DOMAIN-SUFFIX,51ifind.com,DIRECT
 DOMAIN-KEYWORD,todesk,DIRECT
 DOMAIN-SUFFIX,todesk.com,DIRECT
 DOMAIN-SUFFIX,kylinlot.com,DIRECT
+
+# Logitech Options+: keep app, account, update, and telemetry traffic on DIRECT.
+# Avoid DOMAIN-KEYWORD,logi because it also matches unrelated "login" hosts.
+DOMAIN-SUFFIX,logi.com,DIRECT
+DOMAIN-SUFFIX,logitech.com,DIRECT
+DOMAIN-SUFFIX,logitech.io,DIRECT
+DOMAIN-SUFFIX,logitechg.com,DIRECT
+DOMAIN-SUFFIX,logitech.com.cn,DIRECT
+DOMAIN-SUFFIX,logitechg.com.cn,DIRECT
+DOMAIN-KEYWORD,logitech,DIRECT
