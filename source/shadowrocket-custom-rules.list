@@ -34,6 +34,9 @@ DOMAIN-SUFFIX,rumt-zh.com,DIRECT
 # MiniMax China website, platform, API, and product subdomains use DIRECT.
 DOMAIN-SUFFIX,minimaxi.com,DIRECT
 
+# Screen Studio website and supporting subdomains use DIRECT.
+DOMAIN-SUFFIX,screen.studio,DIRECT
+
 # Tonghuashun and iFinD use the local network directly.
 DOMAIN-KEYWORD,10jqka,DIRECT
 DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
