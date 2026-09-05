@@ -10,7 +10,6 @@ payload:
   - 'DOMAIN-SUFFIX,schwab.com'
   - 'DOMAIN-SUFFIX,schwabapi.com'
   - 'DOMAIN-SUFFIX,robinhood.com'
-  - 'DOMAIN-SUFFIX,fidelity.com'
   - 'DOMAIN-SUFFIX,gemini.google.com'
   - 'DOMAIN-SUFFIX,aistudio.google.com'
   - 'DOMAIN-SUFFIX,ai.google.dev'

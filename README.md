@@ -12,13 +12,14 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 
 ## Routing Notes
 
-- In Clash, broker/account domains use the subscription's `🇺🇸 美国自动`
+- In Clash, broker/account domains (except Fidelity) use the subscription's `🇺🇸 美国自动`
   `url-test` group so the fastest measured US node is selected automatically.
-- In Shadowrocket, broker/account domains use its separate `US` `url-test`
+- In Shadowrocket, broker/account domains (except Fidelity) use its separate `US` `url-test`
   group. Shadowrocket node definitions are never copied into Clash.
 - Broker coverage includes Interactive Brokers, thinkorswim/Schwab, Robinhood,
-  Fidelity, E*TRADE, Webull, tastytrade, TradeStation, and Alpaca. Rules use
+  E*TRADE, Webull, tastytrade, TradeStation, and Alpaca. Rules use
   domain suffixes for broker-owned web, login, and API subdomains.
+  Fidelity (`fidelity.com`) uses `DIRECT` in both clients.
 - In Clash only, OpenAI/ChatGPT uses `🇺🇸 美国手动`; other Clash-only AI routes
   use `🇯🇵 日本手动`. Gemini follows the shared `US` policy and maps to
   `🇺🇸 美国自动` in Clash.

@@ -1,5 +1,5 @@
 # Custom overrides. Keep these before the base domestic/foreign + ad rules.
-# US-only broker services.
+# Broker services (Fidelity uses DIRECT).
 DOMAIN-KEYWORD,interactivebrokers,US
 DOMAIN-SUFFIX,interactivebrokers.com,US
 DOMAIN-SUFFIX,ibkr.com,US
@@ -8,7 +8,7 @@ DOMAIN-SUFFIX,thinkorswim.com,US
 DOMAIN-SUFFIX,schwab.com,US
 DOMAIN-SUFFIX,schwabapi.com,US
 DOMAIN-SUFFIX,robinhood.com,US
-DOMAIN-SUFFIX,fidelity.com,US
+DOMAIN-SUFFIX,fidelity.com,DIRECT
 
 # X (Twitter) and its short-link/static domains use the Japan group.
 DOMAIN-SUFFIX,x.com,JP

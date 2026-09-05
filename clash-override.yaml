@@ -1,7 +1,7 @@
 # Clash Verge profile enhancement: rules.
 # Add this as a rule enhancement on top of your existing subscription.
 #
-# Broker/account domains use the upstream US url-test group so a very slow but
+# Broker/account domains (except Fidelity) use the upstream US url-test group so a very slow but
 # technically reachable node does not remain selected by a fallback group.
 # OpenAI/ChatGPT always uses the stable US manual group.
 
@@ -14,7 +14,7 @@ prepend:
   - 'DOMAIN-SUFFIX,schwab.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,schwabapi.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,robinhood.com,🇺🇸 美国自动'
-  - 'DOMAIN-SUFFIX,fidelity.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,fidelity.com,DIRECT'
   - 'DOMAIN-SUFFIX,etrade.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,etrade.net,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,webull.com,🇺🇸 美国自动'
