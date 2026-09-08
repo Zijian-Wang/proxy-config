@@ -37,6 +37,18 @@ DOMAIN-SUFFIX,minimaxi.com,DIRECT
 # Screen Studio website and supporting subdomains use DIRECT.
 DOMAIN-SUFFIX,screen.studio,DIRECT
 
+# Adobe Creative Cloud software download and fulfillment endpoints use DIRECT.
+# Keep adobe.com, Behance, Fonts, and cloud-content services on their existing rules.
+DOMAIN-SUFFIX,ccmdls.adobe.com,DIRECT
+DOMAIN-SUFFIX,ccmdl.adobe.com,DIRECT
+DOMAIN-SUFFIX,cc-ext-prod-pkgs.s3.amazonaws.com,DIRECT
+DOMAIN-SUFFIX,ans.oobesaas.adobe.com,DIRECT
+DOMAIN-SUFFIX,ars.oobesaas.adobe.com,DIRECT
+DOMAIN-SUFFIX,cdn-ffc.oobesaas.adobe.com,DIRECT
+DOMAIN-SUFFIX,ffc-icons.oobesaas.adobe.com,DIRECT
+DOMAIN-SUFFIX,ffc-static-cdn.oobesaas.adobe.com,DIRECT
+DOMAIN-SUFFIX,prod-rel-ffc-ccm.oobesaas.adobe.com,DIRECT
+
 # Tonghuashun and iFinD use the local network directly.
 DOMAIN-KEYWORD,10jqka,DIRECT
 DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
