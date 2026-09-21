@@ -18,3 +18,4 @@ payload:
   - 'DOMAIN-SUFFIX,aistudio.google.com'
   - 'DOMAIN-SUFFIX,ai.google.dev'
   - 'DOMAIN-SUFFIX,generativelanguage.googleapis.com'
+  - 'DOMAIN-SUFFIX,muse.ai'
