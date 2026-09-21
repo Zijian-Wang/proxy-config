@@ -47,6 +47,9 @@ prepend:
   - 'DOMAIN-SUFFIX,midjourney.com,🇯🇵 日本手动'
 
   # Gemini: match the current Shadowrocket US routing policy.
+  # Meta Muse personal AI agent -> US automatic group.
+  - 'DOMAIN-SUFFIX,muse.ai,🇺🇸 美国自动'
+
   - 'DOMAIN-SUFFIX,gemini.google.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,aistudio.google.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,ai.google.dev,🇺🇸 美国自动'
