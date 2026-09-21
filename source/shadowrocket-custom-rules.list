@@ -47,6 +47,13 @@ DOMAIN-SUFFIX,aistudio.google.com,US
 DOMAIN-SUFFIX,ai.google.dev,US
 DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
 
+# Meta Muse personal AI agent uses its dedicated US service.
+DOMAIN-SUFFIX,muse.ai,US
+DOMAIN-SUFFIX,gemini.google.com,US
+DOMAIN-SUFFIX,aistudio.google.com,US
+DOMAIN-SUFFIX,ai.google.dev,US
+DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
+
 # Tencent Yuanbao core, streaming, CDN, and telemetry endpoints use DIRECT.
 DOMAIN-SUFFIX,yuanbao.tencent.com,DIRECT
 DOMAIN-SUFFIX,igtm-yuanbao.com,DIRECT
