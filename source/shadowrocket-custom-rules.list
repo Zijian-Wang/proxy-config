@@ -47,11 +47,25 @@ DOMAIN-SUFFIX,aistudio.google.com,US
 DOMAIN-SUFFIX,ai.google.dev,US
 DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
 
-# Claude / Anthropic use Japan nodes.
-DOMAIN-SUFFIX,claude.ai,JP
-DOMAIN-SUFFIX,claude.com,JP
-DOMAIN-SUFFIX,anthropic.com,JP
-DOMAIN-SUFFIX,claudeusercontent.com,JP
+# Claude / Anthropic use Taiwan nodes.
+DOMAIN-SUFFIX,claude.ai,TW
+DOMAIN-SUFFIX,claude.com,TW
+DOMAIN-SUFFIX,anthropic.com,TW
+DOMAIN-SUFFIX,claudeusercontent.com,TW
+
+# Other AI tools (Grok, Perplexity, Poe, Copilot, Cursor, etc.) prefer Taiwan.
+# OpenAI and Gemini keep their US routes.
+DOMAIN-SUFFIX,grok.com,TW
+DOMAIN-SUFFIX,x.ai,TW
+DOMAIN-SUFFIX,perplexity.ai,TW
+DOMAIN-SUFFIX,pplx.ai,TW
+DOMAIN-SUFFIX,poe.com,TW
+DOMAIN,copilot.microsoft.com,TW
+DOMAIN-SUFFIX,cursor.com,TW
+DOMAIN-SUFFIX,cursor.sh,TW
+DOMAIN-SUFFIX,codeium.com,TW
+DOMAIN-SUFFIX,windsurf.com,TW
+DOMAIN-SUFFIX,midjourney.com,TW
 
 # Meta Muse personal AI agent uses its dedicated US service.
 DOMAIN-SUFFIX,muse.ai,US

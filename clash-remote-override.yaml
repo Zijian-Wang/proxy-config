@@ -6,6 +6,7 @@ prepend:
   # Shadowrocket policy -> Clash policy-group mapping.
   - 'RULE-SET,personal-shadowrocket-us,🇺🇸 美国自动'
   - 'RULE-SET,personal-shadowrocket-jp,🇯🇵 日本手动'
+  - 'RULE-SET,personal-shadowrocket-tw,🇹🇼 台湾手动'
   - 'RULE-SET,personal-shadowrocket-direct,DIRECT'
 
   # Additional Clash-only broker coverage -> US automatic group.
@@ -24,21 +25,6 @@ prepend:
   - 'DOMAIN-SUFFIX,oaistatic.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,oaiusercontent.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国手动'
-
-  # Other Clash-only AI routes -> Japan manual group.
-  - 'DOMAIN-SUFFIX,anthropic.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,claude.ai,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,perplexity.ai,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,pplx.ai,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,poe.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,grok.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,x.ai,🇯🇵 日本手动'
-  - 'DOMAIN,copilot.microsoft.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,cursor.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,cursor.sh,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,codeium.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,windsurf.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,midjourney.com,🇯🇵 日本手动'
 
   # Apple Music and Podcasts -> US manual group.
   - 'DOMAIN-SUFFIX,music.apple.com,🇺🇸 美国手动'

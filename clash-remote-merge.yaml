@@ -19,6 +19,14 @@ rule-providers:
     proxy: 🚀 选择节点
     path: ./ruleset/personal-shadowrocket-jp.yaml
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-jp.yaml
+  personal-shadowrocket-tw:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 604800
+    proxy: 🚀 选择节点
+    path: ./ruleset/personal-shadowrocket-tw.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-tw.yaml
   personal-shadowrocket-direct:
     type: http
     behavior: classical

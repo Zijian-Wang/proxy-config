@@ -20,9 +20,10 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   E*TRADE, Webull, tastytrade, TradeStation, and Alpaca. Rules use
   domain suffixes for broker-owned web, login, and API subdomains.
   Fidelity (`fidelity.com`) uses `DIRECT` in both clients.
-- In Clash only, OpenAI/ChatGPT uses `🇺🇸 美国手动`; other Clash-only AI routes
-  use `🇯🇵 日本手动`. Gemini follows the shared `US` policy and maps to
-  `🇺🇸 美国自动` in Clash.
+- Claude/Anthropic and other AI tools (Grok/xAI, Perplexity, Poe, Copilot,
+  Cursor, Codeium/Windsurf, Midjourney) use the shared `TW` policy, which maps
+  to `🇹🇼 台湾手动` in Clash. In Clash only, OpenAI/ChatGPT uses `🇺🇸 美国手动`.
+  Gemini follows the shared `US` policy and maps to `🇺🇸 美国自动` in Clash.
 - Logitech Options+ domains use `DIRECT`; Clash also has process-name fallbacks
   for the Options+ app, agent, updater, and Electron helpers.
 - Hugging Face China mirror (`hf-mirror.com`) uses `DIRECT`.
@@ -38,6 +39,7 @@ rules map only the routing intent:
 | --- | --- |
 | `US` | `🇺🇸 美国自动` |
 | `JP` | `🇯🇵 日本手动` |
+| `TW` | `🇹🇼 台湾手动` |
 | `DIRECT` | `DIRECT` |
 
 `🇺🇸 美国自动` performs latency-based selection among the subscription's US
