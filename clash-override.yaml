@@ -31,9 +31,13 @@ prepend:
   - 'DOMAIN-SUFFIX,oaiusercontent.com,🇺🇸 美国手动'
   - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国手动'
 
+  # Claude / Anthropic -> US automatic group (never Japan).
+  - 'DOMAIN-SUFFIX,claude.ai,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,claude.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,anthropic.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,claudeusercontent.com,🇺🇸 美国自动'
+
   # Other AI tools: Japan is the default; switch manually in Clash if needed.
-  - 'DOMAIN-SUFFIX,anthropic.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,claude.ai,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,perplexity.ai,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,pplx.ai,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,poe.com,🇯🇵 日本手动'
