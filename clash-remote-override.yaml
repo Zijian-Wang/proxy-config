@@ -26,6 +26,8 @@ prepend:
   - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国手动'
 
   # Other Clash-only AI routes -> Japan manual group.
+  - 'DOMAIN-SUFFIX,anthropic.com,🇯🇵 日本手动'
+  - 'DOMAIN-SUFFIX,claude.ai,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,perplexity.ai,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,pplx.ai,🇯🇵 日本手动'
   - 'DOMAIN-SUFFIX,poe.com,🇯🇵 日本手动'

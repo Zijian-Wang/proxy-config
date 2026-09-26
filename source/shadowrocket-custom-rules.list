@@ -47,11 +47,11 @@ DOMAIN-SUFFIX,aistudio.google.com,US
 DOMAIN-SUFFIX,ai.google.dev,US
 DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
 
-# Claude / Anthropic must not use Japan nodes.
-DOMAIN-SUFFIX,claude.ai,US
-DOMAIN-SUFFIX,claude.com,US
-DOMAIN-SUFFIX,anthropic.com,US
-DOMAIN-SUFFIX,claudeusercontent.com,US
+# Claude / Anthropic use Japan nodes.
+DOMAIN-SUFFIX,claude.ai,JP
+DOMAIN-SUFFIX,claude.com,JP
+DOMAIN-SUFFIX,anthropic.com,JP
+DOMAIN-SUFFIX,claudeusercontent.com,JP
 
 # Meta Muse personal AI agent uses its dedicated US service.
 DOMAIN-SUFFIX,muse.ai,US
