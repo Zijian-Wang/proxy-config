@@ -3,7 +3,7 @@
 #
 # Broker/account domains (except Fidelity) use the upstream US url-test group so a very slow but
 # technically reachable node does not remain selected by a fallback group.
-# OpenAI/ChatGPT always uses the stable US manual group.
+# OpenAI/ChatGPT uses the US automatic group.
 
 prepend:
   - 'DOMAIN-KEYWORD,interactivebrokers,🇺🇸 美国自动'
@@ -24,31 +24,31 @@ prepend:
   - 'DOMAIN-SUFFIX,tradestation.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,alpaca.markets,🇺🇸 美国自动'
 
-  # OpenAI/ChatGPT: always use the stable US manual group.
-  - 'DOMAIN-SUFFIX,openai.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,chatgpt.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,oaistatic.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,oaiusercontent.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国手动'
+  # OpenAI/ChatGPT -> US automatic group.
+  - 'DOMAIN-SUFFIX,openai.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,chatgpt.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,oaistatic.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,oaiusercontent.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国自动'
 
-  # Claude / Anthropic -> Taiwan manual group.
-  - 'DOMAIN-SUFFIX,claude.ai,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,claude.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,anthropic.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,claudeusercontent.com,🇹🇼 台湾手动'
+  # Claude / Anthropic -> Taiwan automatic group.
+  - 'DOMAIN-SUFFIX,claude.ai,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,claude.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,anthropic.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,claudeusercontent.com,🇹🇼 台湾自动'
 
-  # Other AI tools: Taiwan is the default; switch manually in Clash if needed.
-  - 'DOMAIN-SUFFIX,perplexity.ai,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,pplx.ai,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,poe.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,grok.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,x.ai,🇹🇼 台湾手动'
-  - 'DOMAIN,copilot.microsoft.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,cursor.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,cursor.sh,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,codeium.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,windsurf.com,🇹🇼 台湾手动'
-  - 'DOMAIN-SUFFIX,midjourney.com,🇹🇼 台湾手动'
+  # Other AI tools -> Taiwan automatic group.
+  - 'DOMAIN-SUFFIX,perplexity.ai,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,pplx.ai,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,poe.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,grok.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,x.ai,🇹🇼 台湾自动'
+  - 'DOMAIN,copilot.microsoft.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,cursor.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,cursor.sh,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,codeium.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,windsurf.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,midjourney.com,🇹🇼 台湾自动'
 
   # Gemini: match the current Shadowrocket US routing policy.
   # Meta Muse personal AI agent -> US automatic group.
@@ -59,25 +59,25 @@ prepend:
   - 'DOMAIN-SUFFIX,ai.google.dev,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,generativelanguage.googleapis.com,🇺🇸 美国自动'
 
-  # X (Twitter) and its short-link/static domains use Japan.
-  - 'DOMAIN-SUFFIX,x.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,twitter.com,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,t.co,🇯🇵 日本手动'
-  - 'DOMAIN-SUFFIX,twimg.com,🇯🇵 日本手动'
+  # X (Twitter) and its short-link/static domains use Taiwan.
+  - 'DOMAIN-SUFFIX,x.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,twitter.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,t.co,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,twimg.com,🇹🇼 台湾自动'
 
-  # Apple Music -> US manual (geo-locked catalog).
-  - 'DOMAIN-SUFFIX,music.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,amp-api.music.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,play.music.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,aodp-ssl.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,blobstore.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,audio-ssl.itunes.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,streamingaudio.itunes.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,mvod.itunes.apple.com,🇺🇸 美国手动'
+  # Apple Music -> US automatic (geo-locked catalog).
+  - 'DOMAIN-SUFFIX,music.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,amp-api.music.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,play.music.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,aodp-ssl.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,blobstore.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,audio-ssl.itunes.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,streamingaudio.itunes.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,mvod.itunes.apple.com,🇺🇸 美国自动'
 
-  # Apple Podcasts -> US manual (geo-locked catalog).
-  - 'DOMAIN-SUFFIX,podcasts.apple.com,🇺🇸 美国手动'
-  - 'DOMAIN-SUFFIX,podcasters.apple.com,🇺🇸 美国手动'
+  # Apple Podcasts -> US automatic (geo-locked catalog).
+  - 'DOMAIN-SUFFIX,podcasts.apple.com,🇺🇸 美国自动'
+  - 'DOMAIN-SUFFIX,podcasters.apple.com,🇺🇸 美国自动'
 
   # Apple App Store / iTunes / software update: use China CDN directly.
   - 'DOMAIN-SUFFIX,apps.apple.com,DIRECT'

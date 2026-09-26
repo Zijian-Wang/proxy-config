@@ -20,10 +20,12 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   E*TRADE, Webull, tastytrade, TradeStation, and Alpaca. Rules use
   domain suffixes for broker-owned web, login, and API subdomains.
   Fidelity (`fidelity.com`) uses `DIRECT` in both clients.
-- Claude/Anthropic and other AI tools (Grok/xAI, Perplexity, Poe, Copilot,
-  Cursor, Codeium/Windsurf, Midjourney) use the shared `TW` policy, which maps
-  to `🇹🇼 台湾手动` in Clash. In Clash only, OpenAI/ChatGPT uses `🇺🇸 美国手动`.
-  Gemini follows the shared `US` policy and maps to `🇺🇸 美国自动` in Clash.
+- Claude/Anthropic, other AI tools (Grok/xAI, Perplexity, Poe, Copilot,
+  Cursor, Codeium/Windsurf, Midjourney) and X (Twitter) use the shared `TW`
+  policy, which maps to `🇹🇼 台湾自动` in Clash. In Clash only, OpenAI/ChatGPT
+  uses `🇺🇸 美国自动`. Gemini follows the shared `US` policy.
+- Clash routes only to automatic (`url-test`) region groups, never the manual
+  ones.
 - Logitech Options+ domains use `DIRECT`; Clash also has process-name fallbacks
   for the Options+ app, agent, updater, and Electron helpers.
 - Hugging Face China mirror (`hf-mirror.com`) uses `DIRECT`.
@@ -38,14 +40,13 @@ rules map only the routing intent:
 | Shadowrocket policy | Current Clash policy |
 | --- | --- |
 | `US` | `🇺🇸 美国自动` |
-| `JP` | `🇯🇵 日本手动` |
-| `TW` | `🇹🇼 台湾手动` |
+| `TW` | `🇹🇼 台湾自动` |
 | `DIRECT` | `DIRECT` |
 
-`🇺🇸 美国自动` performs latency-based selection among the subscription's US
-nodes. `🇺🇸 美国手动` remains a separate Clash-only stable selection used for
-OpenAI and Apple media routes. No Shadowrocket node definitions are copied into
-Clash.
+`🇺🇸 美国自动` and `🇹🇼 台湾自动` perform latency-based selection among the
+subscription's US and Taiwan nodes. Shadowrocket's `JP` group is still defined
+but no custom rule uses it, so Clash has no Japan provider. No Shadowrocket node
+definitions are copied into Clash.
 
 ### Auto-updating rules
 
@@ -76,15 +77,15 @@ To apply it:
 3. Open the advanced YAML editor and replace its contents with
    `clash-override.yaml`.
 4. Save, then reload/apply the subscription.
-5. In **Proxies**, confirm that `🇺🇸 美国自动` is a `URL Test` group and
-   run its latency test once.
+5. In **Proxies**, confirm that `🇺🇸 美国自动` and `🇹🇼 台湾自动` are `URL Test`
+   groups and run their latency tests once.
 
 Rules are matched from top to bottom, so these entries must stay in `prepend`.
 The policy-group names must also match the active subscription exactly.
 After applying a routing change, reconnect or restart thinkorswim so its
 existing long-lived connections are recreated through the newly selected node.
-If a stable account IP matters more than latency, point the broker rules back to
-`🇺🇸 美国手动`; `url-test` may use a different US exit for new connections.
+`url-test` may use a different exit for new connections; if a stable account IP
+matters more than latency, point the relevant rules to the matching manual group.
 
 ## Shadowrocket
 
