@@ -59,6 +59,7 @@ the active Clash subscription:
 
 1. Merge: `clash-remote-merge.yaml`
 2. Rules: `clash-remote-override.yaml`
+3. Groups: `clash-remote-groups.yaml`
 
 Mihomo then refreshes each provider from the repository's raw GitHub URL every day. The Merge defines provider URLs; the Rules file maps each provider
 to the appropriate Clash policy group. Clash-only rules stay inline in the
@@ -122,4 +123,4 @@ or its Clash provider generator is pushed to `main`. It commits when
 
 ## Clash region groups
 
-`clash-remote-merge.yaml` defines its own `TW-Auto` and `US-Auto` `url-test` groups from node names (regex on 台湾/台灣/Taiwan and 美国/美國/USA), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji (the subscription's Taiwan group even uses the Samoa flag). The static `clash-override.yaml` fallback cannot define groups and still uses the subscription's own group names.
+`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `TW-Auto` and `US-Auto` `url-test` groups from node names (regex on 台湾/台灣/Taiwan and 美国/美國/USA), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji (the subscription's Taiwan group even uses the Samoa flag). The static `clash-override.yaml` fallback cannot define groups and still uses the subscription's own group names.
