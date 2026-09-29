@@ -60,8 +60,7 @@ the active Clash subscription:
 1. Merge: `clash-remote-merge.yaml`
 2. Rules: `clash-remote-override.yaml`
 
-Mihomo then refreshes each provider from the repository's raw GitHub URL every
-seven days. The Merge defines provider URLs; the Rules file maps each provider
+Mihomo then refreshes each provider from the repository's raw GitHub URL every day. The Merge defines provider URLs; the Rules file maps each provider
 to the appropriate Clash policy group. Clash-only rules stay inline in the
 Rules file.
 
