@@ -35,6 +35,9 @@ DOMAIN-SUFFIX,schwabapi.com,US
 DOMAIN-SUFFIX,robinhood.com,US
 DOMAIN-SUFFIX,fidelity.com,DIRECT
 
+# Norgate Data (market data service and updater) uses DIRECT.
+DOMAIN-SUFFIX,norgatedata.com,DIRECT
+
 # X (Twitter) and its short-link/static domains use the Taiwan group.
 DOMAIN-SUFFIX,x.com,TW
 DOMAIN-SUFFIX,twitter.com,TW

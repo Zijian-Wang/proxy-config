@@ -15,6 +15,7 @@ prepend:
   - 'DOMAIN-SUFFIX,schwabapi.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,robinhood.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,fidelity.com,DIRECT'
+  - 'DOMAIN-SUFFIX,norgatedata.com,DIRECT'
   - 'DOMAIN-SUFFIX,etrade.com,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,etrade.net,🇺🇸 美国自动'
   - 'DOMAIN-SUFFIX,webull.com,🇺🇸 美国自动'

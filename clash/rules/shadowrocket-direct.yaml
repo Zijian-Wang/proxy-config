@@ -25,6 +25,7 @@ payload:
   - 'IP-CIDR,123.58.184.232/32'
   - 'IP-CIDR,42.186.225.155/32'
   - 'DOMAIN-SUFFIX,fidelity.com'
+  - 'DOMAIN-SUFFIX,norgatedata.com'
   - 'DOMAIN-SUFFIX,yuanbao.tencent.com'
   - 'DOMAIN-SUFFIX,igtm-yuanbao.com'
   - 'DOMAIN-SUFFIX,aida.qq.com'
