@@ -33,23 +33,23 @@ prepend:
   - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🇺🇸 美国自动'
 
   # Claude / Anthropic -> Taiwan automatic group.
-  - 'DOMAIN-SUFFIX,claude.ai,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,claude.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,anthropic.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,claudeusercontent.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,claude.ai,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,claude.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,anthropic.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,claudeusercontent.com,🇼🇸 台湾自动'
 
   # Other AI tools -> Taiwan automatic group.
-  - 'DOMAIN-SUFFIX,perplexity.ai,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,pplx.ai,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,poe.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,grok.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,x.ai,🇹🇼 台湾自动'
-  - 'DOMAIN,copilot.microsoft.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,cursor.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,cursor.sh,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,codeium.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,windsurf.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,midjourney.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,perplexity.ai,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,pplx.ai,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,poe.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,grok.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,x.ai,🇼🇸 台湾自动'
+  - 'DOMAIN,copilot.microsoft.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,cursor.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,cursor.sh,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,codeium.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,windsurf.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,midjourney.com,🇼🇸 台湾自动'
 
   # Gemini: match the current Shadowrocket US routing policy.
   # Meta Muse personal AI agent -> US automatic group.
@@ -61,10 +61,10 @@ prepend:
   - 'DOMAIN-SUFFIX,generativelanguage.googleapis.com,🇺🇸 美国自动'
 
   # X (Twitter) and its short-link/static domains use Taiwan.
-  - 'DOMAIN-SUFFIX,x.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,twitter.com,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,t.co,🇹🇼 台湾自动'
-  - 'DOMAIN-SUFFIX,twimg.com,🇹🇼 台湾自动'
+  - 'DOMAIN-SUFFIX,x.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,twitter.com,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,t.co,🇼🇸 台湾自动'
+  - 'DOMAIN-SUFFIX,twimg.com,🇼🇸 台湾自动'
 
   # Apple Music -> US automatic (geo-locked catalog).
   - 'DOMAIN-SUFFIX,music.apple.com,🇺🇸 美国自动'

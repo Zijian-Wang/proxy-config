@@ -22,7 +22,7 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   Fidelity (`fidelity.com`) uses `DIRECT` in both clients.
 - Claude/Anthropic, other AI tools (Grok/xAI, Perplexity, Poe, Copilot,
   Cursor, Codeium/Windsurf, Midjourney) and X (Twitter) use the shared `TW`
-  policy, which maps to `🇹🇼 台湾自动` in Clash. In Clash only, OpenAI/ChatGPT
+  policy, which maps to `🇼🇸 台湾自动` in Clash. In Clash only, OpenAI/ChatGPT
   uses `🇺🇸 美国自动`. Gemini follows the shared `US` policy.
 - Clash routes only to automatic (`url-test`) region groups, never the manual
   ones.
@@ -40,10 +40,10 @@ rules map only the routing intent:
 | Shadowrocket policy | Current Clash policy |
 | --- | --- |
 | `US` | `🇺🇸 美国自动` |
-| `TW` | `🇹🇼 台湾自动` |
+| `TW` | `🇼🇸 台湾自动` |
 | `DIRECT` | `DIRECT` |
 
-`🇺🇸 美国自动` and `🇹🇼 台湾自动` perform latency-based selection among the
+`🇺🇸 美国自动` and `🇼🇸 台湾自动` perform latency-based selection among the
 subscription's US and Taiwan nodes. Shadowrocket's `JP` group is still defined
 but no custom rule uses it, so Clash has no Japan provider. No Shadowrocket node
 definitions are copied into Clash.
@@ -76,7 +76,7 @@ To apply it:
 3. Open the advanced YAML editor and replace its contents with
    `clash-override.yaml`.
 4. Save, then reload/apply the subscription.
-5. In **Proxies**, confirm that `🇺🇸 美国自动` and `🇹🇼 台湾自动` are `URL Test`
+5. In **Proxies**, confirm that `🇺🇸 美国自动` and `🇼🇸 台湾自动` are `URL Test`
    groups and run their latency tests once.
 
 Rules are matched from top to bottom, so these entries must stay in `prepend`.
@@ -119,3 +119,7 @@ source/shadowrocket-custom-rules.list
 The GitHub Action runs weekly, and also runs when the shared custom-rule source
 or its Clash provider generator is pushed to `main`. It commits when
 `shadowrocket.conf`, its QR code, or the generated Clash rule providers change.
+
+Note: the subscription's Taiwan groups are named with the 🇼🇸 (Samoa) flag emoji
+rather than the Taiwan flag, so group names in the Clash files must use that exact
+character sequence. This is a provider naming quirk, not an OS difference.
