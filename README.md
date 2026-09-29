@@ -120,6 +120,6 @@ The GitHub Action runs weekly, and also runs when the shared custom-rule source
 or its Clash provider generator is pushed to `main`. It commits when
 `shadowrocket.conf`, its QR code, or the generated Clash rule providers change.
 
-Note: the subscription's Taiwan groups are named with the 🇼🇸 (Samoa) flag emoji
-rather than the Taiwan flag, so group names in the Clash files must use that exact
-character sequence. This is a provider naming quirk, not an OS difference.
+## Clash region groups
+
+`clash-remote-merge.yaml` defines its own `TW-Auto` and `US-Auto` `url-test` groups from node names (regex on 台湾/台灣/Taiwan and 美国/美國/USA), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji (the subscription's Taiwan group even uses the Samoa flag). The static `clash-override.yaml` fallback cannot define groups and still uses the subscription's own group names.

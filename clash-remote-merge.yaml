@@ -2,6 +2,25 @@
 # These files are generated from source/shadowrocket-custom-rules.list and
 # published through the same GitHub repository as shadowrocket.conf.
 
+# Region url-test groups built from node names, so rules do not depend on the
+# subscription's group names (whose flag emoji differ, e.g. Taiwan uses the
+# Samoa flag). Matches Simplified/Traditional Chinese and English node names.
+prepend-proxy-groups:
+  - name: TW-Auto
+    type: url-test
+    include-all-proxies: true
+    filter: '(?i)台[灣湾]|taiwan'
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    tolerance: 50
+  - name: US-Auto
+    type: url-test
+    include-all-proxies: true
+    filter: '(?i)美[國国]|\bUSA?\b|united states'
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    tolerance: 50
+
 rule-providers:
   personal-shadowrocket-us:
     type: http
