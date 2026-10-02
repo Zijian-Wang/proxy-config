@@ -13,7 +13,6 @@ DEFAULT_OUTPUT_DIR = ROOT / "clash" / "rules"
 POLICY_FILES = {
     "US": "shadowrocket-us.yaml",
     "JP": "shadowrocket-jp.yaml",
-    "TW": "shadowrocket-tw.yaml",
     "AUTO": "shadowrocket-auto.yaml",
     "DIRECT": "shadowrocket-direct.yaml",
     "REJECT": "shadowrocket-reject.yaml",

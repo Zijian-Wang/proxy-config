@@ -21,8 +21,8 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   domain suffixes for broker-owned web, login, and API subdomains.
   Fidelity (`fidelity.com`) uses `DIRECT` in both clients.
 - Claude/Anthropic, other AI tools (Grok/xAI, Perplexity, Poe, Copilot,
-  Cursor, Codeium/Windsurf, Midjourney) and X (Twitter) use the shared `TW`
-  policy, which maps to `🇼🇸 台湾自动` in Clash. In Clash only, OpenAI/ChatGPT
+  Cursor, Codeium/Windsurf, Midjourney) and X (Twitter) use the shared `JP`
+  policy, which maps to `JP-Auto` (Japan nodes) in Clash. In Clash only, OpenAI/ChatGPT
   uses `🇺🇸 美国自动`. Gemini follows the shared `US` policy.
 - Clash routes only to automatic (`url-test`) region groups, never the manual
   ones.
@@ -40,12 +40,11 @@ rules map only the routing intent:
 | Shadowrocket policy | Current Clash policy |
 | --- | --- |
 | `US` | `🇺🇸 美国自动` |
-| `TW` | `🇼🇸 台湾自动` |
+| `JP` | `JP-Auto` (static fallback: `🇯🇵 日本自动`) |
 | `DIRECT` | `DIRECT` |
 
-`🇺🇸 美国自动` and `🇼🇸 台湾自动` perform latency-based selection among the
-subscription's US and Taiwan nodes. Shadowrocket's `JP` group is still defined
-but no custom rule uses it, so Clash has no Japan provider. No Shadowrocket node
+`US-Auto` and `JP-Auto` perform latency-based selection among the
+subscription's US and Japan nodes, excluding 特殊/限速 and >2.0x nodes. No Shadowrocket node
 definitions are copied into Clash.
 
 ### Auto-updating rules
@@ -77,7 +76,7 @@ To apply it:
 3. Open the advanced YAML editor and replace its contents with
    `clash-override.yaml`.
 4. Save, then reload/apply the subscription.
-5. In **Proxies**, confirm that `🇺🇸 美国自动` and `🇼🇸 台湾自动` are `URL Test`
+5. In **Proxies**, confirm that `🇺🇸 美国自动` and `🇯🇵 日本自动` are `URL Test`
    groups and run their latency tests once.
 
 Rules are matched from top to bottom, so these entries must stay in `prepend`.
@@ -123,4 +122,4 @@ or its Clash provider generator is pushed to `main`. It commits when
 
 ## Clash region groups
 
-`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `TW-Auto` and `US-Auto` `url-test` groups from node names (regex on 台湾/台灣/Taiwan and 美国/美國/USA), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji (the subscription's Taiwan group even uses the Samoa flag). The static `clash-override.yaml` fallback cannot define groups and still uses the subscription's own group names.
+`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `JP-Auto` and `US-Auto` `url-test` groups from node names (regex on 日本/Japan/JP and 美国/美國/USA, with an `exclude-filter` for 特殊/限速/>2.0x nodes), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji. The static `clash-override.yaml` fallback cannot define groups and still uses the subscription's own group names.

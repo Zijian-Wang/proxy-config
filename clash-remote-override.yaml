@@ -5,7 +5,7 @@
 prepend:
   # Shadowrocket policy -> Clash policy-group mapping.
   - 'RULE-SET,personal-shadowrocket-us,US-Auto'
-  - 'RULE-SET,personal-shadowrocket-tw,TW-Auto'
+  - 'RULE-SET,personal-shadowrocket-jp,JP-Auto'
   - 'RULE-SET,personal-shadowrocket-direct,DIRECT'
 
   # Additional Clash-only broker coverage -> US automatic group.

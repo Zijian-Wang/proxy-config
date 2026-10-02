@@ -1,13 +1,15 @@
 # Clash Verge Groups enhancement (bind to the subscription's Groups slot).
 # Builds region url-test groups from node names so rules do not depend on the
-# subscription's group names (whose flag emoji differ, e.g. Taiwan uses the
-# Samoa flag). Matches Simplified/Traditional Chinese and English node names.
+# subscription's group names (whose flag emoji can differ). Matches
+# Simplified/Traditional Chinese and English node names, and excludes
+# 特殊/限速 nodes and nodes with a [rate] multiplier above 2.0.
 
 prepend:
-  - name: TW-Auto
+  - name: JP-Auto
     type: url-test
     include-all-proxies: true
-    filter: '(?i)台[灣湾]|taiwan'
+    filter: '(?i)日本|japan|\bJP\b'
+    exclude-filter: '特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\]'
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
     tolerance: 50
@@ -15,6 +17,7 @@ prepend:
     type: url-test
     include-all-proxies: true
     filter: '(?i)美[國国]|\bUSA?\b|united states'
+    exclude-filter: '特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\]'
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
     tolerance: 50
