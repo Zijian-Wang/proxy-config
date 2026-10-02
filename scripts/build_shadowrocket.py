@@ -32,11 +32,11 @@ private-ip-answer = true
 
 [Proxy Group]
 # Region groups over nodes imported from your Shadowrocket subscription.
-# Exclude "特殊" nodes from every group (often low-quality or non-standard exits).
-US = url-test,policy-regex-filter=^(?!.*特殊).*(美国|美國|US|USA|United States|America),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
-JP = url-test,policy-regex-filter=^(?!.*特殊).*(日本|Japan|JP),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
-TW = url-test,policy-regex-filter=^(?!.*特殊).*(台|台湾|台灣|Taiwan|TW),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
-AUTO = url-test,policy-regex-filter=^(?!.*特殊).*(台|台湾|台灣|Taiwan|TW|日本|Japan|JP|美国|美國|US|USA|United States|America),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+# Exclude "特殊" / "限速" nodes and nodes with a [rate] multiplier above 2.0 from every group.
+US = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\])).*(美国|美國|US|USA|United States|America),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+JP = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\])).*(日本|Japan|JP),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+TW = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\])).*(台|台湾|台灣|Taiwan|TW),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+AUTO = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\])).*(台|台湾|台灣|Taiwan|TW|日本|Japan|JP|美国|美國|US|USA|United States|America),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
 """
 
 FOOTER = """[Host]
