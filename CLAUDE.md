@@ -25,6 +25,26 @@
   are for Clash Verge on the Mac. The subscription's own rules/groups are not
   used by the NAS (the provider only exposes its nodes).
 - Never commit the subscription URL or controller `secret`.
+- Image is `docker.io/metacubex/mihomo:latest` (Docker Hub pulls work from
+  the NAS; the old Huawei `swr.cn-north-4…` mirror was stale and dropped).
+  The container is plain `docker run` (no compose); its exact flags live in
+  `run_mihomo()` in `nas/mihomo-update.sh`.
+- Dashboard: zashboard at `http://192.168.0.106:9090/ui/`, files in
+  `ui/zashboard/` in the config dir (`external-ui: ui`,
+  `external-ui-name: zashboard`). mihomo's own `/upgrade/ui` goes direct and
+  times out on GitHub, so the script below fetches it via the proxy instead.
+
+### Nightly auto-update
+
+`nas/mihomo-update.sh` (installed at `/share/Container/mihomo-update/update.sh`,
+log `update.log` next to it) runs from cron at 03:14 (NAS TZ is UTC+8 =
+Taipei). It pulls `:latest`, and only if the image changed: validates
+`config.yaml` with the new core, recreates `mihomo-1`, and rolls back to the
+old container if the controller/DNS aren't healthy within 60s. Then it
+updates zashboard if a new release exists. `DRY_RUN=1` skips all switching.
+The cron line lives in `/etc/config/crontab`; reloading it needs root
+(`sudo crontab /etc/config/crontab && sudo /etc/init.d/crond.sh restart`).
+After editing the script here, `scp` it to the NAS.
 
 ### Editing the NAS config
 
