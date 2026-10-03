@@ -2,7 +2,6 @@
 
 Two client-facing files live at the repo root:
 
-- `clash-override.yaml`: Clash Verge rule enhancement.
 - `clash-remote-merge.yaml` + `clash-remote-override.yaml`: auto-updating
   Clash Verge enhancements backed by remote rule providers.
 - `shadowrocket.conf`: generated Shadowrocket config.
@@ -67,28 +66,6 @@ Mihomo then refreshes each provider from the repository's raw GitHub URL every d
 to the appropriate Clash policy group. No rules are inline; add Clash-only
 rules to `source/clash-extra-rules.list`.
 
-### Static rules fallback
-
-`clash-override.yaml` is a per-subscription Rules enhancement; Clash Verge does
-not read the repository file automatically.
-
-To apply it:
-
-1. Open **Profiles** in Clash Verge Rev.
-2. Right-click the active subscription and choose **Edit Rules**.
-3. Open the advanced YAML editor and replace its contents with
-   `clash-override.yaml`.
-4. Save, then reload/apply the subscription.
-5. In **Proxies**, confirm that `🇺🇸 美国自动` and `🇯🇵 日本自动` are `URL Test`
-   groups and run their latency tests once.
-
-Rules are matched from top to bottom, so these entries must stay in `prepend`.
-The policy-group names must also match the active subscription exactly.
-After applying a routing change, reconnect or restart thinkorswim so its
-existing long-lived connections are recreated through the newly selected node.
-`url-test` may use a different exit for new connections; if a stable account IP
-matters more than latency, point the relevant rules to the matching manual group.
-
 ## Shadowrocket
 
 After this repo is pushed to GitHub, the workflow generates:
@@ -125,4 +102,4 @@ the Clash-only source, or the provider generator is pushed to `main`. It commits
 
 ## Clash region groups
 
-`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `JP-Auto` and `US-Auto` `url-test` groups from node names (regex on 日本/Japan/JP and 美国/美國/USA, with an `exclude-filter` for 特殊/限速/>2.0x nodes), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji. The static `clash-override.yaml` fallback cannot define groups and still uses the subscription's own group names.
+`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `JP-Auto` and `US-Auto` `url-test` groups from node names (regex on 日本/Japan/JP and 美国/美國/USA, with an `exclude-filter` for 特殊/限速/>2.0x nodes), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji.
