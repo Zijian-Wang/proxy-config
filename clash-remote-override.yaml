@@ -1,75 +1,12 @@
 # Clash Verge Rules enhancement paired with clash-remote-merge.yaml.
-# Shadowrocket-derived routing is loaded from remote providers. Clash-only
-# routing stays inline because it intentionally has no Shadowrocket equivalent.
+# All routing lives in the remote providers (generated from source/*.list), so
+# this file only maps each provider to its policy group. US is matched before
+# DIRECT so specific US hosts win over broader DIRECT suffixes.
 
 prepend:
-  # Shadowrocket policy -> Clash policy-group mapping.
   - 'RULE-SET,personal-shadowrocket-us,US-Auto'
   - 'RULE-SET,personal-shadowrocket-jp,JP-Auto'
   - 'RULE-SET,personal-shadowrocket-direct,DIRECT'
-
-  # Additional Clash-only broker coverage -> US automatic group.
-  - 'DOMAIN-SUFFIX,etrade.com,US-Auto'
-  - 'DOMAIN-SUFFIX,etrade.net,US-Auto'
-  - 'DOMAIN-SUFFIX,webull.com,US-Auto'
-  - 'DOMAIN-SUFFIX,webullbroker.com,US-Auto'
-  - 'DOMAIN-SUFFIX,tastytrade.com,US-Auto'
-  - 'DOMAIN-SUFFIX,tastyworks.com,US-Auto'
-  - 'DOMAIN-SUFFIX,tradestation.com,US-Auto'
-  - 'DOMAIN-SUFFIX,alpaca.markets,US-Auto'
-
-  # OpenAI/ChatGPT -> US automatic group.
-  - 'DOMAIN-SUFFIX,openai.com,US-Auto'
-  - 'DOMAIN-SUFFIX,chatgpt.com,US-Auto'
-  - 'DOMAIN-SUFFIX,oaistatic.com,US-Auto'
-  - 'DOMAIN-SUFFIX,oaiusercontent.com,US-Auto'
-  - 'DOMAIN-SUFFIX,openaiapi-site.azureedge.net,US-Auto'
-
-  # Apple Music and Podcasts -> US automatic group.
-  - 'DOMAIN-SUFFIX,music.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,amp-api.music.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,play.music.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,aodp-ssl.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,blobstore.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,audio-ssl.itunes.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,streamingaudio.itunes.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,mvod.itunes.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,podcasts.apple.com,US-Auto'
-  - 'DOMAIN-SUFFIX,podcasters.apple.com,US-Auto'
-
-  # Apple App Store / iTunes / software update -> direct China CDN.
-  - 'DOMAIN-SUFFIX,apps.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,itunes.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,bag.itunes.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,play.itunes.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,phobos.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,iosapps.itunes.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,appldnld.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,swcdn.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,updates-http.cdn-apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,c.apple.com,DIRECT'
-  - 'DOMAIN-SUFFIX,ocsp.apple.com,DIRECT'
-
-  - 'DOMAIN-KEYWORD,epicgames,DIRECT'
-  - 'DOMAIN,unrealengine.com,DIRECT'
-  - 'DOMAIN,epicgames.com,DIRECT'
-  - 'DOMAIN-SUFFIX,waditu.com,DIRECT'
-  - 'DOMAIN-SUFFIX,Rotenone.com,DIRECT'
-
-  # Clash-only process fallbacks.
-  - 'PROCESS-NAME,ToDesk,DIRECT'
-  - 'PROCESS-NAME,ToDesk.exe,DIRECT'
-  - 'PROCESS-NAME,ToDesk_Service.exe,DIRECT'
-  - 'PROCESS-NAME,ToDesk_Session.exe,DIRECT'
-  - 'PROCESS-NAME,logioptionsplus,DIRECT'
-  - 'PROCESS-NAME,logioptionsplus_agent,DIRECT'
-  - 'PROCESS-NAME,logioptionsplus_updater,DIRECT'
-  - 'PROCESS-NAME,logioptionsplus Helper,DIRECT'
-  - 'PROCESS-NAME,logioptionsplus Helper (Renderer),DIRECT'
-  - 'PROCESS-NAME,logioptionsplus Helper (Plugin),DIRECT'
-  - 'PROCESS-NAME,logioptionsplus Helper (GPU),DIRECT'
-
-  - 'DOMAIN-SUFFIX,hf-mirror.com,DIRECT'
 
 append: []
 delete: []

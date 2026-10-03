@@ -1,0 +1,66 @@
+# Clash-only rules (Clash Verge on the Mac and mihomo on the NAS). Same format
+# as shadowrocket-custom-rules.list, but Shadowrocket never reads this file.
+# scripts/build_clash_rule_providers.py merges both sources into clash/rules/.
+
+# Broker and account domains use the US group.
+DOMAIN-SUFFIX,etrade.com,US
+DOMAIN-SUFFIX,etrade.net,US
+DOMAIN-SUFFIX,webull.com,US
+DOMAIN-SUFFIX,webullbroker.com,US
+DOMAIN-SUFFIX,tastytrade.com,US
+DOMAIN-SUFFIX,tastyworks.com,US
+DOMAIN-SUFFIX,tradestation.com,US
+DOMAIN-SUFFIX,alpaca.markets,US
+
+# OpenAI / ChatGPT use the US group.
+DOMAIN-SUFFIX,openai.com,US
+DOMAIN-SUFFIX,chatgpt.com,US
+DOMAIN-SUFFIX,oaistatic.com,US
+DOMAIN-SUFFIX,oaiusercontent.com,US
+DOMAIN-SUFFIX,openaiapi-site.azureedge.net,US
+
+# Apple Music and Podcasts use the US group. These must stay ahead of the
+# DIRECT itunes.apple.com rule below, so US rules are always matched first.
+DOMAIN-SUFFIX,music.apple.com,US
+DOMAIN-SUFFIX,aodp-ssl.apple.com,US
+DOMAIN-SUFFIX,blobstore.apple.com,US
+DOMAIN-SUFFIX,audio-ssl.itunes.apple.com,US
+DOMAIN-SUFFIX,streamingaudio.itunes.apple.com,US
+DOMAIN-SUFFIX,mvod.itunes.apple.com,US
+DOMAIN-SUFFIX,podcasts.apple.com,US
+DOMAIN-SUFFIX,podcasters.apple.com,US
+
+# App Store, iTunes, and software updates use the China CDN directly.
+DOMAIN-SUFFIX,apps.apple.com,DIRECT
+DOMAIN-SUFFIX,itunes.apple.com,DIRECT
+DOMAIN-SUFFIX,phobos.apple.com,DIRECT
+DOMAIN-SUFFIX,appldnld.apple.com,DIRECT
+DOMAIN-SUFFIX,swcdn.apple.com,DIRECT
+DOMAIN-SUFFIX,updates-http.cdn-apple.com,DIRECT
+DOMAIN-SUFFIX,c.apple.com,DIRECT
+DOMAIN-SUFFIX,ocsp.apple.com,DIRECT
+
+# Epic Games launcher, downloads, and Unreal Engine.
+DOMAIN-SUFFIX,epicgames.com,DIRECT
+DOMAIN-SUFFIX,epicgames.dev,DIRECT
+DOMAIN-SUFFIX,epicgamescdn.com,DIRECT
+DOMAIN-SUFFIX,epicgames-download1.akamaized.net,DIRECT
+DOMAIN-SUFFIX,unrealengine.com,DIRECT
+
+# Misc direct services.
+DOMAIN-SUFFIX,waditu.com,DIRECT
+DOMAIN-SUFFIX,rotenone.com,DIRECT
+DOMAIN-SUFFIX,hf-mirror.com,DIRECT
+
+# Process fallbacks (macOS/Windows clients only; no-ops on the NAS).
+PROCESS-NAME,ToDesk,DIRECT
+PROCESS-NAME,ToDesk.exe,DIRECT
+PROCESS-NAME,ToDesk_Service.exe,DIRECT
+PROCESS-NAME,ToDesk_Session.exe,DIRECT
+PROCESS-NAME,logioptionsplus,DIRECT
+PROCESS-NAME,logioptionsplus_agent,DIRECT
+PROCESS-NAME,logioptionsplus_updater,DIRECT
+PROCESS-NAME,logioptionsplus Helper,DIRECT
+PROCESS-NAME,logioptionsplus Helper (Renderer),DIRECT
+PROCESS-NAME,logioptionsplus Helper (Plugin),DIRECT
+PROCESS-NAME,logioptionsplus Helper (GPU),DIRECT

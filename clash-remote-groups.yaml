@@ -10,16 +10,24 @@ prepend:
     include-all-proxies: true
     filter: '(?i)日本|japan|\bJP\b'
     exclude-filter: '特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\]'
-    url: 'http://www.gstatic.com/generate_204'
+    url: 'https://www.gstatic.com/generate_204'
     interval: 300
     tolerance: 50
+    lazy: false
+    timeout: 3000
+    max-failed-times: 3
+    interrupt-exist-connections: true
   - name: US-Auto
     type: url-test
     include-all-proxies: true
     filter: '(?i)美[國国]|\bUSA?\b|united states'
     exclude-filter: '特殊|限速|\[(?:2\.\d*[1-9]|[3-9](?:\.\d+)?|\d{2,}(?:\.\d+)?)\]'
-    url: 'http://www.gstatic.com/generate_204'
+    url: 'https://www.gstatic.com/generate_204'
     interval: 300
     tolerance: 50
+    lazy: false
+    timeout: 3000
+    max-failed-times: 3
+    interrupt-exist-connections: true
 append: []
 delete: []

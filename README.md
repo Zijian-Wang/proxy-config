@@ -49,9 +49,12 @@ definitions are copied into Clash.
 
 ### Auto-updating rules
 
-`scripts/build_clash_rule_providers.py` converts the shared Shadowrocket custom
-rule source into policy-specific Mihomo `classical` providers under
-`clash/rules/`. The GitHub workflow regenerates them with `shadowrocket.conf`.
+`scripts/build_clash_rule_providers.py` merges the shared Shadowrocket custom
+rule source (`source/shadowrocket-custom-rules.list`) with the Clash-only source
+(`source/clash-extra-rules.list`) into one policy-specific Mihomo `classical`
+provider per policy (US / JP / DIRECT) under `clash/rules/`. The GitHub workflow
+regenerates them with `shadowrocket.conf`. The NAS mihomo reads the same
+providers (see `CLAUDE.md`).
 
 After the generated files are published to `main`, bind both enhancements to
 the active Clash subscription:
@@ -61,8 +64,8 @@ the active Clash subscription:
 3. Groups: `clash-remote-groups.yaml`
 
 Mihomo then refreshes each provider from the repository's raw GitHub URL every day. The Merge defines provider URLs; the Rules file maps each provider
-to the appropriate Clash policy group. Clash-only rules stay inline in the
-Rules file.
+to the appropriate Clash policy group. No rules are inline; add Clash-only
+rules to `source/clash-extra-rules.list`.
 
 ### Static rules fallback
 
@@ -116,8 +119,8 @@ To edit your personal Shadowrocket overrides, change:
 source/shadowrocket-custom-rules.list
 ```
 
-The GitHub Action runs weekly, and also runs when the shared custom-rule source
-or its Clash provider generator is pushed to `main`. It commits when
+The GitHub Action runs weekly, and also runs when the shared custom-rule source,
+the Clash-only source, or the provider generator is pushed to `main`. It commits when
 `shadowrocket.conf`, its QR code, or the generated Clash rule providers change.
 
 ## Clash region groups

@@ -25,10 +25,8 @@ IP-CIDR,123.58.184.232/32,DIRECT
 IP-CIDR,42.186.225.155/32,DIRECT
 
 # Broker services (Fidelity uses DIRECT).
-DOMAIN-KEYWORD,interactivebrokers,US
 DOMAIN-SUFFIX,interactivebrokers.com,US
 DOMAIN-SUFFIX,ibkr.com,US
-DOMAIN-KEYWORD,thinkorswim,US
 DOMAIN-SUFFIX,thinkorswim.com,US
 DOMAIN-SUFFIX,schwab.com,US
 DOMAIN-SUFFIX,schwabapi.com,US
@@ -101,22 +99,18 @@ DOMAIN-SUFFIX,ffc-static-cdn.oobesaas.adobe.com,DIRECT
 DOMAIN-SUFFIX,prod-rel-ffc-ccm.oobesaas.adobe.com,DIRECT
 
 # Tonghuashun and iFinD use the local network directly.
-DOMAIN-KEYWORD,10jqka,DIRECT
 DOMAIN-SUFFIX,10jqka.com.cn,DIRECT
 DOMAIN-SUFFIX,10jqka.com,DIRECT
 DOMAIN-SUFFIX,51ifind.com,DIRECT
 
 # ToDesk remote desktop: keep Chinese control-plane traffic on DIRECT.
-DOMAIN-KEYWORD,todesk,DIRECT
 DOMAIN-SUFFIX,todesk.com,DIRECT
 DOMAIN-SUFFIX,kylinlot.com,DIRECT
 
 # Logitech Options+: keep app, account, update, and telemetry traffic on DIRECT.
-# Avoid DOMAIN-KEYWORD,logi because it also matches unrelated "login" hosts.
 DOMAIN-SUFFIX,logi.com,DIRECT
 DOMAIN-SUFFIX,logitech.com,DIRECT
 DOMAIN-SUFFIX,logitech.io,DIRECT
 DOMAIN-SUFFIX,logitechg.com,DIRECT
 DOMAIN-SUFFIX,logitech.com.cn,DIRECT
 DOMAIN-SUFFIX,logitechg.com.cn,DIRECT
-DOMAIN-KEYWORD,logitech,DIRECT
