@@ -8,6 +8,7 @@ on:
     paths:
       - source/shadowrocket-custom-rules.list
       - source/clash-extra-rules.list
+      - scripts/build_shadowrocket.py
       - scripts/build_clash_rule_providers.py
   schedule:
     # Mondays 09:20 Beijing time.

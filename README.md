@@ -43,7 +43,7 @@ rules map only the routing intent:
 | `DIRECT` | `DIRECT` |
 
 `US-Auto` and `JP-Auto` perform latency-based selection among the
-subscription's US and Japan nodes, excluding 特殊/限速 and >2.0x nodes. No Shadowrocket node
+subscription's US and Japan nodes, excluding 特殊/限速 and ≥5x nodes. No Shadowrocket node
 definitions are copied into Clash.
 
 ### Auto-updating rules
@@ -102,4 +102,4 @@ the Clash-only source, or the provider generator is pushed to `main`. It commits
 
 ## Clash region groups
 
-`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `JP-Auto` and `US-Auto` `url-test` groups from node names (regex on 日本/Japan/JP and 美国/美國/USA, with an `exclude-filter` for 特殊/限速/>2.0x nodes), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji.
+`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `JP-Auto` and `US-Auto` `url-test` groups from node names (regex on 日本/Japan/JP and 美国/美國/USA, with an `exclude-filter` for 特殊/限速/≥5x nodes), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji.
