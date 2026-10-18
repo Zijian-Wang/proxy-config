@@ -23,6 +23,9 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   Cursor, Codeium/Windsurf, Midjourney) and X (Twitter) use the shared `JP`
   policy, which maps to `JP-Auto` (Japan nodes) in Clash. In Clash only, OpenAI/ChatGPT
   uses `🇺🇸 美国自动`. Gemini follows the shared `US` policy.
+- DeepSeek (official site/web app, platform, API, API docs, CDN, downloads,
+  status) and the DeepSeek Harness desktop app (API, login, update feed, and
+  telemetry on `deepseeksvc.com`) use `DIRECT` in both clients.
 - Clash routes only to automatic (`url-test`) region groups, never the manual
   ones.
 - Logitech Options+ domains use `DIRECT`; Clash also has process-name fallbacks
