@@ -34,9 +34,14 @@ def parse_rules(
         if not line:
             continue
         parts = [part.strip() for part in line.split(",")]
+        if parts and parts[-1] == "no-resolve":
+            parts = parts[:-1]
         if len(parts) < 3:
             raise ValueError(f"{source}:{line_number}: malformed rule: {raw_line}")
         policy = parts[-1]
+        # Shadowrocket's built-in Tailscale module. Clash has no such outbound.
+        if policy == "TAILSCALE":
+            continue
         if policy not in POLICY_FILES:
             raise ValueError(
                 f"{source}:{line_number}: unsupported Shadowrocket policy {policy!r}"

@@ -1,10 +1,12 @@
 # Custom overrides. Keep these before the base domestic/foreign + ad rules.
 
 # Tailscale tailnet for the on-Mac DeepSeek Harness remote.
-# MagicDNS and CGNAT stay on this machine. tailscale.com stays on the proxy
-# so the Shanghai control plane can still connect.
-DOMAIN-SUFFIX,ts.net,DIRECT
-IP-CIDR,100.64.0.0/10,DIRECT
+# iPhone Shadowrocket must hand MagicDNS and CGNAT to its Tailscale module.
+# DIRECT or skip-proxy sends them out the normal proxy, where the name has
+# no public address and Safari fails the TLS handshake. tailscale.com stays
+# on the proxy so the Shanghai control plane can still connect.
+DOMAIN-SUFFIX,ts.net,TAILSCALE
+IP-CIDR,100.64.0.0/10,TAILSCALE,no-resolve
 
 # 网易 UU 远程：控制面、信令、串流、测速、统计及 macOS helper 全部直连。
 PROCESS-NAME,UURemote,DIRECT
