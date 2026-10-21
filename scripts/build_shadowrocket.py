@@ -18,7 +18,7 @@ OUTPUT = ROOT / "shadowrocket.conf"
 
 HEADER = """[General]
 bypass-system = true
-skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, captive.apple.com
+skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 100.64.0.0/10, 172.16.0.0/12, localhost, *.local, *.ts.net, captive.apple.com
 tun-excluded-routes = 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/4
 dns-server = system
 fallback-dns-server = system
