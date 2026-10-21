@@ -56,7 +56,7 @@ rule source (`source/shadowrocket-custom-rules.list`) with the Clash-only source
 (`source/clash-extra-rules.list`) into one policy-specific Mihomo `classical`
 provider per policy (US / JP / DIRECT) under `clash/rules/`. The GitHub workflow
 regenerates them with `shadowrocket.conf`. The NAS mihomo reads the same
-providers (see `CLAUDE.md`).
+providers (see `AGENTS.md`).
 
 After the generated files are published to `main`, bind both enhancements to
 the active Clash subscription:
