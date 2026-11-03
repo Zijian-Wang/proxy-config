@@ -50,11 +50,21 @@ DOMAIN-SUFFIX,twitter.com,JP
 DOMAIN-SUFFIX,t.co,JP
 DOMAIN-SUFFIX,twimg.com,JP
 
-# Gemini and its supporting Google AI endpoints require a US IP.
+# Gemini, Google AI Studio, NotebookLM, Labs and Gemini Code Assist.
 DOMAIN-SUFFIX,gemini.google.com,US
 DOMAIN-SUFFIX,aistudio.google.com,US
 DOMAIN-SUFFIX,ai.google.dev,US
 DOMAIN-SUFFIX,generativelanguage.googleapis.com,US
+DOMAIN-SUFFIX,notebooklm.google.com,US
+DOMAIN-SUFFIX,labs.google,US
+DOMAIN-SUFFIX,cloudaicompanion.googleapis.com,US
+DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,US
+
+# Vertex AI global, standard regional, and US multi-region public APIs.
+# Vertex AI endpoints are shared by Gemini and other Vertex AI services.
+DOMAIN-SUFFIX,aiplatform.googleapis.com,US
+DOMAIN-KEYWORD,-aiplatform.googleapis.com,US
+DOMAIN-SUFFIX,aiplatform.us.rep.googleapis.com,US
 
 # Claude / Anthropic use Japan nodes.
 DOMAIN-SUFFIX,claude.ai,JP

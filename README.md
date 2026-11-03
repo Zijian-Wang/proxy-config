@@ -22,7 +22,10 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 - Claude/Anthropic, other AI tools (Grok/xAI, Perplexity, Poe, Copilot,
   Cursor, Codeium/Windsurf, Midjourney) and X (Twitter) use the shared `JP`
   policy, which maps to `JP-Auto` (Japan nodes) in Clash. In Clash only, OpenAI/ChatGPT
-  uses `🇺🇸 美国自动`. Gemini follows the shared `US` policy.
+  uses `🇺🇸 美国自动`. Gemini, Google AI Studio, NotebookLM, Google Labs,
+  Gemini Code Assist, and the listed Vertex AI APIs follow the shared `US`
+  policy. Vertex AI API hostnames are shared with other Vertex AI services;
+  Google sign-in and static-resource hostnames retain their existing routes.
 - DeepSeek (official site/web app, platform, API, API docs, CDN, downloads,
   status) and the DeepSeek Harness desktop app (API, login, update feed, and
   telemetry on `deepseeksvc.com`) use `DIRECT` in both clients.
