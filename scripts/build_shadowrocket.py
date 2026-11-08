@@ -37,6 +37,11 @@ private-ip-answer = true
 US = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:[5-9]|\d\d+)(?:\.\d+)?\])).*(美国|美國|US|USA|United States|America),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
 JP = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:[5-9]|\d\d+)(?:\.\d+)?\])).*(日本|Japan|JP),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
 AUTO = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:[5-9]|\d\d+)(?:\.\d+)?\])).*(台|台湾|台灣|Taiwan|TW|日本|Japan|JP|美国|美國|US|USA|United States|America),url=https://www.gstatic.com/generate_204,interval=1800,timeout=5,tolerance=120
+# Dedicated group for the DSH Cloudflare Tunnel egress. Never use AUTO here:
+# a latency-driven switch tears down cloudflared's HTTP/2 connection and the
+# phone gets 1033. tolerance=10000 means the group only moves when the current
+# node actually fails its health check, not on a latency win.
+DSH = url-test,policy-regex-filter=^(?!.*(?:特殊|限速|\[(?:[5-9]|\d\d+)(?:\.\d+)?\])).*(日本|Japan|JP|美国|美國|US|USA|United States|America),url=https://www.gstatic.com/generate_204,interval=300,timeout=5,tolerance=10000
 """
 
 FOOTER = """[Host]

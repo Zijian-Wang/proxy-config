@@ -39,8 +39,10 @@ def parse_rules(
         if len(parts) < 3:
             raise ValueError(f"{source}:{line_number}: malformed rule: {raw_line}")
         policy = parts[-1]
-        # Shadowrocket's built-in Tailscale module. Clash has no such outbound.
-        if policy == "TAILSCALE":
+        # Shadowrocket-only outbounds; Clash has no such group.
+        # TAILSCALE is Shadowrocket's built-in Tailscale module.
+        # DSH pins the Cloudflare Tunnel egress on the Mac (see AGENTS.md).
+        if policy in {"TAILSCALE", "DSH"}:
             continue
         if policy not in POLICY_FILES:
             raise ValueError(

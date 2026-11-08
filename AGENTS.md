@@ -60,3 +60,18 @@ Region groups are `url-test` with an HTTPS `generate_204` URL,
 `lazy: false`, `tolerance: 50`, `interrupt-exist-connections: true`
 (without it, connections stay on a degraded node until the container is
 restarted). Keep test URLs on HTTPS to avoid mihomo's warning.
+
+## Mac 当前代理运行态（2026-11-08）
+
+- Shadowrocket 是当前唯一活跃的代理：系统代理 `127.0.0.1:1082`（owner 是
+  `MacPacketTunnel`），并建 `utun5`（`198.18.0.1`）抢默认路由。
+- Clash Verge 没运行。`clash-verge-service` 只是常驻的休眠 helper，不代表
+  Clash 在跑；Clash 的 TUN 设备是 `utun1024`，当前不存在。
+- Clash HTTP 端口已从 1082 改为 7897（mixed 7890）：同时改
+  `~/Library/Application Support/io.github.clash-verge-rev.clash-verge-rev/`
+  下的 `verge.yaml`（`verge_port`）和 `config.yaml`（`port`）。
+- 判断是谁在代理，要看 lsof / 端口 owner / 默认路由，不要只看
+  `198.18.0.1` 或 1082 —— 这两个特征都可能来自不同客户端。
+- DSH 远程隧道的出站固定在 Shadowrocket 的 `DSH` 组（`tolerance=10000`，
+  只有节点失效才换），规则在 `source/shadowrocket-custom-rules.list` 顶部。
+  不要改回 AUTO：换节点会静默掐断 cloudflared 的 HTTP/2 长连接（手机 1033）。

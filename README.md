@@ -52,6 +52,10 @@ rules map only the routing intent:
 subscription's US and Japan nodes, excluding 特殊/限速 and ≥5x nodes. No Shadowrocket node
 definitions are copied into Clash.
 
+Shadowrocket-only policies in the shared rule source are skipped by the Clash
+provider generator: `TAILSCALE` (built-in Tailscale module) and `DSH` (pins the
+Mac's Cloudflare Tunnel egress — see `AGENTS.md`). Clash has no such groups.
+
 ### Auto-updating rules
 
 `scripts/build_clash_rule_providers.py` merges the shared Shadowrocket custom

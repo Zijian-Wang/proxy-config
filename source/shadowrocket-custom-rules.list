@@ -1,5 +1,18 @@
 # Custom overrides. Keep these before the base domestic/foreign + ad rules.
 
+# Cloudflare Tunnel for DSH remote: pin only the tunnel egress, never AUTO.
+# cloudflared dials region1/2.v2.argotunnel.com:7844 (http2 = TCP), SNI cftunnel.com.
+# AUTO's latency switch silently kills the HTTP/2 connection -> phone 1033.
+PROCESS-NAME,cloudflared,DSH
+DOMAIN-SUFFIX,argotunnel.com,DSH
+DOMAIN-SUFFIX,cftunnel.com,DSH
+IP-CIDR,198.41.192.0/24,DSH,no-resolve
+IP-CIDR,198.41.200.0/24,DSH,no-resolve
+# Phone-side WebSocket entry for the same tunnel.
+DOMAIN,dsh-wl.risk-os.app,DSH
+# If DIRECT proves stable in testing, change the DSH policy above to DIRECT.
+# Do not send all of cloudflare.com to DIRECT; only this tunnel block.
+
 # Tailscale tailnet for the on-Mac DeepSeek Harness remote.
 # iPhone Shadowrocket must hand MagicDNS and CGNAT to its Tailscale module.
 # DIRECT or skip-proxy sends them out the normal proxy, where the name has
