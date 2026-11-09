@@ -22,7 +22,7 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 - Claude/Anthropic, other AI tools (Grok/xAI, Perplexity, Poe, Copilot,
   Cursor, Codeium/Windsurf, Midjourney) and X (Twitter) use the shared `JP`
   policy, which maps to `JP-Auto` (Japan nodes) in Clash. In Clash only, OpenAI/ChatGPT
-  uses `🇺🇸 美国自动`. Gemini, Google AI Studio, NotebookLM, Google Labs,
+  also uses Japan. Gemini, Google AI Studio, NotebookLM, Google Labs,
   Gemini Code Assist, and the listed Vertex AI APIs follow the shared `US`
   policy. Vertex AI API hostnames are shared with other Vertex AI services;
   Google sign-in and static-resource hostnames retain their existing routes.
@@ -52,9 +52,32 @@ rules map only the routing intent:
 subscription's US and Japan nodes, excluding 特殊/限速 and ≥5x nodes. No Shadowrocket node
 definitions are copied into Clash.
 
-Shadowrocket-only policies in the shared rule source are skipped by the Clash
-provider generator: `TAILSCALE` (built-in Tailscale module) and `DSH` (pins the
-Mac's Cloudflare Tunnel egress — see `AGENTS.md`). Clash has no such groups.
+The provider generator skips `TAILSCALE`, Shadowrocket's built-in module.
+`DSH` has a separate provider consumed by the personal override below; the
+existing Clash Verge/NAS enhancements do not reference it.
+
+## Clash App on Mac, iPhone, and iPad
+
+Keep the existing node subscription and its original rule scheme. Under the
+profile's **Override Script**, import and select:
+
+```text
+https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/personal-override.js
+```
+
+The same script can be used as a Clash Verge Script enhancement. It preserves
+subscription nodes and base routing, adds `Personal-US`, `Personal-JP`, and
+`Personal-TW` region groups, and prepends the shared US/JP/DIRECT rule providers.
+There are currently no personal Taiwan domain rules. DSH tunnel traffic uses
+`Personal-DSH`, a Japan/US group with tolerance 10000 rather than ordinary
+latency switching. Existing connections are not forcibly interrupted on auto
+selection. Region membership depends on subscription node names.
+
+Update the script in the App to receive script changes; rule providers refresh
+daily. Back up **All data** to iCloud after selecting the script so the phone
+can restore both the profile and its referenced script. Process rules apply on
+macOS; iOS uses the corresponding domain/IP rules. Shadowrocket's authenticated
+Tailscale module is not transferred by this script.
 
 ### Auto-updating rules
 

@@ -12,12 +12,12 @@ DOMAIN-SUFFIX,tastyworks.com,US
 DOMAIN-SUFFIX,tradestation.com,US
 DOMAIN-SUFFIX,alpaca.markets,US
 
-# OpenAI / ChatGPT use the US group.
-DOMAIN-SUFFIX,openai.com,US
-DOMAIN-SUFFIX,chatgpt.com,US
-DOMAIN-SUFFIX,oaistatic.com,US
-DOMAIN-SUFFIX,oaiusercontent.com,US
-DOMAIN-SUFFIX,openaiapi-site.azureedge.net,US
+# OpenAI / ChatGPT use the Japan group.
+DOMAIN-SUFFIX,openai.com,JP
+DOMAIN-SUFFIX,chatgpt.com,JP
+DOMAIN-SUFFIX,oaistatic.com,JP
+DOMAIN-SUFFIX,oaiusercontent.com,JP
+DOMAIN-SUFFIX,openaiapi-site.azureedge.net,JP
 
 # Apple Music and Podcasts use the US group. These must stay ahead of the
 # DIRECT itunes.apple.com rule below, so US rules are always matched first.

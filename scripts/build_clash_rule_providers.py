@@ -19,6 +19,7 @@ POLICY_FILES = {
     "AUTO": "shadowrocket-auto.yaml",
     "DIRECT": "shadowrocket-direct.yaml",
     "REJECT": "shadowrocket-reject.yaml",
+    "DSH": "personal-dsh.yaml",
 }
 
 
@@ -39,10 +40,9 @@ def parse_rules(
         if len(parts) < 3:
             raise ValueError(f"{source}:{line_number}: malformed rule: {raw_line}")
         policy = parts[-1]
-        # Shadowrocket-only outbounds; Clash has no such group.
-        # TAILSCALE is Shadowrocket's built-in Tailscale module.
-        # DSH pins the Cloudflare Tunnel egress on the Mac (see AGENTS.md).
-        if policy in {"TAILSCALE", "DSH"}:
+        # TAILSCALE is Shadowrocket's built-in module, not a portable outbound.
+        # DSH is consumed only by the personal Clash override, which defines it.
+        if policy == "TAILSCALE":
             continue
         if policy not in POLICY_FILES:
             raise ValueError(
