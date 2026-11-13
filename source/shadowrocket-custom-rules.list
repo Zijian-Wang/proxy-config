@@ -99,8 +99,32 @@ DOMAIN-SUFFIX,codeium.com,JP
 DOMAIN-SUFFIX,windsurf.com,JP
 DOMAIN-SUFFIX,midjourney.com,JP
 
-# Meta Muse personal AI agent uses its dedicated US service.
+# Meta products all use the US group: Muse (the Meta AI agent app), Meta AI,
+# Facebook, Instagram, WhatsApp, Messenger, Threads, and Quest.
+# The Muse process rule catches app endpoints that are not in the list below.
+PROCESS-NAME,Muse,US
 DOMAIN-SUFFIX,muse.ai,US
+DOMAIN-SUFFIX,meta.ai,US
+DOMAIN-SUFFIX,meta.com,US
+DOMAIN-SUFFIX,facebook.com,US
+DOMAIN-SUFFIX,facebook.net,US
+DOMAIN-SUFFIX,fb.com,US
+DOMAIN-SUFFIX,fb.me,US
+DOMAIN-SUFFIX,fb.watch,US
+DOMAIN-SUFFIX,fbcdn.net,US
+DOMAIN-SUFFIX,fbsbx.com,US
+DOMAIN-SUFFIX,m.me,US
+DOMAIN-SUFFIX,instagram.com,US
+DOMAIN-SUFFIX,instagr.am,US
+DOMAIN-SUFFIX,cdninstagram.com,US
+DOMAIN-SUFFIX,whatsapp.com,US
+DOMAIN-SUFFIX,whatsapp.net,US
+DOMAIN-SUFFIX,wa.me,US
+DOMAIN-SUFFIX,messenger.com,US
+DOMAIN-SUFFIX,threads.net,US
+DOMAIN-SUFFIX,threads.com,US
+DOMAIN-SUFFIX,oculus.com,US
+DOMAIN-SUFFIX,oculuscdn.com,US
 
 # Tencent Yuanbao core, streaming, CDN, and telemetry endpoints use DIRECT.
 DOMAIN-SUFFIX,yuanbao.tencent.com,DIRECT

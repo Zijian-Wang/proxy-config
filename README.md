@@ -26,6 +26,10 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   Gemini Code Assist, and the listed Vertex AI APIs follow the shared `US`
   policy. Vertex AI API hostnames are shared with other Vertex AI services;
   Google sign-in and static-resource hostnames retain their existing routes.
+- Meta products (Muse/Meta AI, Facebook, Instagram, WhatsApp, Messenger,
+  Threads, Quest) use the shared `US` policy. The macOS Muse app also gets a
+  `PROCESS-NAME,Muse` fallback, so endpoints outside the listed domains still
+  take the US route.
 - DeepSeek (official site/web app, platform, API, API docs, CDN, downloads,
   status) and the DeepSeek Harness desktop app (API, login, update feed, and
   telemetry on `deepseeksvc.com`) use `DIRECT` in both clients.
