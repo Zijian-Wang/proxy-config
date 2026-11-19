@@ -1,0 +1,43 @@
+# Opt-in for use with clash-ai-groups.yaml.
+
+rule-providers:
+  personal-ai-platform:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    proxy: All-Auto
+    path: ./ruleset/personal-ai-platform.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/ai-platform.yaml
+  personal-shadowrocket-us:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    proxy: All-Auto
+    path: ./ruleset/personal-shadowrocket-us.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-us.yaml
+  personal-shadowrocket-jp:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    proxy: All-Auto
+    path: ./ruleset/personal-shadowrocket-jp.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-jp.yaml
+  personal-shadowrocket-direct:
+    type: http
+    behavior: classical
+    format: yaml
+    interval: 86400
+    proxy: All-Auto
+    path: ./ruleset/personal-shadowrocket-direct.yaml
+    url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-direct.yaml
+
+rules:
+  - 'DOMAIN-SUFFIX,maxon.net,DIRECT'
+  - 'RULE-SET,personal-shadowrocket-us,US-Auto'
+  - 'RULE-SET,personal-ai-platform,AI Platform'
+  - 'RULE-SET,personal-shadowrocket-jp,JP-Auto'
+  - 'RULE-SET,personal-shadowrocket-direct,DIRECT'
+  - 'MATCH,All-Auto'
