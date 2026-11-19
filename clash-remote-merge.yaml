@@ -28,6 +28,7 @@ rule-providers:
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-direct.yaml
 
 rules:
+  - 'DOMAIN-SUFFIX,maxon.net,DIRECT'
   - 'RULE-SET,personal-shadowrocket-us,US-Auto'
   - 'RULE-SET,personal-shadowrocket-jp,JP-Auto'
   - 'RULE-SET,personal-shadowrocket-direct,DIRECT'

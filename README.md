@@ -43,8 +43,9 @@ Keep the existing node subscription. Open its enhancement settings and install
 these two files together:
 
 1. **Merge** (`clash-remote-merge.yaml`) replaces the subscription's entire
-   `rules` list while keeping its nodes and groups. It checks the US, JP, and
-   DIRECT rule sets in that order, then sends unmatched traffic to
+   `rules` list while keeping its nodes and groups. It sends `maxon.net` to
+   `DIRECT` first, checks the US, JP, and DIRECT rule sets in that order,
+   then sends unmatched traffic to
    `MATCH,All-Auto`.
 2. **Groups** (`clash-remote-groups.yaml`) adds `US-Auto`, `JP-Auto`, and
    `All-Auto` as `url-test` groups. `All-Auto` measures the subscription's
