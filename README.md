@@ -139,3 +139,76 @@ source/shadowrocket-custom-rules.list
 The GitHub Action runs weekly, and also runs when the shared custom-rule source,
 the Clash-only source, or the provider generator is pushed to `main`. It commits when
 `shadowrocket.conf`, its QR code, or the generated Clash rule providers change.
+
+## Opt-in AI Platform
+
+| Client | Files | Existing fallback |
+| --- | --- | --- |
+| Clash Verge Rev | `clash-ai-merge.yaml` and `clash-ai-groups.yaml` | `MATCH,All-Auto` |
+| Clash App | `clash/personal-ai-override.js` with the subscription's original rule scheme | Subscription rules and fallback |
+| Shadowrocket | Local preview only | `FINAL,AUTO` in the preview |
+
+`AI Platform` starts on **AI JP Auto**. Select **AI Auto** to test eligible
+Japan, Taiwan, and US nodes together, or choose **AI TW Auto** or **AI US
+Auto** for a single region. The filters use the subscription's node names.
+They exclude special, rate-limited, and high-multiplier nodes, plus recognized
+mixed or out-of-region labels. On clients that offer pinning in a `url-test`
+group, pin a member there if needed.
+
+The new provider covers OpenAI/ChatGPT, Grok/xAI, and X. It runs after the
+existing US rules and before the existing JP rules. Clash App also keeps
+the DSH routes first. Gemini, AI Studio, Vertex, the existing broker routes,
+and the Fidelity `DIRECT` exception keep their policies. In the opt-in files,
+Verge's `US-Auto` and Clash App's `Personal-US` reject when zero eligible US
+nodes match. Their filters and normal node selection stay the same. Legacy
+scripts, enhancements, shared rule providers, and the NAS keep their existing
+files. The scheduled Shadowrocket generation remains on the legacy path.
+
+### Core requirement and rollout check
+
+For Mihomo, use **v1.19.27 or later**. That release added customizable
+`empty-fallback`. Earlier Mihomo versions used `COMPATIBLE` for an empty group,
+which dials directly like `DIRECT`.
+[Mihomo v1.19.27 release notes](https://github.com/MetaCubeX/mihomo/releases/tag/v1.19.27)
+[Legacy direct adapter](https://github.com/MetaCubeX/mihomo/blob/v1.19.26/adapter/outbound/direct.go#L89-L99)
+
+Before adopting these files, verify fallback behavior with the actual core
+build selected on **each device**, including embedded forks. Use an isolated
+synthetic fixture with zero matching nodes after filtering. Confirm that
+`AI JP Auto`, `AI TW Auto`, `AI US Auto`, and `AI Auto` resolve to `REJECT`
+when empty. Also check Gemini and a non-Fidelity broker through `US-Auto`
+(Verge) or `Personal-US` (Clash App) with zero eligible US nodes. The core must
+reject those routes without dialing directly or selecting another region.
+Keep the current profile on any device where this behavior cannot be verified.
+
+A successful configuration parse checks acceptance only. It does not verify
+the selected outbound or a rejected connection. A group with eligible members
+that all fail their health checks is a separate case from a zero-match group.
+
+The reference Mac Verge installation selects its bundled Mihomo v1.19.33.
+Earlier offline parser checks with that version passed. The updated tests
+check the generated policy and rule selection with synthetic fixtures. The
+per-device rejection check is still required.
+
+### Shadowrocket preview
+
+For Shadowrocket, the legacy file sends Grok and X to JP. Its base rules
+handle OpenAI. The local preview moves Grok and X to `AI Platform` and adds
+the five OpenAI suffixes already known to Clash, with the existing narrower
+rejection for `r.openai.com` ahead of the new suffix. Public release notes do
+not establish how an empty filtered `url-test` group handles the explicit
+`REJECT` member, or whether that member can win a health test. Keep the
+preview for review until the app's behavior is confirmed.
+
+Build and test the Clash files locally with Python 3.10 or later. Node.js 18
+or later also runs the script behavior test.
+
+```sh
+python3 scripts/build_ai_routing.py
+python3 -m unittest discover -s tests -v
+```
+
+For local Shadowrocket review, add `--shadowrocket-draft PATH` and choose a
+new file path outside the checkout. The generator does not publish a
+Shadowrocket artifact. The opt-in Clash files reference the AI provider on
+`main`; the provider must be present there before adopting those files.
