@@ -1,9 +1,7 @@
 # Proxy Config
 
-Two client-facing files live at the repo root:
-
-- `clash-remote-merge.yaml` + `clash-remote-override.yaml`: auto-updating
-  Clash Verge enhancements backed by remote rule providers.
+- `clash-remote-merge.yaml` + `clash-remote-groups.yaml`: recommended Clash
+  Verge Rev enhancements with a complete routing policy and remote rule sets.
 - `shadowrocket.conf`: generated Shadowrocket config.
 
 Shadowrocket uses your custom rules first, then a domestic/foreign split with
@@ -11,8 +9,8 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 
 ## Routing Notes
 
-- In Clash, broker/account domains (except Fidelity) use the subscription's `🇺🇸 美国自动`
-  `url-test` group so the fastest measured US node is selected automatically.
+- In Clash Verge, broker/account domains (except Fidelity) use `US-Auto`.
+  The Clash App script routes those domains to `Personal-US`.
 - In Shadowrocket, broker/account domains (except Fidelity) use its separate `US` `url-test`
   group. Shadowrocket node definitions are never copied into Clash.
 - Broker coverage includes Interactive Brokers, thinkorswim/Schwab, Robinhood,
@@ -39,22 +37,46 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   for the Options+ app, agent, updater, and Electron helpers.
 - Hugging Face China mirror (`hf-mirror.com`) uses `DIRECT`.
 
-## Clash Verge Rev
+## Clash Verge Rev (recommended)
+
+Keep the existing node subscription. Open its enhancement settings and install
+these two files together:
+
+1. **Merge** (`clash-remote-merge.yaml`) replaces the subscription's entire
+   `rules` list while keeping its nodes and groups. It checks the US, JP, and
+   DIRECT rule sets in that order, then sends unmatched traffic to
+   `MATCH,All-Auto`.
+2. **Groups** (`clash-remote-groups.yaml`) adds `US-Auto`, `JP-Auto`, and
+   `All-Auto` as `url-test` groups. `All-Auto` measures the subscription's
+   nodes across all regions and is also used to download the rule sets.
+   The region groups filter node names and exclude 特殊/限速 and ≥5x nodes.
+
+Leave the subscription's **Rules** and **Script** enhancements empty for this
+setup. If migrating an existing setup, replace Merge and Groups together and
+reactivate the profile. The optional `clash-remote-override.yaml` is for keeping
+the subscription's routing as a fallback. To use it, keep only the
+`rule-providers` section of the Merge, install the Groups file, and put the
+optional file in **Rules**.
 
 ### Policy mapping
 
 Shadowrocket and Clash keep separate nodes and policy groups. The shared custom
 rules map only the routing intent:
 
-| Shadowrocket policy | Current Clash policy |
+| Shadowrocket policy | Clash Verge policy |
 | --- | --- |
-| `US` | `🇺🇸 美国自动` |
-| `JP` | `JP-Auto` (static fallback: `🇯🇵 日本自动`) |
+| `US` | `US-Auto` |
+| `JP` | `JP-Auto` |
 | `DIRECT` | `DIRECT` |
 
-`US-Auto` and `JP-Auto` perform latency-based selection among the
-subscription's US and Japan nodes, excluding 特殊/限速 and ≥5x nodes. No Shadowrocket node
-definitions are copied into Clash.
+### Auto-updating rules
+
+Mihomo refreshes the three remote rule sets under `clash/rules/` every day.
+Edit `source/shadowrocket-custom-rules.list` for shared rules or
+`source/clash-extra-rules.list` for Clash-only rules. The GitHub workflow
+runs `scripts/build_clash_rule_providers.py` to publish the generated files.
+For changes to the Merge or Groups file itself, refresh those enhancements
+in Clash Verge and reactivate the profile.
 
 The provider generator skips `TAILSCALE`, Shadowrocket's built-in module.
 `DSH` has a separate provider consumed by the personal override below; the
@@ -82,26 +104,6 @@ daily. Back up **All data** to iCloud after selecting the script so the phone
 can restore both the profile and its referenced script. Process rules apply on
 macOS; iOS uses the corresponding domain/IP rules. Shadowrocket's authenticated
 Tailscale module is not transferred by this script.
-
-### Auto-updating rules
-
-`scripts/build_clash_rule_providers.py` merges the shared Shadowrocket custom
-rule source (`source/shadowrocket-custom-rules.list`) with the Clash-only source
-(`source/clash-extra-rules.list`) into one policy-specific Mihomo `classical`
-provider per policy (US / JP / DIRECT) under `clash/rules/`. The GitHub workflow
-regenerates them with `shadowrocket.conf`. The NAS mihomo reads the same
-providers (see `AGENTS.md`).
-
-After the generated files are published to `main`, bind both enhancements to
-the active Clash subscription:
-
-1. Merge: `clash-remote-merge.yaml`
-2. Rules: `clash-remote-override.yaml`
-3. Groups: `clash-remote-groups.yaml`
-
-Mihomo then refreshes each provider from the repository's raw GitHub URL every day. The Merge defines provider URLs; the Rules file maps each provider
-to the appropriate Clash policy group. No rules are inline; add Clash-only
-rules to `source/clash-extra-rules.list`.
 
 ## Shadowrocket
 
@@ -136,7 +138,3 @@ source/shadowrocket-custom-rules.list
 The GitHub Action runs weekly, and also runs when the shared custom-rule source,
 the Clash-only source, or the provider generator is pushed to `main`. It commits when
 `shadowrocket.conf`, its QR code, or the generated Clash rule providers change.
-
-## Clash region groups
-
-`clash-remote-groups.yaml` (bound in Clash Verge as the subscription's **Groups** enhancement, next to Merge and Rules) defines its own `JP-Auto` and `US-Auto` `url-test` groups from node names (regex on 日本/Japan/JP and 美国/美國/USA, with an `exclude-filter` for 特殊/限速/≥5x nodes), and `clash-remote-override.yaml` routes to them. Rules therefore do not depend on the subscription's group names or their flag emoji.

@@ -3,6 +3,7 @@
 # subscription's group names (whose flag emoji can differ). Matches
 # Simplified/Traditional Chinese and English node names, and excludes
 # 特殊/限速 nodes and nodes with a [rate] multiplier of 5.0 or more.
+# All-Auto selects from the subscription's nodes across all regions.
 
 prepend:
   - name: JP-Auto
@@ -29,5 +30,15 @@ prepend:
     timeout: 3000
     max-failed-times: 3
     interrupt-exist-connections: true
+  - name: All-Auto
+    type: url-test
+    include-all: true
+    empty-fallback: REJECT
+    url: 'https://www.gstatic.com/generate_204'
+    interval: 300
+    tolerance: 50
+    lazy: false
+    timeout: 3000
+    max-failed-times: 3
 append: []
 delete: []

@@ -1,6 +1,5 @@
-# Clash Verge Merge enhancement for auto-updating personal rule providers.
-# These files are generated from source/shadowrocket-custom-rules.list and
-# published through the same GitHub repository as shadowrocket.conf.
+# Recommended Clash Verge Merge enhancement. Replaces the subscription's
+# routing rules and uses the groups from clash-remote-groups.yaml.
 
 rule-providers:
   personal-shadowrocket-us:
@@ -8,7 +7,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    proxy: 🚀 选择节点
+    proxy: All-Auto
     path: ./ruleset/personal-shadowrocket-us.yaml
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-us.yaml
   personal-shadowrocket-jp:
@@ -16,7 +15,7 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    proxy: 🚀 选择节点
+    proxy: All-Auto
     path: ./ruleset/personal-shadowrocket-jp.yaml
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-jp.yaml
   personal-shadowrocket-direct:
@@ -24,6 +23,12 @@ rule-providers:
     behavior: classical
     format: yaml
     interval: 86400
-    proxy: 🚀 选择节点
+    proxy: All-Auto
     path: ./ruleset/personal-shadowrocket-direct.yaml
     url: https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/rules/shadowrocket-direct.yaml
+
+rules:
+  - 'RULE-SET,personal-shadowrocket-us,US-Auto'
+  - 'RULE-SET,personal-shadowrocket-jp,JP-Auto'
+  - 'RULE-SET,personal-shadowrocket-direct,DIRECT'
+  - 'MATCH,All-Auto'

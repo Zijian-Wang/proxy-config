@@ -1,7 +1,6 @@
-# Clash Verge Rules enhancement paired with clash-remote-merge.yaml.
-# All routing lives in the remote providers (generated from source/*.list), so
-# this file only maps each provider to its policy group. US is matched before
-# DIRECT so specific US hosts win over broader DIRECT suffixes.
+# Optional Clash Verge Rules enhancement for retaining subscription routing.
+# Use with only the rule-providers section of clash-remote-merge.yaml and the
+# Groups enhancement. The recommended Merge already defines the full rule list.
 
 prepend:
   - 'RULE-SET,personal-shadowrocket-us,US-Auto'
