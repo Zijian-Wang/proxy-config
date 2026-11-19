@@ -152,16 +152,45 @@ the Clash-only source, or the provider generator is pushed to `main`. It commits
 Japan, Taiwan, and US nodes together, or choose **AI TW Auto** or **AI US
 Auto** for a single region. The filters use the subscription's node names.
 They exclude special, rate-limited, and high-multiplier nodes, plus recognized
-mixed or out-of-region labels. The Clash candidates use `REJECT` when a
-group is empty. On clients that offer pinning in a `url-test` group, pin a
-member there if needed.
+mixed or out-of-region labels. On clients that offer pinning in a `url-test`
+group, pin a member there if needed.
 
 The new provider covers OpenAI/ChatGPT, Grok/xAI, and X. It runs after the
 existing US rules and before the existing JP rules. Clash App also keeps
 the DSH routes first. Gemini, AI Studio, Vertex, the existing broker routes,
-and the Fidelity `DIRECT` exception keep their policies. Legacy scripts,
-enhancements, shared rule providers, and the NAS keep their existing files.
-The scheduled Shadowrocket generation remains on the legacy path.
+and the Fidelity `DIRECT` exception keep their policies. In the opt-in files,
+Verge's `US-Auto` and Clash App's `Personal-US` reject when zero eligible US
+nodes match. Their filters and normal node selection stay the same. Legacy
+scripts, enhancements, shared rule providers, and the NAS keep their existing
+files. The scheduled Shadowrocket generation remains on the legacy path.
+
+### Core requirement and rollout check
+
+For Mihomo, use **v1.19.27 or later**. That release added customizable
+`empty-fallback`. Earlier Mihomo versions used `COMPATIBLE` for an empty group,
+which dials directly like `DIRECT`.
+[Mihomo v1.19.27 release notes](https://github.com/MetaCubeX/mihomo/releases/tag/v1.19.27)
+[Legacy direct adapter](https://github.com/MetaCubeX/mihomo/blob/v1.19.26/adapter/outbound/direct.go#L89-L99)
+
+Before adopting these files, verify fallback behavior with the actual core
+build selected on **each device**, including embedded forks. Use an isolated
+synthetic fixture with zero matching nodes after filtering. Confirm that
+`AI JP Auto`, `AI TW Auto`, `AI US Auto`, and `AI Auto` resolve to `REJECT`
+when empty. Also check Gemini and a non-Fidelity broker through `US-Auto`
+(Verge) or `Personal-US` (Clash App) with zero eligible US nodes. The core must
+reject those routes without dialing directly or selecting another region.
+Keep the current profile on any device where this behavior cannot be verified.
+
+A successful configuration parse checks acceptance only. It does not verify
+the selected outbound or a rejected connection. A group with eligible members
+that all fail their health checks is a separate case from a zero-match group.
+
+The reference Mac Verge installation selects its bundled Mihomo v1.19.33.
+Earlier offline parser checks with that version passed. The updated tests
+check the generated policy and rule selection with synthetic fixtures. The
+per-device rejection check is still required.
+
+### Shadowrocket preview
 
 For Shadowrocket, the legacy file sends Grok and X to JP. Its base rules
 handle OpenAI. The local preview moves Grok and X to `AI Platform` and adds

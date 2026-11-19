@@ -116,6 +116,8 @@ def verge_merge(legacy: str) -> str:
 
 def verge_groups(legacy: str) -> str:
     legacy = legacy[legacy.index("prepend:") :]
+    us_group = "  - name: US-Auto\n    type: url-test\n"
+    legacy = replace_once(legacy, us_group, us_group + "    empty-fallback: REJECT\n")
     entries = []
     for group in mihomo_groups(app=False):
         for ordinal, (key, value) in enumerate(group.items()):
@@ -138,6 +140,10 @@ def clash_app_script(legacy: str) -> str:
         + base.rstrip()
         + "\n\nfunction main(config) {\n"
         + "  config = legacyOverride(config);\n"
+        + '''  config["proxy-groups"].forEach(function (group) {
+    if (group.name === "Personal-US") group["empty-fallback"] = "REJECT";
+  });
+'''
         + "  var aiGroups = " + groups.replace("\n", "\n  ") + ";\n"
         + '''  var names = aiGroups.map(function (group) { return group.name; });
   config["proxy-groups"] = aiGroups.concat(config["proxy-groups"].filter(function (group) {

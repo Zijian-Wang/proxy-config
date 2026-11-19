@@ -61,6 +61,9 @@ function legacyOverride(config) {
 
 function main(config) {
   config = legacyOverride(config);
+  config["proxy-groups"].forEach(function (group) {
+    if (group.name === "Personal-US") group["empty-fallback"] = "REJECT";
+  });
   var aiGroups = [
     {
       "name": "AI Platform",

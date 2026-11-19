@@ -151,6 +151,20 @@ class AIRoutingTests(unittest.TestCase):
             with self.subTest(domain=domain):
                 self.assertEqual(match_domain(merged, providers, domain), policy)
 
+    def test_verge_fixed_us_group_configures_zero_match_rejection(self) -> None:
+        group_header = "  - name: US-Auto\n"
+        new = read("clash-ai-groups.yaml").split(group_header, 1)[1].split("\n  - name:", 1)[0]
+        old = read("clash-remote-groups.yaml").split(group_header, 1)[1].split("\n  - name:", 1)[0]
+        self.assertIn("    empty-fallback: REJECT\n", new)
+        self.assertEqual(new.replace("    empty-fallback: REJECT\n", ""), old)
+        fields = dict(line.strip().split(": ", 1) for line in new.splitlines())
+        include = re.compile(fields["filter"].strip("'"))
+        exclude = re.compile(fields["exclude-filter"].strip("'"))
+        nodes = ["Synthetic Japan JP", "Synthetic Taiwan TW", "Synthetic USA [5.0]"]
+        self.assertEqual([node for node in nodes if include.search(node) and not exclude.search(node)], [])
+        self.assertIsNotNone(include.search("Synthetic USA"))
+        self.assertIsNone(exclude.search("Synthetic USA"))
+
     def test_shadowrocket_preview_keeps_original_base(self) -> None:
         current = read("shadowrocket.conf")
         draft = ai.shadowrocket(current, ai.route_entries())
@@ -198,7 +212,25 @@ const after = run(optIn, input);
 const extra = 'RULE-SET,personal-ai-platform,AI Platform';
 assert.deepEqual(after.rules.filter((rule) => rule !== extra), before.rules);
 assert.ok(after.rules.indexOf(extra) < after.rules.indexOf('RULE-SET,personal-jp,Personal-JP'));
-assert.deepEqual(after['proxy-groups'].slice(5), before['proxy-groups']);
+const fixedUS = after['proxy-groups'].find((group) => group.name === 'Personal-US');
+assert.equal(fixedUS['empty-fallback'], 'REJECT');
+const include = new RegExp(fixedUS.filter.replace(/^\(\?i\)/, ''), 'i');
+const exclude = new RegExp(fixedUS['exclude-filter'], 'u');
+const names = ['Synthetic Japan JP', 'Synthetic Taiwan TW', 'Synthetic USA [5.0]'];
+assert.deepEqual(names.filter((name) => include.test(name) && !exclude.test(name)), []);
+assert.ok(include.test('Synthetic USA') && !exclude.test('Synthetic USA'));
+assert.ok(after.rules.includes('RULE-SET,personal-us,Personal-US'));
+const usPayload = fs.readFileSync('clash/rules/shadowrocket-us.yaml', 'utf8');
+for (const domain of ['gemini.google.com', 'aistudio.google.com', 'interactivebrokers.com', 'etrade.com']) {
+  assert.ok(usPayload.includes(`'DOMAIN-SUFFIX,${domain}'`));
+}
+const unchangedGroups = after['proxy-groups'].slice(5).map((group) => {
+  if (group.name !== 'Personal-US') return group;
+  const original = {...group};
+  delete original['empty-fallback'];
+  return original;
+});
+assert.deepEqual(unchangedGroups, before['proxy-groups']);
 assert.deepEqual(after.proxies, input.proxies);
 assert.deepEqual(after.dns, input.dns);
 assert.deepEqual(after.tun, input.tun);

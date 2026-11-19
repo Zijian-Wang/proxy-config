@@ -68,6 +68,7 @@ prepend:
     interrupt-exist-connections: true
   - name: US-Auto
     type: url-test
+    empty-fallback: REJECT
     include-all-proxies: true
     filter: '(?i)美[國国]|\bUSA?\b|united states'
     exclude-filter: '特殊|限速|\[(?:[5-9]|\d\d+)(?:\.\d+)?\]'
