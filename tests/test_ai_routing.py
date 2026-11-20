@@ -5,9 +5,11 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 from collections import defaultdict
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -187,6 +189,54 @@ class AIRoutingTests(unittest.TestCase):
         self.assertEqual(match_domain(rules, {}, "gemini.google.com"), "US")
         self.assertEqual(match_domain(rules, {}, "fidelity.com"), "DIRECT")
         self.assertEqual(match_domain(rules, {}, "fallback.example"), "AUTO")
+
+    def test_published_shadowrocket_preview_routing(self) -> None:
+        preview = read("shadowrocket-ai.conf")
+        rules = preview.split("[Rule]\n")[1].split("[Host]\n")[0].splitlines()
+        for entry in ai.route_entries():
+            host = "api." + entry.split(",")[1]
+            self.assertEqual(match_domain(rules, {}, host), ai.SELECTOR)
+        controls = {
+            "r.openai.com": "REJECT",
+            "gemini.google.com": "US",
+            "aistudio.google.com": "US",
+            "us-central1-aiplatform.googleapis.com": "US",
+            "api.interactivebrokers.com": "US",
+            "api.schwabapi.com": "US",
+            "etrade.com": "AUTO",  # Legacy Shadowrocket does not use the Clash-only broker rules.
+            "api.fidelity.com": "DIRECT",
+            "claude.ai": "JP",
+            "agent.example": "AUTO",
+        }
+        for host, policy in controls.items():
+            with self.subTest(host=host):
+                self.assertEqual(match_domain(rules, {}, host), policy)
+        self.assertEqual([line for line in rules if line.startswith("FINAL,")], ["FINAL,AUTO"])
+        self.assertIn(
+            "AI Platform = select,AI JP Auto,AI Auto,AI TW Auto,AI US Auto,"
+            "select=0,policy-select-name=AI JP Auto",
+            preview,
+        )
+        for group, regex in ai.ai_filters().items():
+            self.assertIn(f"{group} = url-test,REJECT,policy-regex-filter={regex},url={ai.CHECK}", preview)
+        proxy_section = preview.split("[Proxy]\n")[1].split("[Proxy Group]\n")[0]
+        self.assertTrue(all(not line.strip() or line.startswith("#") for line in proxy_section.splitlines()))
+
+    def test_shadowrocket_publication_rejects_device_exports(self) -> None:
+        input_text = read("shadowrocket.conf")
+        mutations = {
+            "node": input_text.replace("[Proxy]\n", "[Proxy]\nprivate-node = ss,127.0.0.1,1234\n"),
+            "module": input_text.replace("FINAL,AUTO", "[Module]\nFINAL,AUTO"),
+            "token_url": input_text.replace("FINAL,AUTO", "# https://example.invalid/?token=SYNTHETIC\nFINAL,AUTO"),
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            candidate = Path(directory) / "input.conf"
+            with patch.object(ai.legacy_shadowrocket, "OUTPUT", candidate):
+                for name, modified in mutations.items():
+                    with self.subTest(name=name):
+                        candidate.write_text(modified, encoding="utf-8")
+                        with self.assertRaises(ValueError):
+                            ai.public_shadowrocket_preview()
 
     @unittest.skipUnless(shutil.which("node"), "Node.js required for script behavior")
     def test_clash_app_inherits_subscription_and_is_idempotent(self) -> None:
