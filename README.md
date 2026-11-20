@@ -146,7 +146,7 @@ the Clash-only source, or the provider generator is pushed to `main`. It commits
 | --- | --- | --- |
 | Clash Verge Rev | `clash-ai-merge.yaml` and `clash-ai-groups.yaml` | `MATCH,All-Auto` |
 | Clash App | `clash/personal-ai-override.js` with the subscription's original rule scheme | Subscription rules and fallback |
-| Shadowrocket | Local preview only | `FINAL,AUTO` in the preview |
+| Shadowrocket | [`shadowrocket-ai.conf`](shadowrocket-ai.conf), opt-in preview | `FINAL,AUTO` in the preview; `shadowrocket.conf` remains the default |
 
 `AI Platform` starts on **AI JP Auto**. Select **AI Auto** to test eligible
 Japan, Taiwan, and US nodes together, or choose **AI TW Auto** or **AI US
@@ -162,7 +162,8 @@ and the Fidelity `DIRECT` exception keep their policies. In the opt-in files,
 Verge's `US-Auto` and Clash App's `Personal-US` reject when zero eligible US
 nodes match. Their filters and normal node selection stay the same. Legacy
 scripts, enhancements, shared rule providers, and the NAS keep their existing
-files. The scheduled Shadowrocket generation remains on the legacy path.
+files. Scheduled Shadowrocket generation and the default QR code still point
+only to `shadowrocket.conf`.
 
 ### Core requirement and rollout check
 
@@ -192,13 +193,34 @@ per-device rejection check is still required.
 
 ### Shadowrocket preview
 
-For Shadowrocket, the legacy file sends Grok and X to JP. Its base rules
-handle OpenAI. The local preview moves Grok and X to `AI Platform` and adds
-the five OpenAI suffixes already known to Clash, with the existing narrower
-rejection for `r.openai.com` ahead of the new suffix. Public release notes do
-not establish how an empty filtered `url-test` group handles the explicit
-`REJECT` member, or whether that member can win a health test. Keep the
-preview for review until the app's behavior is confirmed.
+The default [`shadowrocket.conf`](shadowrocket.conf) and its QR code are unchanged.
+To try the preview, add it as a **separate configuration** in Shadowrocket; do
+not replace the default or change your node subscription:
+
+```text
+https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/shadowrocket-ai.conf
+```
+
+The preview contains public routing rules and groups, not nodes, login details,
+subscription links, or authenticated modules. It moves Grok and X from JP to
+`AI Platform` and adds OpenAI/ChatGPT rules. The narrower `r.openai.com`
+rejection, Gemini's US route, broker routes (including Fidelity `DIRECT`), and
+the legacy `FINAL,AUTO` rule stay in place.
+
+**Not validated on iOS.** The `REJECT` member expresses the intended fallback
+when no nodes match a filter. It is not proof that the app will reject an empty
+group, or that it will prefer a healthy matching node over `REJECT`. Before
+using the preview for everyday traffic, test both cases in an isolated setup.
+Switch back to `shadowrocket.conf` if you cannot verify them. Do not assume a
+successful import proves how traffic is routed.
+
+The preview is a manual snapshot of the checked-in legacy config; it does not
+follow the weekly refresh automatically. To update or verify it offline:
+
+```sh
+python3 scripts/build_ai_routing.py --shadowrocket-preview
+python3 scripts/build_ai_routing.py --check-shadowrocket-preview
+```
 
 Build and test the Clash files locally with Python 3.10 or later. Node.js 18
 or later also runs the script behavior test.
@@ -208,7 +230,6 @@ python3 scripts/build_ai_routing.py
 python3 -m unittest discover -s tests -v
 ```
 
-For local Shadowrocket review, add `--shadowrocket-draft PATH` and choose a
-new file path outside the checkout. The generator does not publish a
-Shadowrocket artifact. The opt-in Clash files reference the AI provider on
-`main`; the provider must be present there before adopting those files.
+For a throwaway Shadowrocket draft, add `--shadowrocket-draft PATH` and choose
+a new file path outside the checkout. The opt-in Clash files reference the AI
+provider on `main`; the provider must be present there before adopting those files.
