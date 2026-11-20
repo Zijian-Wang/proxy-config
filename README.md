@@ -150,21 +150,27 @@ The config URL and QR destination do not change.
 | Clash App | Opt-in: `clash/personal-ai-override.js` with the subscription's original rule scheme | Subscription rules and fallback |
 | Shadowrocket | [`shadowrocket.conf`](shadowrocket.conf), existing URL and QR | `FINAL,AUTO` |
 
-`AI Platform` starts on **AI JP Auto**. Select **AI Auto** to test eligible
-Japan, Taiwan, and US nodes together, or choose **AI TW Auto** or **AI US
-Auto** for a single region. The filters use the subscription's node names.
-They exclude special, rate-limited, and high-multiplier nodes, plus recognized
-mixed or out-of-region labels. On clients that offer pinning in a `url-test`
-group, pin a member there if needed.
+AI Platform defaults to Japan and uses the normal regional groups:
+
+| Client | Japan (default) | Three-region auto | Taiwan | United States |
+| --- | --- | --- | --- | --- |
+| Clash Verge Rev | `JP-Auto` | `JP-TW-US-Auto` | `TW-Auto` | `US-Auto` |
+| Clash App | `Personal-JP` | `Personal-JP-TW-US-Auto` | `Personal-TW` | `Personal-US` |
+| Shadowrocket | `JP` | existing `AUTO` | `TW` | `US` |
+
+The new Clash auto groups use node names to match Japan, Taiwan, and US,
+excluding recognized mixed-region names, special and rate-limited nodes, and
+high-multiplier nodes. Verge's all-region `All-Auto` is unchanged. Shadowrocket
+keeps its original TW/JP/US-oriented `AUTO` name filter for both AI and general
+fallback; it is a naming heuristic, not a strict geographic check.
 
 The new provider covers OpenAI/ChatGPT, Grok/xAI, and X. It runs after the
 existing US rules and before the existing JP rules. Clash App also keeps
 the DSH routes first. Gemini, AI Studio, Vertex, the existing broker routes,
-and the Fidelity `DIRECT` exception keep their policies. In the opt-in files,
-Verge's `US-Auto` and Clash App's `Personal-US` reject when zero eligible US
-nodes match. Their filters and normal node selection stay the same. Legacy
-scripts, enhancements, shared rule providers, and the NAS keep their existing
-files.
+and the Fidelity `DIRECT` exception keep their policies. In the opt-in Clash
+files, the shared region groups specify `REJECT` for zero eligible nodes.
+The reused groups keep their node filters. Legacy scripts, enhancements,
+shared rule providers, and the NAS are unchanged.
 
 ### Mihomo requirement and rollout check
 
@@ -177,8 +183,8 @@ which dials directly like `DIRECT`.
 Before adopting these files, verify fallback behavior with the actual core
 build selected on **each device**, including embedded forks. Use an isolated
 synthetic fixture with zero matching nodes after filtering. Confirm that
-`AI JP Auto`, `AI TW Auto`, `AI US Auto`, and `AI Auto` resolve to `REJECT`
-when empty. Also check Gemini and a non-Fidelity broker through `US-Auto`
+each of the shared groups in the table above resolves to `REJECT` when
+empty in Clash. Also check Gemini and a non-Fidelity broker through `US-Auto`
 (Verge) or `Personal-US` (Clash App) with zero eligible US nodes. The core must
 reject those routes without dialing directly or selecting another region.
 Keep the current profile on any device where this behavior cannot be verified.
@@ -204,11 +210,10 @@ and X use `AI Platform`. The narrower `r.openai.com` rejection, Gemini's US
 route, existing broker routes (including Fidelity `DIRECT`), and
 `FINAL,AUTO` stay in place.
 
-**Not validated on iOS.** An explicit `REJECT` member is the intended fallback
-when no nodes match. A successful import does not prove that Shadowrocket
-rejects an empty group or prefers a healthy eligible node over `REJECT`.
-Test both in an isolated setup before relying on those behaviors. To roll back
-the published change, revert the rollout commit and refresh the same URL.
+**Not validated on iOS.** Shadowrocket now uses the normal groups without an
+explicit `REJECT` member. Its behavior when no node name matches is not verified;
+do not assume it fails closed. To roll back the published change, revert the
+rollout commit and refresh the same URL.
 
 Build and test the Clash files locally with Python 3.10 or later. Node.js 18
 or later also runs the script behavior test.

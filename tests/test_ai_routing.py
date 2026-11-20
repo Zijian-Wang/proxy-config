@@ -80,21 +80,29 @@ class AIRoutingTests(unittest.TestCase):
         self.assertNotIn("shadowrocket-ai.conf", workflow)
         self.assertNotIn("python3 scripts/build_ai_routing.py", workflow)
 
-    def test_ai_selection_and_empty_groups(self) -> None:
-        for app in [False, True]:
-            groups = ai.mihomo_groups(app=app)
-            by_name = {group["name"]: group for group in groups}
-            selector = by_name.pop(ai.SELECTOR)
-            self.assertEqual(selector["proxies"], [ai.JP, ai.AUTO, ai.TW, ai.US])
-            self.assertEqual(selector["default-selected"], ai.JP)
-            self.assertEqual(set(by_name), set(selector["proxies"]))
-            for group in by_name.values():
+    def test_ai_reuses_region_groups_and_configures_empty_fallback(self) -> None:
+        for app, choices, expected_new in [
+            (False, ["JP-Auto", "JP-TW-US-Auto", "TW-Auto", "US-Auto"], ["JP-TW-US-Auto", "TW-Auto"]),
+            (True, ["Personal-JP", "Personal-JP-TW-US-Auto", "Personal-TW", "Personal-US"],
+             ["Personal-JP-TW-US-Auto"]),
+        ]:
+            selector, *new_groups = ai.mihomo_groups(app=app)
+            self.assertEqual(selector["proxies"], choices)
+            self.assertEqual(selector["default-selected"], choices[0])
+            self.assertEqual(selector["empty-fallback"], "REJECT")
+            self.assertEqual([group["name"] for group in new_groups], expected_new)
+            for group in new_groups:
                 self.assertEqual(group["type"], "url-test")
                 self.assertTrue(group["include-all"])
                 self.assertEqual(group["empty-fallback"], "REJECT")
                 self.assertFalse(group.get("proxies"))
                 self.assertEqual(group["interrupt-exist-connections"], not app)
 
+        legacy_all = read("clash-remote-groups.yaml").split("  - name: All-Auto\n", 1)[1]
+        updated_all = read("clash-ai-groups.yaml").split("  - name: All-Auto\n", 1)[1]
+        self.assertEqual(legacy_all, updated_all)
+
+    def test_new_groups_use_only_known_single_region_labels(self) -> None:
         samples = {
             "Japan JP [1]": ai.JP,
             "台灣 TW [4.9]": ai.TW,
@@ -106,6 +114,8 @@ class AIRoutingTests(unittest.TestCase):
             "US via Hong Kong": None,
             "Singapore SG": None,
             "South America": None,
+            "Central America": None,
+            "US via Germany": None,
             "DIRECT": None,
             "特殊 JP": None,
             "US 限速": None,
@@ -113,18 +123,18 @@ class AIRoutingTests(unittest.TestCase):
             "JP [x5.0]": None,
             "Taiwan [10×]": None,
         }
-        filters = {group: re.compile(pattern) for group, pattern in ai.ai_filters().items()}
+        regions, combined = ai.regional_filters()
+        filters = {group: re.compile(pattern) for group, pattern in regions.items()}
         for name, region in samples.items():
             with self.subTest(name=name):
                 self.assertEqual(
-                    [group for group in (ai.JP, ai.TW, ai.US) if filters[group].search(name)],
+                    [group for group, pattern in filters.items() if pattern.search(name)],
                     [region] if region else [],
                 )
-                self.assertEqual(bool(filters[ai.AUTO].search(name)), region is not None)
-        excluded = [name for name, region in samples.items() if region is None]
-        for group, compiled in filters.items():
-            eligible = [name for name in excluded if compiled.search(name)]
-            self.assertEqual(eligible, [], group)
+                self.assertEqual(bool(re.search(combined, name)), region is not None)
+        for app in (False, True):
+            self.assertEqual(ai.mihomo_groups(app=app)[1]["filter"], combined)
+            self.assertFalse(any(re.search(combined, name) for name, region in samples.items() if region is None))
 
     def test_verge_domain_order_and_fallback(self) -> None:
         merged = yaml_rules(read("clash-ai-merge.yaml"))
@@ -156,7 +166,15 @@ class AIRoutingTests(unittest.TestCase):
             with self.subTest(domain=domain):
                 self.assertEqual(match_domain(merged, providers, domain), policy)
 
-    def test_verge_fixed_us_group_configures_zero_match_rejection(self) -> None:
+    def test_verge_reused_groups_preserve_filters_and_configure_empty_fallback(self) -> None:
+        for name in ("JP-Auto", "US-Auto"):
+            header = f"  - name: {name}\n"
+            slot = lambda text: text.split(header, 1)[1].split("\n  - name:", 1)[0]
+            baseline = slot(read("clash-remote-groups.yaml"))
+            updated = slot(read("clash-ai-groups.yaml"))
+            self.assertIn("    empty-fallback: REJECT\n", updated)
+            self.assertEqual(updated.replace("    empty-fallback: REJECT\n", ""), baseline)
+
         group_header = "  - name: US-Auto\n"
         new = read("clash-ai-groups.yaml").split(group_header, 1)[1].split("\n  - name:", 1)[0]
         old = read("clash-remote-groups.yaml").split(group_header, 1)[1].split("\n  - name:", 1)[0]
@@ -214,13 +232,13 @@ class AIRoutingTests(unittest.TestCase):
             with self.subTest(host=host):
                 self.assertEqual(match_domain(rules, {}, host), policy)
         self.assertEqual([line for line in rules if line.startswith("FINAL,")], ["FINAL,AUTO"])
-        self.assertIn(
-            "AI Platform = select,AI JP Auto,AI Auto,AI TW Auto,AI US Auto,"
-            "select=0,policy-select-name=AI JP Auto",
-            preview,
-        )
-        for group, regex in ai.ai_filters().items():
-            self.assertIn(f"{group} = url-test,REJECT,policy-regex-filter={regex},url={ai.CHECK}", preview)
+        self.assertIn("AI Platform = select,JP,AUTO,TW,US,select=0,policy-select-name=JP", preview)
+        groups = preview.split("[Proxy Group]\n", 1)[1].split("\n[Rule]\n", 1)[0]
+        names = re.findall(r"^([^#\s][^=]+?) = ", groups, re.M)
+        self.assertCountEqual(names, ["US", "JP", "TW", "AUTO", "DSH", ai.SELECTOR])
+        self.assertTrue(preview.startswith(shadowrocket.HEADER.rstrip() + "\n\n"))
+        regions, _ = ai.regional_filters()
+        self.assertIn(f"TW = url-test,policy-regex-filter={regions[ai.TW]},url={ai.CHECK}", groups)
         proxy_section = preview.split("[Proxy]\n")[1].split("[Proxy Group]\n")[0]
         self.assertTrue(all(not line.strip() or line.startswith("#") for line in proxy_section.splitlines()))
 
@@ -279,13 +297,29 @@ const usPayload = fs.readFileSync('clash/rules/shadowrocket-us.yaml', 'utf8');
 for (const domain of ['gemini.google.com', 'aistudio.google.com', 'interactivebrokers.com', 'etrade.com']) {
   assert.ok(usPayload.includes(`'DOMAIN-SUFFIX,${domain}'`));
 }
-const unchangedGroups = after['proxy-groups'].slice(5).map((group) => {
-  if (group.name !== 'Personal-US') return group;
+const allGroups = after['proxy-groups'];
+const selector = allGroups[0];
+assert.equal(selector.name, 'AI Platform');
+assert.equal(selector['default-selected'], 'Personal-JP');
+assert.deepEqual(selector.proxies, ['Personal-JP', 'Personal-JP-TW-US-Auto', 'Personal-TW', 'Personal-US']);
+assert.deepEqual(allGroups.slice(0, 2).map(group => group.name), ['AI Platform', 'Personal-JP-TW-US-Auto']);
+for (const name of selector.proxies) {
+  const members = allGroups.filter(group => group.name === name);
+  assert.equal(members.length, 1);
+  assert.equal(members[0]['empty-fallback'], 'REJECT');
+}
+const unchangedGroups = allGroups.slice(2).map((group) => {
+  if (!['Personal-JP', 'Personal-TW', 'Personal-US'].includes(group.name)) return group;
   const original = {...group};
   delete original['empty-fallback'];
   return original;
 });
 assert.deepEqual(unchangedGroups, before['proxy-groups']);
+const old = structuredClone(input);
+for (const name of ['AI Auto', 'AI JP Auto', 'AI TW Auto', 'AI US Auto']) {
+  old['proxy-groups'].push({name, type: 'url-test'});
+}
+assert.deepEqual(run(optIn, old), after);
 assert.deepEqual(after.proxies, input.proxies);
 assert.deepEqual(after.dns, input.dns);
 assert.deepEqual(after.tun, input.tun);

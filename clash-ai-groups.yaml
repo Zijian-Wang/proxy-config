@@ -3,25 +3,13 @@
 prepend:
   - name: 'AI Platform'
     type: 'select'
-    proxies: ["AI JP Auto", "AI Auto", "AI TW Auto", "AI US Auto"]
-    default-selected: 'AI JP Auto'
+    proxies: ["JP-Auto", "JP-TW-US-Auto", "TW-Auto", "US-Auto"]
+    default-selected: 'JP-Auto'
     empty-fallback: 'REJECT'
-  - name: 'AI Auto'
+  - name: 'JP-TW-US-Auto'
     type: 'url-test'
     include-all: true
-    filter: '(?i)(?:^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|\b(?:North|South|Latin)\s+America\b|🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b|🇺🇸|美[國国]|\b(?:US|USA|United States|America)\b)).*(?:🇯🇵|日本|\b(?:JP|Japan)\b)|^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|\b(?:North|South|Latin)\s+America\b|🇯🇵|日本|\b(?:JP|Japan)\b|🇺🇸|美[國国]|\b(?:US|USA|United States|America)\b)).*(?:🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b)|^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|\b(?:North|South|Latin)\s+America\b|🇯🇵|日本|\b(?:JP|Japan)\b|🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b)).*(?:🇺🇸|美[國国]|\b(?:US|USA|United States|America)\b))'
-    empty-fallback: 'REJECT'
-    url: 'https://www.gstatic.com/generate_204'
-    interval: 300
-    tolerance: 50
-    lazy: false
-    interrupt-exist-connections: true
-    timeout: 3000
-    max-failed-times: 3
-  - name: 'AI JP Auto'
-    type: 'url-test'
-    include-all: true
-    filter: '(?i)^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|\b(?:North|South|Latin)\s+America\b|🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b|🇺🇸|美[國国]|\b(?:US|USA|United States|America)\b)).*(?:🇯🇵|日本|\b(?:JP|Japan)\b)'
+    filter: '(?i)(?:^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|🇩🇪|德国|德國|\b(?:DE|Germany)\b|🇫🇷|法国|法國|\b(?:FR|France)\b|\b(?:North|South|Central|Latin)\s+America\b|🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b|🇺🇸|美[國国]|\b(?:US|USA|United States)\b)).*(?:🇯🇵|日本|\b(?:JP|Japan)\b)|^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|🇩🇪|德国|德國|\b(?:DE|Germany)\b|🇫🇷|法国|法國|\b(?:FR|France)\b|\b(?:North|South|Central|Latin)\s+America\b|🇯🇵|日本|\b(?:JP|Japan)\b|🇺🇸|美[國国]|\b(?:US|USA|United States)\b)).*(?:🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b)|^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|🇩🇪|德国|德國|\b(?:DE|Germany)\b|🇫🇷|法国|法國|\b(?:FR|France)\b|\b(?:North|South|Central|Latin)\s+America\b|🇯🇵|日本|\b(?:JP|Japan)\b|🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b)).*(?:🇺🇸|美[國国]|\b(?:US|USA|United States)\b))'
     empty-fallback: 'REJECT'
     url: 'https://www.gstatic.com/generate_204'
     interval: 300
@@ -30,22 +18,10 @@ prepend:
     interrupt-exist-connections: true
     timeout: 3000
     max-failed-times: 3
-  - name: 'AI TW Auto'
+  - name: 'TW-Auto'
     type: 'url-test'
     include-all: true
-    filter: '(?i)^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|\b(?:North|South|Latin)\s+America\b|🇯🇵|日本|\b(?:JP|Japan)\b|🇺🇸|美[國国]|\b(?:US|USA|United States|America)\b)).*(?:🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b)'
-    empty-fallback: 'REJECT'
-    url: 'https://www.gstatic.com/generate_204'
-    interval: 300
-    tolerance: 50
-    lazy: false
-    interrupt-exist-connections: true
-    timeout: 3000
-    max-failed-times: 3
-  - name: 'AI US Auto'
-    type: 'url-test'
-    include-all: true
-    filter: '(?i)^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|\b(?:North|South|Latin)\s+America\b|🇯🇵|日本|\b(?:JP|Japan)\b|🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b)).*(?:🇺🇸|美[國国]|\b(?:US|USA|United States|America)\b)'
+    filter: '(?i)^(?!.*(?:特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]|🇭🇰|香港|\b(?:HK|Hong Kong)\b|🇨🇳|中国|中國|\b(?:CN|China)\b|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b|🇩🇪|德国|德國|\b(?:DE|Germany)\b|🇫🇷|法国|法國|\b(?:FR|France)\b|\b(?:North|South|Central|Latin)\s+America\b|🇯🇵|日本|\b(?:JP|Japan)\b|🇺🇸|美[國国]|\b(?:US|USA|United States)\b)).*(?:🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b)'
     empty-fallback: 'REJECT'
     url: 'https://www.gstatic.com/generate_204'
     interval: 300
@@ -56,6 +32,7 @@ prepend:
     max-failed-times: 3
   - name: JP-Auto
     type: url-test
+    empty-fallback: REJECT
     include-all-proxies: true
     filter: '(?i)日本|japan|\bJP\b'
     exclude-filter: '特殊|限速|\[(?:[5-9]|\d\d+)(?:\.\d+)?\]'

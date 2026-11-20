@@ -117,16 +117,13 @@ def normalize_rule_section(rule_text: str) -> str:
 
 
 def ai_groups() -> str:
-    groups = [
-        "# AI Platform: the explicit REJECT member's iOS behavior is unverified.",
-        f"{ai.SELECTOR} = select,{','.join(ai.CHOICES)},select=0,policy-select-name={ai.JP}",
-    ]
-    for name, pattern in ai.ai_filters().items():
-        groups.append(
-            f"{name} = url-test,REJECT,policy-regex-filter={pattern},url={ai.CHECK},"
-            "interval=1800,timeout=5,tolerance=120"
-        )
-    return "\n".join(groups)
+    regions, _ = ai.regional_filters()
+    return (
+        f"TW = url-test,policy-regex-filter={regions[ai.TW]},url={ai.CHECK},"
+        "interval=1800,timeout=5,tolerance=120\n\n"
+        "# Reuse the normal regional groups and the existing AUTO group.\n"
+        f"{ai.SELECTOR} = select,JP,AUTO,TW,US,select=0,policy-select-name=JP"
+    )
 
 
 def custom_rules_with_ai(custom: str, upstream: str) -> str:

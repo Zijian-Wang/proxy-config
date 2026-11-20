@@ -12,12 +12,13 @@ from build_clash_rule_providers import ROOT, render_provider, yaml_quote
 
 SOURCE = ROOT / "source" / "ai-platform.list"
 SELECTOR = "AI Platform"
-JP = "AI JP Auto"
-TW = "AI TW Auto"
-US = "AI US Auto"
-AUTO = "AI Auto"
-CHOICES = [JP, AUTO, TW, US]
-PROVIDER = "ai-platform"
+JP = "JP"
+TW = "TW"
+US = "US"
+VERGE_REGIONAL = "JP-TW-US-Auto"
+APP_REGIONAL = "Personal-JP-TW-US-Auto"
+VERGE_CHOICES = ["JP-Auto", VERGE_REGIONAL, "TW-Auto", "US-Auto"]
+APP_CHOICES = ["Personal-JP", APP_REGIONAL, "Personal-TW", "Personal-US"]
 CHECK = "https://www.gstatic.com/generate_204"
 EXCLUDED_NODES = r"特殊|限速|\[\s*(?:[x×]\s*)?(?:[5-9]|\d\d+)(?:\.\d+)?\s*(?:[x×倍])?\s*\]"
 OTHER_REGIONS = (
@@ -25,12 +26,13 @@ OTHER_REGIONS = (
     r"|🇸🇬|新加坡|\b(?:SG|Singapore)\b|🇰🇷|韩国|韓國|\b(?:KR|Korea)\b"
     r"|🇨🇦|加拿大|\bCanada\b|🇦🇺|澳洲|\bAustralia\b"
     r"|🇬🇧|英国|英國|\b(?:UK|United Kingdom)\b"
-    r"|\b(?:North|South|Latin)\s+America\b"
+    r"|🇩🇪|德国|德國|\b(?:DE|Germany)\b|🇫🇷|法国|法國|\b(?:FR|France)\b"
+    r"|\b(?:North|South|Central|Latin)\s+America\b"
 )
 REGION_NAMES = {
     JP: r"🇯🇵|日本|\b(?:JP|Japan)\b",
     TW: r"🇹🇼|台[灣湾]|臺灣|\b(?:TW|Taiwan)\b",
-    US: r"🇺🇸|美[國国]|\b(?:US|USA|United States|America)\b",
+    US: r"🇺🇸|美[國国]|\b(?:US|USA|United States)\b",
 }
 
 
@@ -48,27 +50,33 @@ def route_entries() -> list[str]:
     return rules
 
 
-def ai_filters() -> dict[str, str]:
+def regional_filters() -> tuple[dict[str, str], str]:
     regions = {}
     for name, match in REGION_NAMES.items():
         excluded = [EXCLUDED_NODES, OTHER_REGIONS]
         excluded.extend(marker for region, marker in REGION_NAMES.items() if region != name)
         regions[name] = rf"^(?!.*(?:{'|'.join(excluded)})).*(?:{match})"
     combined = "(?i)(?:" + "|".join(regions.values()) + ")"
-    return {AUTO: combined, **{name: "(?i)" + pattern for name, pattern in regions.items()}}
+    return {name: "(?i)" + pattern for name, pattern in regions.items()}, combined
 
 
 def mihomo_groups(*, app: bool) -> list[dict]:
+    choices = APP_CHOICES if app else VERGE_CHOICES
+    regional_name = APP_REGIONAL if app else VERGE_REGIONAL
+    regions, combined = regional_filters()
+    filters = {regional_name: combined}
+    if not app:
+        filters["TW-Auto"] = regions[TW]
     groups = [
         {
             "name": SELECTOR,
             "type": "select",
-            "proxies": CHOICES,
-            "default-selected": JP,
+            "proxies": choices,
+            "default-selected": choices[0],
             "empty-fallback": "REJECT",
         }
     ]
-    for name, pattern in ai_filters().items():
+    for name, pattern in filters.items():
         group = {
             "name": name,
             "type": "url-test",
@@ -115,8 +123,9 @@ def verge_merge(legacy: str) -> str:
 
 def verge_groups(legacy: str) -> str:
     legacy = legacy[legacy.index("prepend:") :]
-    us_group = "  - name: US-Auto\n    type: url-test\n"
-    legacy = replace_once(legacy, us_group, us_group + "    empty-fallback: REJECT\n")
+    for name in ("JP-Auto", "US-Auto"):
+        existing = f"  - name: {name}\n    type: url-test\n"
+        legacy = replace_once(legacy, existing, existing + "    empty-fallback: REJECT\n")
     entries = []
     for group in mihomo_groups(app=False):
         for ordinal, (key, value) in enumerate(group.items()):
@@ -140,11 +149,15 @@ def clash_app_script(legacy: str) -> str:
         + "\n\nfunction main(config) {\n"
         + "  config = legacyOverride(config);\n"
         + '''  config["proxy-groups"].forEach(function (group) {
-    if (group.name === "Personal-US") group["empty-fallback"] = "REJECT";
+    if (["Personal-JP", "Personal-TW", "Personal-US"].indexOf(group.name) !== -1) {
+      group["empty-fallback"] = "REJECT";
+    }
   });
 '''
         + "  var aiGroups = " + groups.replace("\n", "\n  ") + ";\n"
-        + '''  var names = aiGroups.map(function (group) { return group.name; });
+        + '''  // Drop obsolete groups if a config already contains the previous override.
+  var names = aiGroups.map(function (group) { return group.name; })
+    .concat(["AI Auto", "AI JP Auto", "AI TW Auto", "AI US Auto"]);
   config["proxy-groups"] = aiGroups.concat(config["proxy-groups"].filter(function (group) {
     return names.indexOf(group.name) === -1;
   }));
