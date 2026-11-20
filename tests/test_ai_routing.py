@@ -5,17 +5,16 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 import unittest
 from collections import defaultdict
 from pathlib import Path
-from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import build_ai_routing as ai
 import build_clash_rule_providers as legacy
+import build_shadowrocket as shadowrocket
 
 
 def read(relative_path: str) -> str:
@@ -62,7 +61,7 @@ class AIRoutingTests(unittest.TestCase):
             legacy.render_provider([ai.SOURCE], ai.SELECTOR, ai.route_entries()),
         )
 
-    def test_legacy_providers_and_generation_are_separate(self) -> None:
+    def test_legacy_clash_providers_and_shadowrocket_workflow(self) -> None:
         grouped: dict[str, list[str]] = defaultdict(list)
         for source in legacy.DEFAULT_SOURCES:
             legacy.parse_rules(source, grouped)
@@ -72,10 +71,14 @@ class AIRoutingTests(unittest.TestCase):
                 read(f"clash/rules/{filename}"),
                 legacy.render_provider(legacy.DEFAULT_SOURCES, policy, rules),
             )
-        self.assertNotIn("AI Platform", read("shadowrocket.conf"))
+        self.assertFalse((ROOT / "shadowrocket-ai.conf").exists())
         workflow = read(".github/workflows/update-shadowrocket.yml")
-        for name in ["build_ai_routing.py", "ai-platform.list", "shadowrocket-ai.conf"]:
-            self.assertNotIn(name, workflow)
+        self.assertIn("python3 scripts/build_shadowrocket.py", workflow)
+        self.assertIn("      - scripts/build_ai_routing.py", workflow)
+        self.assertIn("      - source/ai-platform.list", workflow)
+        self.assertIn('/refs/heads/${GITHUB_REF_NAME}/shadowrocket.conf"', workflow)
+        self.assertNotIn("shadowrocket-ai.conf", workflow)
+        self.assertNotIn("python3 scripts/build_ai_routing.py", workflow)
 
     def test_ai_selection_and_empty_groups(self) -> None:
         for app in [False, True]:
@@ -167,31 +170,30 @@ class AIRoutingTests(unittest.TestCase):
         self.assertIsNotNone(include.search("Synthetic USA"))
         self.assertIsNone(exclude.search("Synthetic USA"))
 
-    def test_shadowrocket_preview_keeps_original_base(self) -> None:
+    def test_canonical_shadowrocket_rebuilds_without_changing_upstream(self) -> None:
         current = read("shadowrocket.conf")
-        draft = ai.shadowrocket(current, ai.route_entries())
-        self.assertTrue(draft.startswith("# DRAFT:"))
-        marker = "# Base: Johnshall domestic/foreign split + ad blocking.\n"
-        self.assertEqual(draft.split(marker, 1)[1], current.split(marker, 1)[1])
+        marker = f"{shadowrocket.BASE_MARKER}# Source: {shadowrocket.DEFAULT_SOURCE_URL}\n"
+        base = current.split(marker, 1)[1]
+        upstream = "[Rule]\n" + base
+        rebuilt = shadowrocket.build(upstream, shadowrocket.DEFAULT_SOURCE_URL)
+        self.assertEqual(current, rebuilt)
+        self.assertEqual(rebuilt.split(marker, 1)[1], base)
+        self.assertEqual(rebuilt, shadowrocket.build(upstream, shadowrocket.DEFAULT_SOURCE_URL))
+
+    def test_shadowrocket_fixture_normalizes_and_preserves_narrower_rules(self) -> None:
         fixture = (
-            "[Proxy Group]\nJP = select,REJECT\nAUTO = select,REJECT\n"
-            "[Rule]\nDOMAIN-SUFFIX,grok.com,JP\nDOMAIN-SUFFIX,x.com,JP\n"
-            "DOMAIN-SUFFIX,gemini.google.com,US\nDOMAIN-SUFFIX,fidelity.com,DIRECT\n"
-            + marker
-            + "DOMAIN-SUFFIX,r.openai.com,REJECT\nFINAL,AUTO\n\n[Host]\n"
+            "[Rule]\nDOMAIN-SUFFIX,r.openai.com,Reject\n"
+            "DOMAIN-SUFFIX,example.com,Proxy\nFINAL,Proxy\n[MITM]\nhostname =\n"
         )
-        preview = ai.shadowrocket(fixture, ai.route_entries())
-        rules = preview.split("[Rule]\n")[1].split("[Host]\n")[0].splitlines()
+        rendered = shadowrocket.build(fixture, shadowrocket.DEFAULT_SOURCE_URL)
+        rules = rendered.split("[Rule]\n")[1].split("[Host]\n")[0].splitlines()
         self.assertEqual(match_domain(rules, {}, "r.openai.com"), "REJECT")
         self.assertEqual(match_domain(rules, {}, "api.openai.com"), ai.SELECTOR)
-        self.assertEqual(match_domain(rules, {}, "grok.com"), ai.SELECTOR)
-        self.assertEqual(match_domain(rules, {}, "x.com"), ai.SELECTOR)
-        self.assertEqual(match_domain(rules, {}, "gemini.google.com"), "US")
-        self.assertEqual(match_domain(rules, {}, "fidelity.com"), "DIRECT")
+        self.assertEqual(match_domain(rules, {}, "api.example.com"), "AUTO")
         self.assertEqual(match_domain(rules, {}, "fallback.example"), "AUTO")
 
-    def test_published_shadowrocket_preview_routing(self) -> None:
-        preview = read("shadowrocket-ai.conf")
+    def test_canonical_shadowrocket_routing(self) -> None:
+        preview = read("shadowrocket.conf")
         rules = preview.split("[Rule]\n")[1].split("[Host]\n")[0].splitlines()
         for entry in ai.route_entries():
             host = "api." + entry.split(",")[1]
@@ -222,21 +224,24 @@ class AIRoutingTests(unittest.TestCase):
         proxy_section = preview.split("[Proxy]\n")[1].split("[Proxy Group]\n")[0]
         self.assertTrue(all(not line.strip() or line.startswith("#") for line in proxy_section.splitlines()))
 
-    def test_shadowrocket_publication_rejects_device_exports(self) -> None:
-        input_text = read("shadowrocket.conf")
-        mutations = {
-            "node": input_text.replace("[Proxy]\n", "[Proxy]\nprivate-node = ss,127.0.0.1,1234\n"),
-            "module": input_text.replace("FINAL,AUTO", "[Module]\nFINAL,AUTO"),
-            "token_url": input_text.replace("FINAL,AUTO", "# https://example.invalid/?token=SYNTHETIC\nFINAL,AUTO"),
-        }
-        with tempfile.TemporaryDirectory() as directory:
-            candidate = Path(directory) / "input.conf"
-            with patch.object(ai.legacy_shadowrocket, "OUTPUT", candidate):
-                for name, modified in mutations.items():
-                    with self.subTest(name=name):
-                        candidate.write_text(modified, encoding="utf-8")
-                        with self.assertRaises(ValueError):
-                            ai.public_shadowrocket_preview()
+    def test_shadowrocket_rejects_non_public_or_malformed_inputs(self) -> None:
+        unsafe = [
+            ("[Module]\n", shadowrocket.DEFAULT_SOURCE_URL),
+            ("# https://example.invalid/?token=SYNTHETIC\n", shadowrocket.DEFAULT_SOURCE_URL),
+            ("# password=SYNTHETIC\n", shadowrocket.DEFAULT_SOURCE_URL),
+            ("", "https://example.invalid/?token=SYNTHETIC"),
+            ("", "https://account:SYNTHETIC@example.invalid/file"),
+            ("FINAL,AUTO\n", shadowrocket.DEFAULT_SOURCE_URL),
+        ]
+        for prefix, source in unsafe:
+            with self.subTest(prefix=prefix, source=source):
+                with self.assertRaises(ValueError):
+                    shadowrocket.build(f"[Rule]\n{prefix}FINAL,AUTO\n", source)
+
+        # A pre-rule device section must never be emitted; only its rule block
+        # is read, and our [Proxy] section comes from the repository template.
+        synthetic = "[Proxy]\nprivate-node = ss,127.0.0.1,1234\n[Rule]\nFINAL,AUTO\n"
+        self.assertNotIn("private-node", shadowrocket.build(synthetic, shadowrocket.DEFAULT_SOURCE_URL))
 
     @unittest.skipUnless(shutil.which("node"), "Node.js required for script behavior")
     def test_clash_app_inherits_subscription_and_is_idempotent(self) -> None:

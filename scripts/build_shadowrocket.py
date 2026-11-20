@@ -8,15 +8,19 @@ import time
 from http.client import IncompleteRead
 from pathlib import Path
 from urllib.error import URLError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
+
+import build_ai_routing as ai
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE_URL = "https://johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_ad.conf"
 CUSTOM_RULES = ROOT / "source" / "shadowrocket-custom-rules.list"
 OUTPUT = ROOT / "shadowrocket.conf"
+BASE_MARKER = "# Base: Johnshall domestic/foreign split + ad blocking.\n"
 
-HEADER = """[General]
+HEADER = r"""[General]
 bypass-system = true
 skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, captive.apple.com
 tun-excluded-routes = 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/4
@@ -112,19 +116,90 @@ def normalize_rule_section(rule_text: str) -> str:
     return "\n".join(lines).strip()
 
 
+def ai_groups() -> str:
+    groups = [
+        "# AI Platform: the explicit REJECT member's iOS behavior is unverified.",
+        f"{ai.SELECTOR} = select,{','.join(ai.CHOICES)},select=0,policy-select-name={ai.JP}",
+    ]
+    for name, pattern in ai.ai_filters().items():
+        groups.append(
+            f"{name} = url-test,REJECT,policy-regex-filter={pattern},url={ai.CHECK},"
+            "interval=1800,timeout=5,tolerance=120"
+        )
+    return "\n".join(groups)
+
+
+def custom_rules_with_ai(custom: str, upstream: str) -> str:
+    entries = ai.route_entries()
+    custom = custom.replace(
+        "# X (Twitter) and its short-link/static domains use the Japan group.",
+        "# X (Twitter) and its short-link/static domains use AI Platform.",
+    ).replace(
+        "# Other AI tools (Grok, Perplexity, Poe, Copilot, Cursor, etc.) prefer Japan.\n"
+        "# OpenAI also uses Japan; Gemini keeps its US route.",
+        "# Other AI tools prefer Japan. Grok uses AI Platform; Gemini keeps its US route.",
+    )
+    custom_lines = custom.splitlines()
+    routed = set()
+    for index, line in enumerate(custom_lines):
+        if line.endswith(",JP") and line[:-3] in entries:
+            routed.add(line[:-3])
+            custom_lines[index] = f"{line[:-3]},{ai.SELECTOR}"
+
+    added = [entry for entry in entries if entry not in routed]
+    suffixes = [entry.split(",", 1)[1] for entry in added]
+    # Preserve existing narrower upstream exceptions, including r.openai.com.
+    exceptions = []
+    for line in upstream.splitlines():
+        parts = line.split(",")
+        if len(parts) == 3 and parts[0] in {"DOMAIN", "DOMAIN-SUFFIX"}:
+            if any(parts[1].endswith("." + suffix) for suffix in suffixes):
+                exceptions.append(line)
+    new_rules = ["# OpenAI / ChatGPT. Keep existing narrower upstream exceptions first."]
+    return "\n".join(custom_lines + [""] + new_rules + exceptions + [
+        f"{entry},{ai.SELECTOR}" for entry in added
+    ])
+
+
+def validate_public_rules(rules: str, source_url: str) -> None:
+    """Only routing rules and public source URLs can enter the generated config."""
+    source = urlsplit(source_url)
+    if (
+        source.scheme not in {"http", "https"} or not source.hostname
+        or source.username is not None or source.password is not None
+        or source.query or source.fragment or any(c.isspace() for c in source_url)
+    ):
+        raise ValueError("Expected a public rule source URL without credentials, query or fragment")
+    urls = set(re.findall(r"[a-zA-Z][a-zA-Z0-9+.-]*://[^\s,]+", rules))
+    if urls - {source_url, ai.CHECK} or re.search(
+        r"(?i)\b(?:token|password|secret|subscription|auth[-_]?key|api[-_]?key|private[-_]?key)\s*=",
+        rules,
+    ):
+        raise ValueError("Unexpected URL or credential-like field in the Shadowrocket rules")
+    rule_pattern = re.compile(
+        r"(?:DOMAIN(?:-SUFFIX|-KEYWORD)?|IP-CIDR6?|GEOIP|PROCESS-NAME),"
+        rf"[A-Za-z0-9_.*:/-]+,(?:AUTO|DIRECT|DSH|JP|REJECT|TAILSCALE|US|{ai.SELECTOR})"
+        r"(?:,no-resolve)?"
+    )
+    active = [line for line in rules.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+    if not active or active[-1] != "FINAL,AUTO":
+        raise ValueError("Expected to end the rules with FINAL,AUTO")
+    if any(not rule_pattern.fullmatch(line) for line in active[:-1]):
+        raise ValueError("Unexpected syntax in a public Shadowrocket rule")
+
+
 def build(upstream_text: str, source_url: str) -> str:
-    custom_rules = CUSTOM_RULES.read_text(encoding="utf-8").strip()
     upstream_rules = normalize_rule_section(extract_rule_section(upstream_text))
+    custom_rules = custom_rules_with_ai(CUSTOM_RULES.read_text(encoding="utf-8").strip(), upstream_rules)
+    public_rules = (
+        f"{custom_rules}\n\n{BASE_MARKER}# Source: {source_url}\n{upstream_rules}"
+    )
+    validate_public_rules(public_rules, source_url)
     return (
         HEADER.rstrip()
-        + "\n\n[Rule]\n"
-        + custom_rules
-        + "\n\n"
-        + "# Base: Johnshall domestic/foreign split + ad blocking.\n"
-        + f"# Source: {source_url}\n"
-        + upstream_rules
-        + "\n\n"
-        + FOOTER
+        + "\n\n" + ai_groups()
+        + "\n\n[Rule]\n" + public_rules
+        + "\n\n" + FOOTER
     )
 
 
