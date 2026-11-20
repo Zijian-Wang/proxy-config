@@ -62,62 +62,28 @@ function legacyOverride(config) {
 function main(config) {
   config = legacyOverride(config);
   config["proxy-groups"].forEach(function (group) {
-    if (group.name === "Personal-US") group["empty-fallback"] = "REJECT";
+    if (["Personal-JP", "Personal-TW", "Personal-US"].indexOf(group.name) !== -1) {
+      group["empty-fallback"] = "REJECT";
+    }
   });
   var aiGroups = [
     {
       "name": "AI Platform",
       "type": "select",
       "proxies": [
-        "AI JP Auto",
-        "AI Auto",
-        "AI TW Auto",
-        "AI US Auto"
+        "Personal-JP",
+        "Personal-JP-TW-US-Auto",
+        "Personal-TW",
+        "Personal-US"
       ],
-      "default-selected": "AI JP Auto",
+      "default-selected": "Personal-JP",
       "empty-fallback": "REJECT"
     },
     {
-      "name": "AI Auto",
+      "name": "Personal-JP-TW-US-Auto",
       "type": "url-test",
       "include-all": true,
-      "filter": "(?i)(?:^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|\\b(?:North|South|Latin)\\s+America\\b|🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b|🇺🇸|美[國国]|\\b(?:US|USA|United States|America)\\b)).*(?:🇯🇵|日本|\\b(?:JP|Japan)\\b)|^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|\\b(?:North|South|Latin)\\s+America\\b|🇯🇵|日本|\\b(?:JP|Japan)\\b|🇺🇸|美[國国]|\\b(?:US|USA|United States|America)\\b)).*(?:🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b)|^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|\\b(?:North|South|Latin)\\s+America\\b|🇯🇵|日本|\\b(?:JP|Japan)\\b|🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b)).*(?:🇺🇸|美[國国]|\\b(?:US|USA|United States|America)\\b))",
-      "empty-fallback": "REJECT",
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "tolerance": 50,
-      "lazy": false,
-      "interrupt-exist-connections": false
-    },
-    {
-      "name": "AI JP Auto",
-      "type": "url-test",
-      "include-all": true,
-      "filter": "(?i)^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|\\b(?:North|South|Latin)\\s+America\\b|🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b|🇺🇸|美[國国]|\\b(?:US|USA|United States|America)\\b)).*(?:🇯🇵|日本|\\b(?:JP|Japan)\\b)",
-      "empty-fallback": "REJECT",
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "tolerance": 50,
-      "lazy": false,
-      "interrupt-exist-connections": false
-    },
-    {
-      "name": "AI TW Auto",
-      "type": "url-test",
-      "include-all": true,
-      "filter": "(?i)^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|\\b(?:North|South|Latin)\\s+America\\b|🇯🇵|日本|\\b(?:JP|Japan)\\b|🇺🇸|美[國国]|\\b(?:US|USA|United States|America)\\b)).*(?:🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b)",
-      "empty-fallback": "REJECT",
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "tolerance": 50,
-      "lazy": false,
-      "interrupt-exist-connections": false
-    },
-    {
-      "name": "AI US Auto",
-      "type": "url-test",
-      "include-all": true,
-      "filter": "(?i)^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|\\b(?:North|South|Latin)\\s+America\\b|🇯🇵|日本|\\b(?:JP|Japan)\\b|🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b)).*(?:🇺🇸|美[國国]|\\b(?:US|USA|United States|America)\\b)",
+      "filter": "(?i)(?:^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|🇩🇪|德国|德國|\\b(?:DE|Germany)\\b|🇫🇷|法国|法國|\\b(?:FR|France)\\b|\\b(?:North|South|Central|Latin)\\s+America\\b|🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b|🇺🇸|美[國国]|\\b(?:US|USA|United States)\\b)).*(?:🇯🇵|日本|\\b(?:JP|Japan)\\b)|^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|🇩🇪|德国|德國|\\b(?:DE|Germany)\\b|🇫🇷|法国|法國|\\b(?:FR|France)\\b|\\b(?:North|South|Central|Latin)\\s+America\\b|🇯🇵|日本|\\b(?:JP|Japan)\\b|🇺🇸|美[國国]|\\b(?:US|USA|United States)\\b)).*(?:🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b)|^(?!.*(?:特殊|限速|\\[\\s*(?:[x×]\\s*)?(?:[5-9]|\\d\\d+)(?:\\.\\d+)?\\s*(?:[x×倍])?\\s*\\]|🇭🇰|香港|\\b(?:HK|Hong Kong)\\b|🇨🇳|中国|中國|\\b(?:CN|China)\\b|🇸🇬|新加坡|\\b(?:SG|Singapore)\\b|🇰🇷|韩国|韓國|\\b(?:KR|Korea)\\b|🇨🇦|加拿大|\\bCanada\\b|🇦🇺|澳洲|\\bAustralia\\b|🇬🇧|英国|英國|\\b(?:UK|United Kingdom)\\b|🇩🇪|德国|德國|\\b(?:DE|Germany)\\b|🇫🇷|法国|法國|\\b(?:FR|France)\\b|\\b(?:North|South|Central|Latin)\\s+America\\b|🇯🇵|日本|\\b(?:JP|Japan)\\b|🇹🇼|台[灣湾]|臺灣|\\b(?:TW|Taiwan)\\b)).*(?:🇺🇸|美[國国]|\\b(?:US|USA|United States)\\b))",
       "empty-fallback": "REJECT",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 300,
@@ -126,7 +92,9 @@ function main(config) {
       "interrupt-exist-connections": false
     }
   ];
-  var names = aiGroups.map(function (group) { return group.name; });
+  // Drop obsolete groups if a config already contains the previous override.
+  var names = aiGroups.map(function (group) { return group.name; })
+    .concat(["AI Auto", "AI JP Auto", "AI TW Auto", "AI US Auto"]);
   config["proxy-groups"] = aiGroups.concat(config["proxy-groups"].filter(function (group) {
     return names.indexOf(group.name) === -1;
   }));
