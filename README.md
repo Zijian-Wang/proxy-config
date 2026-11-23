@@ -17,6 +17,10 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   E*TRADE, Webull, tastytrade, TradeStation, and Alpaca. Rules use
   domain suffixes for broker-owned web, login, and API subdomains.
   Fidelity (`fidelity.com`) uses `DIRECT` in both clients.
+- Microsoft Teams meeting signaling, media, and view-only streams use `DIRECT`
+  in both clients. The rules cover the Teams Worldwide endpoint sets 11 and 12
+  and Microsoft's commercial-cloud streaming domains. See [Teams endpoints](https://learn.microsoft.com/en-us/microsoft-365/enterprise/urls-and-ip-address-ranges?view=o365-worldwide#microsoft-teams)
+  and [Teams proxy guidance](https://learn.microsoft.com/en-us/microsoftteams/proxy-servers-for-skype-for-business-online#recommendation-for-teams-events-optimized-for-large-audiences-and-teams-view-only-meetings).
 - Claude/Anthropic and other AI tools (Perplexity, Poe, Copilot, Cursor,
   Codeium/Windsurf, Midjourney) use the shared `JP` policy, which maps to
   `JP-Auto` in Clash. In legacy Clash profiles, Grok/xAI, X, and OpenAI/ChatGPT
