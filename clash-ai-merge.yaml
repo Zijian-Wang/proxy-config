@@ -36,8 +36,8 @@ rule-providers:
 
 rules:
   - 'DOMAIN-SUFFIX,maxon.net,DIRECT'
-  - 'RULE-SET,personal-shadowrocket-us,US-Auto'
   - 'RULE-SET,personal-ai-platform,AI Platform'
+  - 'RULE-SET,personal-shadowrocket-us,US-Auto'
   - 'RULE-SET,personal-shadowrocket-jp,JP-Auto'
   - 'RULE-SET,personal-shadowrocket-direct,DIRECT'
   - 'MATCH,All-Auto'

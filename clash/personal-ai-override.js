@@ -107,6 +107,6 @@ function main(config) {
     return rule.indexOf("RULE-SET,personal-ai-platform,") !== 0;
   });
   var us = config.rules.indexOf("RULE-SET,personal-us,Personal-US");
-  config.rules.splice(us + 1, 0, "RULE-SET,personal-ai-platform,AI Platform");
+  config.rules.splice(us, 0, "RULE-SET,personal-ai-platform,AI Platform");
   return config;
 }

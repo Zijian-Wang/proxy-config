@@ -117,7 +117,7 @@ def verge_merge(legacy: str) -> str:
     legacy = replace_once(legacy, "rule-providers:\n", "rule-providers:\n" + provider)
     us = "  - 'RULE-SET,personal-shadowrocket-us,US-Auto'\n"
     return "# Opt-in for use with clash-ai-groups.yaml.\n\n" + replace_once(
-        legacy, us, us + "  - 'RULE-SET,personal-ai-platform,AI Platform'\n"
+        legacy, us, "  - 'RULE-SET,personal-ai-platform,AI Platform'\n" + us
     )
 
 
@@ -170,7 +170,7 @@ def clash_app_script(legacy: str) -> str:
     return rule.indexOf("RULE-SET,personal-ai-platform,") !== 0;
   });
   var us = config.rules.indexOf("RULE-SET,personal-us,Personal-US");
-  config.rules.splice(us + 1, 0, "RULE-SET,personal-ai-platform,AI Platform");
+  config.rules.splice(us, 0, "RULE-SET,personal-ai-platform,AI Platform");
   return config;
 }
 '''

@@ -24,11 +24,12 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 - Claude/Anthropic and other AI tools (Perplexity, Poe, Copilot, Cursor,
   Codeium/Windsurf, Midjourney) use the shared `JP` policy, which maps to
   `JP-Auto` in Clash. In legacy Clash profiles, Grok/xAI, X, and OpenAI/ChatGPT
-  also use Japan. Shadowrocket and the opt-in Clash profiles send those three
-  services to `AI Platform`. Gemini, Google AI Studio, NotebookLM, Google Labs,
-  Gemini Code Assist, and the listed Vertex AI APIs follow the shared `US`
-  policy. Vertex AI API hostnames are shared with other Vertex AI services;
-  Google sign-in and static-resource hostnames retain their existing routes.
+  also use Japan and Gemini uses the shared US policy. Shadowrocket and the
+  opt-in Clash profiles send those three services and `gemini.google.com` to
+  `AI Platform`. Google AI Studio, the Gemini API used by AI Studio, NotebookLM,
+  Google Labs, Gemini Code Assist, and the listed Vertex AI APIs still use the
+  shared `US` policy. Google sign-in and static-resource hostnames retain
+  their existing routes.
 - Meta products (Muse/Meta AI, Facebook, Instagram, WhatsApp, Messenger,
   Threads, Quest) use the shared `US` policy. The macOS Muse app also gets a
   `PROCESS-NAME,Muse` fallback, so endpoints outside the listed domains still
@@ -168,13 +169,20 @@ high-multiplier nodes. Verge's all-region `All-Auto` is unchanged. Shadowrocket
 keeps its original TW/JP/US-oriented `AUTO` name filter for both AI and general
 fallback; it is a naming heuristic, not a strict geographic check.
 
-The new provider covers OpenAI/ChatGPT, Grok/xAI, and X. It runs after the
-existing US rules and before the existing JP rules. Clash App also keeps
-the DSH routes first. Gemini, AI Studio, Vertex, the existing broker routes,
-and the Fidelity `DIRECT` exception keep their policies. In the opt-in Clash
-files, the shared region groups specify `REJECT` for zero eligible nodes.
-The reused groups keep their node filters. Legacy scripts, enhancements,
-shared rule providers, and the NAS are unchanged.
+Clash checks the AI provider for Gemini, OpenAI/ChatGPT, Grok/xAI, and X
+before the shared US and JP rules. Clash App checks the DSH rules first.
+In both Clash profiles, the shared region groups specify `REJECT` for zero
+eligible nodes.
+
+- **Clash App** — Select the AI override script if you use the legacy script.
+  If you already use the AI script, update it and reapply the profile to load
+  the new provider order. The provider itself refreshes daily.
+  [AI override script](https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/personal-ai-override.js)
+- **Clash Verge Rev** — Install the AI Merge and Groups enhancements if you use
+  the legacy enhancements. If you already use the AI enhancements, update the
+  Merge and reactivate the profile to load the new provider order.
+- **Shadowrocket** — Refresh the existing remote config. See the rollout notes
+  below.
 
 ### Mihomo requirement and rollout check
 
@@ -188,9 +196,10 @@ Before adopting these files, verify fallback behavior with the actual core
 build selected on **each device**, including embedded forks. Use an isolated
 synthetic fixture with zero matching nodes after filtering. Confirm that
 each of the shared groups in the table above resolves to `REJECT` when
-empty in Clash. Also check Gemini and a non-Fidelity broker through `US-Auto`
-(Verge) or `Personal-US` (Clash App) with zero eligible US nodes. The core must
-reject those routes without dialing directly or selecting another region.
+empty in Clash. Select the US option in `AI Platform` and check Gemini and an
+OpenAI endpoint. Check a non-Fidelity broker through `US-Auto` (Verge) or
+`Personal-US` (Clash App) with zero eligible US nodes. The core must reject
+these routes without dialing directly or selecting another region.
 Keep the current profile on any device where this behavior cannot be verified.
 
 A successful configuration parse checks acceptance only. It does not verify
@@ -209,9 +218,9 @@ The existing [`shadowrocket.conf`](shadowrocket.conf) URL and QR code now carry
 the routing change without a new import. No node subscription change is needed.
 
 The config contains public routing rules and groups, not servers, login
-details, subscription links, or authenticated modules. OpenAI/ChatGPT, Grok,
-and X use `AI Platform`. The narrower `r.openai.com` rejection, Gemini's US
-route, existing broker routes (including Fidelity `DIRECT`), and
+details, subscription links, or authenticated modules. Gemini,
+OpenAI/ChatGPT, Grok, and X use `AI Platform`. The narrower `r.openai.com`
+rejection, existing broker routes (including Fidelity `DIRECT`), and
 `FINAL,AUTO` stay in place.
 
 **Not validated on iOS.** Shadowrocket now uses the normal groups without an

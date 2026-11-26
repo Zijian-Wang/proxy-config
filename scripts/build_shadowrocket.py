@@ -128,20 +128,25 @@ def ai_groups() -> str:
 
 def custom_rules_with_ai(custom: str, upstream: str) -> str:
     entries = ai.route_entries()
+    entry_set = set(entries)
     custom = custom.replace(
         "# X (Twitter) and its short-link/static domains use the Japan group.",
         "# X (Twitter) and its short-link/static domains use AI Platform.",
     ).replace(
+        "# Legacy US routing for Google AI services. AI-enabled profiles override Gemini.",
+        "# Gemini uses AI Platform. Other Google AI services use US.",
+    ).replace(
         "# Other AI tools (Grok, Perplexity, Poe, Copilot, Cursor, etc.) prefer Japan.\n"
-        "# OpenAI also uses Japan; Gemini keeps its US route.",
-        "# Other AI tools prefer Japan. Grok uses AI Platform; Gemini keeps its US route.",
+        "# OpenAI also uses Japan in legacy Clash profiles.",
+        "# Other AI tools prefer Japan. Grok uses AI Platform.",
     )
     custom_lines = custom.splitlines()
     routed = set()
     for index, line in enumerate(custom_lines):
-        if line.endswith(",JP") and line[:-3] in entries:
-            routed.add(line[:-3])
-            custom_lines[index] = f"{line[:-3]},{ai.SELECTOR}"
+        rule, _, policy = line.rpartition(",")
+        if policy in {ai.JP, ai.US} and rule in entry_set:
+            routed.add(rule)
+            custom_lines[index] = f"{rule},{ai.SELECTOR}"
 
     added = [entry for entry in entries if entry not in routed]
     suffixes = [entry.split(",", 1)[1] for entry in added]

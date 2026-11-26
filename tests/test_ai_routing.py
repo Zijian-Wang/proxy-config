@@ -147,12 +147,17 @@ class AIRoutingTests(unittest.TestCase):
             f"personal-shadowrocket-{policy}": yaml_rules(read(f"clash/rules/shadowrocket-{policy}.yaml"))
             for policy in ("us", "jp", "direct")
         }
-        providers["personal-ai-platform"] = ai.route_entries()
+        providers["personal-ai-platform"] = yaml_rules(read("clash/rules/ai-platform.yaml"))
+        self.assertEqual(match_domain(legacy_rules, providers, "gemini.google.com"), "US-Auto")
         for rule in ai.route_entries():
             domain = rule.split(",")[1]
             self.assertEqual(match_domain(merged, providers, f"api.{domain}"), ai.SELECTOR)
         controls = {
-            "gemini.google.com": "US-Auto",
+            "gemini.google.com": ai.SELECTOR,
+            "api.openai.com": ai.SELECTOR,
+            "notebooklm.google.com": "US-Auto",
+            "accounts.google.com": "All-Auto",
+            "teams.microsoft.com": "DIRECT",
             "aistudio.google.com": "US-Auto",
             "us-central1-aiplatform.googleapis.com": "US-Auto",
             "api.interactivebrokers.com": "US-Auto",
@@ -218,7 +223,11 @@ class AIRoutingTests(unittest.TestCase):
             self.assertEqual(match_domain(rules, {}, host), ai.SELECTOR)
         controls = {
             "r.openai.com": "REJECT",
-            "gemini.google.com": "US",
+            "gemini.google.com": ai.SELECTOR,
+            "api.openai.com": ai.SELECTOR,
+            "notebooklm.google.com": "US",
+            "teams.microsoft.com": "DIRECT",
+            "dsh-wl.risk-os.app": "DSH",
             "aistudio.google.com": "US",
             "us-central1-aiplatform.googleapis.com": "US",
             "api.interactivebrokers.com": "US",
@@ -284,7 +293,8 @@ const before = run(baseline, input);
 const after = run(optIn, input);
 const extra = 'RULE-SET,personal-ai-platform,AI Platform';
 assert.deepEqual(after.rules.filter((rule) => rule !== extra), before.rules);
-assert.ok(after.rules.indexOf(extra) < after.rules.indexOf('RULE-SET,personal-jp,Personal-JP'));
+assert.ok(after.rules.indexOf(extra) < after.rules.indexOf('RULE-SET,personal-us,Personal-US'));
+assert.ok(after.rules.indexOf(extra) > after.rules.indexOf('RULE-SET,personal-dsh,Personal-DSH'));
 const fixedUS = after['proxy-groups'].find((group) => group.name === 'Personal-US');
 assert.equal(fixedUS['empty-fallback'], 'REJECT');
 const include = new RegExp(fixedUS.filter.replace(/^\(\?i\)/, ''), 'i');
@@ -294,8 +304,33 @@ assert.deepEqual(names.filter((name) => include.test(name) && !exclude.test(name
 assert.ok(include.test('Synthetic USA') && !exclude.test('Synthetic USA'));
 assert.ok(after.rules.includes('RULE-SET,personal-us,Personal-US'));
 const usPayload = fs.readFileSync('clash/rules/shadowrocket-us.yaml', 'utf8');
-for (const domain of ['gemini.google.com', 'aistudio.google.com', 'interactivebrokers.com', 'etrade.com']) {
-  assert.ok(usPayload.includes(`'DOMAIN-SUFFIX,${domain}'`));
+assert.ok(usPayload.includes("'DOMAIN-SUFFIX,gemini.google.com'"));
+const providers = Object.fromEntries(Object.entries(after['rule-providers']).map(([name, provider]) => {
+  const file = provider.url.split('/').pop();
+  const payload = fs.readFileSync(`clash/rules/${file}`, 'utf8');
+  return [name, [...payload.matchAll(/^  - '([^']+)'$/gm)].map((match) => match[1].split(','))];
+}));
+function policy(host) {
+  for (const rule of after.rules) {
+    const [type, value, group] = rule.split(',');
+    if (type === 'MATCH') return value;
+    if (type === 'DOMAIN' && host === value) return group;
+    if (type === 'RULE-SET' && providers[value].some(([kind, domain]) =>
+      (kind === 'DOMAIN' && host === domain) ||
+      (kind === 'DOMAIN-SUFFIX' && (host === domain || host.endsWith('.' + domain))) ||
+      (kind === 'DOMAIN-KEYWORD' && host.includes(domain)))) return group;
+  }
+}
+for (const [host, group] of Object.entries({
+  'gemini.google.com': 'AI Platform', 'api.openai.com': 'AI Platform',
+  'aistudio.google.com': 'Personal-US', 'notebooklm.google.com': 'Personal-US',
+  'us-central1-aiplatform.googleapis.com': 'Personal-US',
+  'interactivebrokers.com': 'Personal-US', 'etrade.com': 'Personal-US',
+  'fidelity.com': 'DIRECT', 'teams.microsoft.com': 'DIRECT',
+  'dsh-wl.risk-os.app': 'Personal-DSH',
+  'accounts.google.com': 'Subscription Fallback', 'fallback.example': 'Subscription Fallback',
+})) {
+  assert.equal(policy(host), group, host);
 }
 const allGroups = after['proxy-groups'];
 const selector = allGroups[0];
