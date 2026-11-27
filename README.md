@@ -1,7 +1,8 @@
 # Proxy Config
 
-- `clash-remote-merge.yaml` + `clash-remote-groups.yaml`: recommended Clash
-  Verge Rev enhancements with a complete routing policy and remote rule sets.
+- [`clash/verge-subscription-overlay.js`](clash/verge-subscription-overlay.js)
+  is the recommended Clash Verge Rev enhancement on Windows. It adds personal
+  exceptions to the subscription's own rules.
 - `shadowrocket.conf`: generated Shadowrocket config.
 
 Shadowrocket uses your custom rules first, then a domestic/foreign split with
@@ -26,10 +27,11 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
   `JP-Auto` in Clash. In legacy Clash profiles, Grok/xAI, X, and OpenAI/ChatGPT
   also use Japan and Gemini uses the shared US policy. Shadowrocket and the
   opt-in Clash profiles send those three services and `gemini.google.com` to
-  `AI Platform`. Google AI Studio, the Gemini API used by AI Studio, NotebookLM,
-  Google Labs, Gemini Code Assist, and the listed Vertex AI APIs still use the
-  shared `US` policy. Google sign-in and static-resource hostnames retain
-  their existing routes.
+  `AI Platform`. The Windows overlay sends that same list to the subscription's
+  `🤖 AI平台` group when available. Google AI Studio, the Gemini API used by
+  AI Studio, NotebookLM, Google Labs, Gemini Code Assist, and the listed
+  Vertex AI APIs still use the shared `US` policy. Google sign-in and
+  static-resource hostnames retain their existing routes.
 - Meta products (Muse/Meta AI, Facebook, Instagram, WhatsApp, Messenger,
   Threads, Quest) use the shared `US` policy. The macOS Muse app also gets a
   `PROCESS-NAME,Muse` fallback, so endpoints outside the listed domains still
@@ -37,16 +39,58 @@ ad blocking from Johnshall's `sr_cnip_ad.conf`.
 - DeepSeek (official site/web app, platform, API, API docs, CDN, downloads,
   status) and the DeepSeek Harness desktop app (API, login, update feed, and
   telemetry on `deepseeksvc.com`) use `DIRECT` in both clients.
-- Clash routes only to automatic (`url-test`) region groups, never the manual
-  ones.
+- Legacy personal regional policies use the named automatic (`url-test`) groups.
+  The Windows overlay uses the subscription's own group types and choices.
 - Logitech Options+ domains use `DIRECT`; Clash also has process-name fallbacks
   for the Options+ app, agent, updater, and Electron helpers.
 - Hugging Face China mirror (`hf-mirror.com`) uses `DIRECT`.
 
-## Clash Verge Rev (recommended)
+## Clash Verge Rev on Windows
 
-Keep the existing node subscription. Open its enhancement settings and install
-these two files together:
+Use the original subscription and install the
+[`verge-subscription-overlay.js`](clash/verge-subscription-overlay.js) script.
+It keeps the subscription's groups, rule providers, and fallback such as
+`MATCH`. It inserts the personal rules after recognized LAN and ad-blocking
+rules. Only unprotected rules with an identical matcher and options are
+replaced. All other subscription rules keep their relative order.
+
+1. Test on a local copy of the subscription first. Back up any current
+   enhancements and remove the old personal snippets from **Global Extend
+   Config** and the profile's **Extend Config** (Merge). In **Edit Proxy
+   Groups**, remove the old personal `prepend` / `append` entries. Also clear
+   the old personal Rules enhancement, if installed. Do this for either legacy
+   Merge/Groups pair and keep each profile's original subscription.
+2. Open **Profiles → Global Extend Script** (订阅 → 全局扩展脚本), paste the
+   contents of the generated JavaScript file, and save. This applies to every
+   profile on that Windows client. To limit the change to one test profile,
+   paste the script into that profile's **Extend Script** instead. Use one
+   script slot and remove any previous personal override from the other slot.
+3. Reactivate the profile and open **View Runtime Config**. Check the
+   subscription groups, `cn_domain`, `cn_ip`, and the original `MATCH`.
+   In the global Script card's **Script Console**, check for warnings about
+   missing groups or broad rules ahead of LAN/ad rules.
+4. On Windows with TUN on, verify new connections for
+   `filecdn.minimax.chat` → `DIRECT`, Gemini and ChatGPT → `🤖 AI平台`,
+   a non-Fidelity broker → `US-Auto`, and Fidelity → `DIRECT`.
+   Change the AI group's selection in **Proxies** and check a new connection.
+   Confirm the approved US exit and existing LAN/ad routing before switching
+   your regular profile.
+
+If `🤖 AI平台` is missing, the AI entries use the subscription's own routing.
+If `US-Auto` is missing, the script inserts `REJECT` for the fixed broker
+domains and skips other personal US rules. Without `JP-Auto`, the personal JP
+rules use subscription routing. These checks use exact group names and do
+not create groups. The script warns when it detects a broad rule before a
+recognized LAN/ad rule. Earlier rules can still win in that layout. Review
+the first match, including the broker routes, before relying on the overlay.
+
+To roll back, restore the backed-up script or use the default script that
+returns `config`, then reactivate the profile. Restore the old Merge/Groups
+only if returning to that compatibility setup.
+
+### Compatibility Merge and Groups
+
+For the legacy full-routing setup, install these two enhancements together:
 
 1. **Merge** (`clash-remote-merge.yaml`) replaces the subscription's entire
    `rules` list while keeping its nodes and groups. It sends `maxon.net` to
@@ -59,8 +103,8 @@ these two files together:
    The region groups filter node names and exclude 特殊/限速 and ≥5x nodes.
 
 Leave the subscription's **Rules** and **Script** enhancements empty for this
-setup. If migrating an existing setup, replace Merge and Groups together and
-reactivate the profile. The optional `clash-remote-override.yaml` is for keeping
+setup and remove the Windows overlay from the global Script slot if installed.
+The optional `clash-remote-override.yaml` is for keeping
 the subscription's routing as a fallback. To use it, keep only the
 `rule-providers` section of the Merge, install the Groups file, and put the
 optional file in **Rules**.
@@ -81,9 +125,9 @@ rules map only the routing intent:
 Mihomo refreshes the three remote rule sets under `clash/rules/` every day.
 Edit `source/shadowrocket-custom-rules.list` for shared rules or
 `source/clash-extra-rules.list` for Clash-only rules. The GitHub workflow
-runs `scripts/build_clash_rule_providers.py` to publish the generated files.
-For changes to the Merge or Groups file itself, refresh those enhancements
-in Clash Verge and reactivate the profile.
+runs `scripts/build_clash_rule_providers.py` and `scripts/build_ai_routing.py`.
+To update the Windows overlay, paste the regenerated script and reactivate the
+profile. For compatibility Merge or Groups changes, refresh those enhancements.
 
 The provider generator skips `TAILSCALE`, Shadowrocket's built-in module.
 `DSH` has a separate provider consumed by the personal override below; the
@@ -151,15 +195,18 @@ The config URL and QR destination do not change.
 
 | Client | Files | Existing fallback |
 | --- | --- | --- |
-| Clash Verge Rev | Opt-in: `clash-ai-merge.yaml` and `clash-ai-groups.yaml` | `MATCH,All-Auto` |
+| Clash Verge Rev on Windows | Subscription overlay with `🤖 AI平台` | Original subscription fallback |
+| Clash Verge Rev compatibility setup | Opt-in: `clash-ai-merge.yaml` and `clash-ai-groups.yaml` | `MATCH,All-Auto` |
 | Clash App | Opt-in: `clash/personal-ai-override.js` with the subscription's original rule scheme | Subscription rules and fallback |
 | Shadowrocket | [`shadowrocket.conf`](shadowrocket.conf), existing URL and QR | `FINAL,AUTO` |
 
-AI Platform defaults to Japan and uses the normal regional groups:
+The repository-managed `AI Platform` defaults to Japan and uses the following
+regional groups. The Windows overlay uses the subscription's existing selector
+and its current selection.
 
 | Client | Japan (default) | Three-region auto | Taiwan | United States |
 | --- | --- | --- | --- | --- |
-| Clash Verge Rev | `JP-Auto` | `JP-TW-US-Auto` | `TW-Auto` | `US-Auto` |
+| Clash Verge Rev compatibility setup | `JP-Auto` | `JP-TW-US-Auto` | `TW-Auto` | `US-Auto` |
 | Clash App | `Personal-JP` | `Personal-JP-TW-US-Auto` | `Personal-TW` | `Personal-US` |
 | Shadowrocket | `JP` | existing `AUTO` | `TW` | `US` |
 
@@ -178,9 +225,8 @@ eligible nodes.
   If you already use the AI script, update it and reapply the profile to load
   the new provider order. The provider itself refreshes daily.
   [AI override script](https://raw.githubusercontent.com/Zijian-Wang/proxy-config/refs/heads/main/clash/personal-ai-override.js)
-- **Clash Verge Rev** — Install the AI Merge and Groups enhancements if you use
-  the legacy enhancements. If you already use the AI enhancements, update the
-  Merge and reactivate the profile to load the new provider order.
+- **Clash Verge Rev compatibility setup** — Use the AI Merge and Groups together
+  for the legacy full-routing profile.
 - **Shadowrocket** — Refresh the existing remote config. See the rollout notes
   below.
 
@@ -228,13 +274,14 @@ explicit `REJECT` member. Its behavior when no node name matches is not verified
 do not assume it fails closed. To roll back the published change, revert the
 rollout commit and refresh the same URL.
 
-Build and test the Clash files locally with Python 3.10 or later. Node.js 18
-or later also runs the script behavior test.
+Build and test the Clash files locally with Python 3.10 or later and Node.js
+18 or later.
 
 ```sh
 python3 scripts/build_ai_routing.py
 python3 -m unittest discover -s tests -v
+node --test tests/verge-subscription-overlay.test.cjs
 ```
 
-The opt-in Clash files reference the AI provider on `main`; the provider
-must be present there before adopting those files.
+The legacy opt-in Clash files reference the AI provider on `main`. The
+Windows overlay bundles its personal rules in the script.

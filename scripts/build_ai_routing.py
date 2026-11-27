@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
-"""Generate the opt-in Clash AI files and share AI filters with Shadowrocket."""
+"""Generate Clash routing files and share AI rules and filters with Shadowrocket."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import re
+from collections import defaultdict
 
-from build_clash_rule_providers import ROOT, render_provider, yaml_quote
+from build_clash_rule_providers import DEFAULT_SOURCES, ROOT, parse_rules, render_provider, yaml_quote
 
 
 SOURCE = ROOT / "source" / "ai-platform.list"
+VERGE_TEMPLATE = ROOT / "scripts" / "verge-subscription-overlay.js.in"
+VERGE_FIXED_US_DOMAINS = [
+    "interactivebrokers.com", "ibkr.com", "thinkorswim.com", "schwab.com",
+    "schwabapi.com", "robinhood.com", "etrade.com", "etrade.net", "webull.com",
+    "webullbroker.com", "tastytrade.com", "tastyworks.com", "tradestation.com",
+    "alpaca.markets",
+]
 SELECTOR = "AI Platform"
 JP = "JP"
 TW = "TW"
@@ -101,6 +109,27 @@ def replace_once(text: str, old: str, new: str) -> str:
     return text.replace(old, new, 1)
 
 
+def verge_subscription_script(ai_rules: list[str]) -> str:
+    grouped: dict[str, list[str]] = defaultdict(list)
+    for source in DEFAULT_SOURCES:
+        parse_rules(source, grouped, keep_no_resolve=True)
+    fixed = [f"DOMAIN-SUFFIX,{name}" for name in VERGE_FIXED_US_DOMAINS]
+    if missing := set(fixed).difference(grouped[US]):
+        raise ValueError(f"Verge broker rules must use US in the shared rules: {sorted(missing)}")
+    # Without the native AI group, these AI matchers belong to the subscription.
+    claimed = set(ai_rules + fixed)
+    routes = {
+        "fixed": fixed,
+        "first": ["DOMAIN,filecdn.minimax.chat", "DOMAIN-SUFFIX,maxon.net"],
+        "ai": ai_rules,
+        "us": [rule for rule in grouped[US] if rule not in claimed],
+        "jp": [rule for rule in grouped[JP] if rule not in claimed],
+        "direct": grouped["DIRECT"],
+    }
+    template = VERGE_TEMPLATE.read_text(encoding="utf-8")
+    return replace_once(template, "/* ROUTES */", json.dumps(routes, ensure_ascii=False, indent=2))
+
+
 def verge_merge(legacy: str) -> str:
     legacy = legacy[legacy.index("rule-providers:") :]
     provider = (
@@ -181,6 +210,7 @@ def main() -> None:
     argparse.ArgumentParser(description=__doc__).parse_args()
     entries = route_entries()
     outputs = {
+        "clash/verge-subscription-overlay.js": verge_subscription_script(entries),
         "clash/rules/ai-platform.yaml": render_provider([SOURCE], SELECTOR, entries),
         "clash-ai-merge.yaml": verge_merge((ROOT / "clash-remote-merge.yaml").read_text(encoding="utf-8")),
         "clash-ai-groups.yaml": verge_groups((ROOT / "clash-remote-groups.yaml").read_text(encoding="utf-8")),

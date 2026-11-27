@@ -1,4 +1,4 @@
-# Recommended Clash Verge Merge enhancement. Replaces the subscription's
+# Compatibility Clash Verge Merge enhancement. Replaces the subscription's
 # routing rules and uses the groups from clash-remote-groups.yaml.
 
 rule-providers:
