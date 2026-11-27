@@ -78,7 +78,8 @@ class AIRoutingTests(unittest.TestCase):
         self.assertIn("      - source/ai-platform.list", workflow)
         self.assertIn('/refs/heads/${GITHUB_REF_NAME}/shadowrocket.conf"', workflow)
         self.assertNotIn("shadowrocket-ai.conf", workflow)
-        self.assertNotIn("python3 scripts/build_ai_routing.py", workflow)
+        self.assertIn("python3 scripts/build_ai_routing.py", workflow)
+        self.assertIn("git diff --exit-code", workflow)
 
     def test_ai_reuses_region_groups_and_configures_empty_fallback(self) -> None:
         for app, choices, expected_new in [

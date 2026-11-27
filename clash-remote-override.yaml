@@ -1,6 +1,6 @@
 # Optional Clash Verge Rules enhancement for retaining subscription routing.
 # Use with only the rule-providers section of clash-remote-merge.yaml and the
-# Groups enhancement. The recommended Merge already defines the full rule list.
+# Groups enhancement. Use this only with the legacy compatibility setup.
 
 prepend:
   - 'RULE-SET,personal-shadowrocket-us,US-Auto'

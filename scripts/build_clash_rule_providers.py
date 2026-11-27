@@ -24,7 +24,8 @@ POLICY_FILES = {
 
 
 def parse_rules(
-    source: Path, grouped: dict[str, list[str]] | None = None
+    source: Path, grouped: dict[str, list[str]] | None = None, *,
+    keep_no_resolve: bool = False,
 ) -> dict[str, list[str]]:
     if grouped is None:
         grouped = defaultdict(list)
@@ -35,8 +36,9 @@ def parse_rules(
         if not line:
             continue
         parts = [part.strip() for part in line.split(",")]
-        if parts and parts[-1] == "no-resolve":
-            parts = parts[:-1]
+        no_resolve = parts[-1] == "no-resolve"
+        if no_resolve:
+            parts.pop()
         if len(parts) < 3:
             raise ValueError(f"{source}:{line_number}: malformed rule: {raw_line}")
         policy = parts[-1]
@@ -49,6 +51,8 @@ def parse_rules(
                 f"{source}:{line_number}: unsupported Shadowrocket policy {policy!r}"
             )
         rule = ",".join(parts[:-1])
+        if no_resolve and keep_no_resolve:
+            rule += ",no-resolve"
         if rule not in grouped[policy]:
             grouped[policy].append(rule)
     return grouped

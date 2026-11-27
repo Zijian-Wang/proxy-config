@@ -2,6 +2,7 @@ name: Update Shadowrocket Config
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
       - main
@@ -12,15 +13,40 @@ on:
       - scripts/build_shadowrocket.py
       - scripts/build_ai_routing.py
       - scripts/build_clash_rule_providers.py
+      - scripts/verge-subscription-overlay.js.in
+      - clash-remote-merge.yaml
+      - clash-remote-groups.yaml
+      - clash/personal-override.js
   schedule:
     # Mondays 09:20 Beijing time.
     - cron: "20 1 * * 1"
 
-permissions:
-  contents: write
-
 jobs:
+  verify:
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check generated Clash routing and run tests
+        run: |
+          python3 scripts/build_clash_rule_providers.py
+          python3 scripts/build_ai_routing.py
+          git diff --exit-code
+          python3 -m unittest discover -s tests -v
+          node --test tests/verge-subscription-overlay.test.cjs
+
   update:
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,17 +59,21 @@ jobs:
         run: |
           python3 scripts/build_shadowrocket.py
           python3 scripts/build_clash_rule_providers.py
+          python3 scripts/build_ai_routing.py
           raw_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/refs/heads/${GITHUB_REF_NAME}/shadowrocket.conf"
           python3 scripts/update_qr.py --url "$raw_url"
 
       - name: Commit changes
         run: |
-          if [ -z "$(git status --short -- shadowrocket.conf assets/shadowrocket-qr.png clash/rules)" ]; then
+          generated=(shadowrocket.conf assets/shadowrocket-qr.png clash/rules
+            clash-ai-merge.yaml clash-ai-groups.yaml clash/personal-ai-override.js
+            clash/verge-subscription-overlay.js)
+          if [ -z "$(git status --short -- "${generated[@]}")" ]; then
             echo "No upstream rule changes."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add shadowrocket.conf assets/shadowrocket-qr.png clash/rules
+          git add -- "${generated[@]}"
           git commit -m "Update generated proxy rules"
           git push
